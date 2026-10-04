@@ -667,7 +667,7 @@ export function describeRestart(spec) {
   if (!spec) {
     return null;
   }
-  return spec.kind === 'button' ? `Button ${spec.index}` : `Switch on axis ${spec.index}`;
+  return spec.kind === 'button' ? `按键 ${spec.index}` : `轴 ${spec.index} 上的开关`;
 }
 
 function maxAbsDelta(axes, rest) {
@@ -1001,14 +1001,14 @@ function mapCentered(v, spec) {
 
 function calTitle(c) {
   return {
-    center: 'Centre',
-    sweep: 'Full range',
-    throttle: 'Throttle',
-    roll: 'Roll',
-    pitch: 'Pitch',
-    yaw: 'Yaw',
-    select: 'Menu switch',
-    confirm: c.checkOnly ? 'Check sticks' : 'Check',
+    center: '回中',
+    sweep: '全行程',
+    throttle: '油门',
+    roll: '横滚',
+    pitch: '俯仰',
+    yaw: '偏航',
+    select: '菜单开关',
+    confirm: c.checkOnly ? '检查摇杆' : '确认',
   }[c.step] || '';
 }
 
@@ -1024,17 +1024,27 @@ function calTitle(c) {
  * has no idea what the shell's settings are and should not.
  */
 function calPrompt(c, mode) {
+  const channel = (name) => ({
+    throttle: '油门',
+    roll: '横滚',
+    pitch: '俯仰',
+    yaw: '偏航',
+  }[name] || name);
+  const side = (name) => (stickSideOf(mode, name) === 'left' ? '左侧' : '右侧');
   if (c.step === 'center') {
-    return 'Both sticks in the centre. Throttle all the way down. Hold still.';
+    return '将两个摇杆置于中央，油门拉到最低，然后保持不动。';
   }
   if (c.step === 'sweep') {
-    return 'Move both sticks through every corner, and the throttle up and down, then put them back.';
+    return '将两个摇杆推到每个角落，并上下拨动油门，然后将它们回中。';
   }
   if (c.step === 'confirm') {
-    return `Move the sticks. Left is ${stickCaption(mode, 'left').toLowerCase()},`
-      + ` right is ${stickCaption(mode, 'right').toLowerCase()}.`;
+    const caption = (side) => stickCaption(mode, side).toLowerCase()
+      .replace(/\bthrottle\b/g, '油门')
+      .replace(/\broll\b/g, '横滚')
+      .replace(/\bpitch\b/g, '俯仰')
+      .replace(/\byaw\b/g, '偏航');
+    return `移动摇杆。左侧是${caption('left')}，右侧是${caption('right')}。`;
   }
-  const side = (ch) => stickSideOf(mode, ch);
   if (c.phase === 'release') {
     /* The stick that carries the throttle as well says to leave the throttle
      * down, because "come back to the centre" is an instruction to let go,
@@ -1045,31 +1055,33 @@ function calPrompt(c, mode) {
       ? `Let the ${side(ch)} stick come back to the centre, with the throttle still all the way down.`
       : `Let the ${side(ch)} stick come back to the centre.`);
     return {
-      throttle: 'Now put the throttle all the way back down.',
+
+      throttle: '现在将油门拉到最低.',
       roll: centre('roll'),
       pitch: centre('pitch'),
       yaw: centre('yaw'),
-      select: 'Put it back where it was.',
-    }[c.step] || 'Return to rest.';
+      select: '将开关拨回原位.',
+    }[c.step] || '回到初始位置.';
+
   }
   return {
-    throttle: 'Push the throttle all the way up and hold it.',
-    roll: `Hold the ${side('roll')} stick fully to the right.`,
-    pitch: `Pull the ${side('pitch')} stick fully back, toward you.`,
-    yaw: `Hold the ${side('yaw')} stick fully to the right.`,
+    throttle: '将油门推到最高并保持。',
+    roll: `将${side('roll')}摇杆向右推到底并保持。`,
+    pitch: `将${side('pitch')}摇杆向后拉到底并保持。`,
+    yaw: `将${side('yaw')}摇杆向右推到底并保持。`,
     /* Only ever asked of a radio reporting no buttons at all, so there is
      * no press to describe and the pilot is choosing which switch becomes
      * one. See SELECT_STEP. */
-    select: 'Throw the switch you want to use as Enter, and hold it.',
+    select: '拨动你想设为 Enter 键的开关并保持。',
   }[c.step] || '';
 }
 
 function calHint(c, travelled, need, gp, idleThrottle = 0, moving = null, blocked = null) {
   if (!gp) {
-    return 'Radio disconnected. Plug it back in, joystick mode.';
+    return '遥控器已断开。请重新连接并切换到摇杆模式。';
   }
   if (c.step === 'center') {
-    return 'Waiting until the reading is steady.';
+    return '正在等待信号稳定。';
   }
   if (c.step === 'sweep') {
     /*
@@ -1093,26 +1105,24 @@ function calHint(c, travelled, need, gp, idleThrottle = 0, moving = null, blocke
     if (travelled === need - 1 && c.min && c.max && c.min.length === need) {
       for (let i = 0; i < need; i += 1) {
         if (c.max[i] - c.min[i] < 0.02) {
-          return `Axis ${i} has not moved at all. If you have moved every stick, that one`
-            + ' is not reaching this browser. Either the radio is not sending it (in its'
-            + ' USB joystick settings, give each of the four sticks a channel, then'
-            + ' reconnect), or the browser is dropping it, which Chrome on Android does.'
-            + ' Stick help, in Settings, tells the two apart.';
+          return `第 ${i} 轴完全没有移动。如果你已经拨动了每个摇杆，说明浏览器没有收到这一轴。`
+            + '原因可能是遥控器没有发送该通道（请在 USB 摇杆设置中为四个摇杆分别分配通道，然后重新连接），'
+            + '也可能是浏览器丢弃了信号，Chrome 安卓版就会出现这种情况。'
+            + '请查看“设置”中的“摇杆帮助”来判断原因。';
         }
       }
     }
     return travelled < need
-      ? `Keep going. Full travel on ${travelled} of ${need} axes so far.`
-      : 'Back to rest to continue.';
+      ? `继续操作。目前 ${need} 个通道中有 ${travelled} 个已达到完整行程。`
+      : '将摇杆回中以继续。';
   }
   if (c.step === 'confirm') {
     /* A throttle reading this high with the sticks sitting where the pilot
      * left them is a quad that will fly itself. Say the number, because the
      * gimbal alone does not make it obvious, and name the way out. */
     if (idleThrottle > CAL.THROTTLE_IDLE) {
-      return `Throttle is reading ${Math.round(idleThrottle * 100)} percent right now.`
-        + ' If that is where your throttle sits when you let go, press T or'
-        + ' Throttle zero is here.';
+      return `当前油门读数为 ${Math.round(idleThrottle * 100)}%。`
+        + '如果松手时油门仍停在这里，请按 T 键或点击此处的“油门归零”。';
     }
     /*
      * The channel under their thumb, named, with the one key that fixes it
@@ -1123,23 +1133,24 @@ function calHint(c, travelled, need, gp, idleThrottle = 0, moving = null, blocke
      */
     if (moving) {
       const rev = c.draft && c.draft.reverse && c.draft.reverse[moving];
-      return `Moving ${moving}${rev ? ', reversed' : ''}.`
-        + ' If the wrong stick moved on screen, press M.'
-        + ` If it moved the wrong way, press R to reverse ${moving}.`;
+      const axis = ({ throttle: '油门', roll: '横滚', pitch: '俯仰', yaw: '偏航' })[moving] || moving;
+      return `检测到${axis}${rev ? '，方向已反转' : ''}。`
+        + '如果屏幕上移动的是错误的摇杆，请按 M。'
+        + `如果方向相反，请按 R 反转${axis}。`;
     }
     const keep = c.checkOnly
-      ? 'Enter or Save mapping keeps the change. Escape leaves it as it was.'
+      ? '按 Enter 或“保存映射”保留更改。按 Escape 放弃更改。'
       : (c.draft && c.draft.select
-        ? 'Enter, Save mapping, or the switch you just assigned. Escape cancels.'
-        : 'Enter or Save mapping keeps it. Escape cancels.');
-    return `Move one stick at a time and watch it. ${keep}`;
+        ? '按 Enter、“保存映射”或刚分配的开关保存。按 Escape 取消。'
+        : '按 Enter 或“保存映射”保留更改。按 Escape 取消。');
+    return `一次移动一个摇杆，并观察屏幕。${keep}`;
   }
   if (c.step === 'select') {
-    return 'This radio reports no buttons, so one channel can be the button.'
-      + ' No switch to spare? Skip. Holding any stick away from centre for'
-      + ' a second counts as a press either way.';
+    return '此遥控器没有上报按键，因此可以将一个通道设为按键。'
+      + '没有多余的开关？可以跳过。无论如何，将任意摇杆推离中心并保持一秒，也会被识别为一次按键。';
   }
   if (c.phase === 'release') {
+
     /* What the release is waiting on, when it is not the stick just asked
      * for: the prompt already covers that one. See blockingAxis. */
     if (blocked && blocked.channel === 'throttle') {
@@ -1157,9 +1168,10 @@ function calHint(c, travelled, need, gp, idleThrottle = 0, moving = null, blocke
       return `Waiting for axis ${blocked.axis}, which has not gone back to where it was at the start.`
         + ' If that is a switch or a dial, put it back.';
     }
-    return 'One direction at a time. Diagonals are ignored.';
+    return '一次只操作一个方向，斜向输入会被忽略.';
+
   }
-  return 'Hold it there. Diagonals are ignored.';
+  return '保持在当前位置。斜向输入会被忽略。';
 }
 
 /*
@@ -2577,7 +2589,7 @@ export class InputManager {
       const motion = maxAbsDelta(snapshotAxes(gp), rest);
       cards.push({
         key,
-        title: `Joystick ${i + 1}`,
+        title: `摇杆 ${i + 1}`,
         name: shortPadName(gp.id),
         motion,
         live: motion >= PAD_PICK.WIGGLE,
@@ -2608,16 +2620,16 @@ export class InputManager {
       });
     }
     const chosen = cards.find((c) => c.chosen) || null;
-    let prompt = 'Move the joystick you want to fly with.';
-    let hint = 'Each box is one plugged-in device. The one you move lights up.';
+    let prompt = '拨动想要用于飞行的摇杆。';
+    let hint = '每个卡片代表一个已连接设备。拨动摇杆即可高亮对应设备。';
     if (!cards.length) {
-      prompt = 'No joystick found.';
-      hint = 'Plug one in, set it to joystick mode, then move it.';
+      prompt = '未检测到摇杆。';
+      hint = '请连接摇杆模式的设备，然后拨动摇杆。';
     } else if (p.phase === 'confirm' && chosen) {
-      prompt = `Use ${chosen.title}?`;
-      hint = 'Yes keeps it. No waits for another wiggle.';
+      prompt = `使用“${chosen.title}”吗？`;
+      hint = '选择“确定”使用此设备，或选择“取消”重新检测。';
     }
-    const skipLabel = p.reason === 'menu' ? 'Cancel' : 'Use keyboard instead';
+    const skipLabel = p.reason === 'menu' ? '取消' : '改用键盘';
     return {
       phase: p.phase,
       reason: p.reason,

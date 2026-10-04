@@ -102,7 +102,7 @@ export function mangaPanels(s) {
     const pat = PATTERNS.find((p) => p.name === trick);
     out.push({
       kind: 'trick',
-      label: 'Best trick',
+      label: '最佳技巧',
       name: trick,
       value: formatScore(s.bestTrick > 0 ? s.bestTrick : (top ? top.points : 0)),
       steps: pat ? pat.steps : null,
@@ -110,27 +110,27 @@ export function mangaPanels(s) {
   }
   if (s.bestGap && s.bestGap.name) {
     out.push({
-      kind: 'gap', label: 'Best gap', name: s.bestGap.name, value: `+${formatScore(s.bestGap.points || 0)}`,
+      kind: 'gap', label: '最佳间隙', name: s.bestGap.name, value: `+${formatScore(s.bestGap.points || 0)}`,
     });
   }
   if (s.longestSkim && s.longestSkim.ms > 0) {
-    const name = s.longestSkim.name || 'Skim';
+    const name = s.longestSkim.name || '贴地滑行';
     out.push({
-      kind: 'skim', label: 'Longest skim', name, value: secs(s.longestSkim.ms), roof: /roof/i.test(name),
+      kind: 'skim', label: '最长贴地滑行', name, value: secs(s.longestSkim.ms), roof: /roof/i.test(name),
     });
   }
   if (s.bestTail && s.bestTail.ms > 0) {
     out.push({
       kind: 'chase',
-      label: 'The chase',
-      name: s.bestTail.drift ? 'Drift Tail' : 'Tail',
+      label: '追逐',
+      name: s.bestTail.drift ? '漂移追尾' : '追尾',
       value: secs(s.bestTail.ms),
       drift: Boolean(s.bestTail.drift),
     });
   }
   if (s.eggFound) {
     out.push({
-      kind: 'stf', label: 'Mark found', name: 'STF', value: '',
+      kind: 'stf', label: '发现标记', name: 'STF', value: '',
     });
   }
   return out;
@@ -141,7 +141,7 @@ export function mangaPanels(s) {
 export function pageSentence(panels) {
   return panels.map((p) => {
     if (p.kind === 'stf') {
-      return 'The STF mark, found.';
+      return '已发现 STF 标记。';
     }
     return `${p.label}: ${p.name}, ${p.value}.`;
   }).join(' ');
@@ -777,12 +777,12 @@ export function drawRunCard(canvas, w, h, run, wordmark) {
   ctx.textAlign = 'left';
   ctx.font = `700 22px ${FONT}`;
   ctx.fillStyle = '#d8d2c0';
-  ctx.fillText(String(run.mapName || 'Freestyle').toUpperCase(), left, 206);
+  ctx.fillText(String(run.mapName || '自由式').toUpperCase(), left, 206);
   ctx.fillStyle = SAKURA;
   ctx.fillRect(left, 220, 40, 3);
   ctx.font = `700 16px ${FONT}`;
   ctx.fillStyle = INKS.slate;
-  ctx.fillText('SCORE', left, 282);
+  ctx.fillText('得分', left, 282);
   const total = formatScore(s.counter != null ? s.counter : (s.total || 0));
   const room = pageX - left - 40;
   let px = 96;
@@ -793,17 +793,17 @@ export function drawRunCard(canvas, w, h, run, wordmark) {
   drawWord(ctx, total, left, scoreBase, px, INKS.cream);
   const bits = [];
   if (s.tricks > 0) {
-    bits.push(`${s.tricks} trick${s.tricks === 1 ? '' : 's'}`);
+    bits.push(`${s.tricks} 个技巧`);
   }
   if (s.gaps > 0) {
-    bits.push(`${s.gaps} gap${s.gaps === 1 ? '' : 's'}`);
+    bits.push(`${s.gaps} 个间隙`);
   }
   const calls = closeCallCount(s.closeCalls);
   if (calls > 0) {
-    bits.push(`${calls} close call${calls === 1 ? '' : 's'}`);
+    bits.push(`${calls} 次险些碰撞`);
   }
   if (s.crashes === 0) {
-    bits.push('no crashes');
+    bits.push('无撞机');
   }
   /* One line of what made it, wrapped rather than run under the page. */
   ctx.font = `600 20px ${FONT}`;

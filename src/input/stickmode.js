@@ -101,9 +101,14 @@ export function stickSideOf(mode, channel) {
  * only thing the two callers disagree about, a comma on the menus and a
  * middle dot on the glass.
  */
-export function stickCaption(mode, side, sep = ', ') {
+export function stickCaption(mode, side, sep = '、') {
   const s = stickChannels(mode)[side === 'right' ? 'right' : 'left'];
-  const name = (ch) => (ch === 'throttle' ? 'throttle' : ch);
+  const name = (ch) => ({
+    throttle: '油门',
+    roll: '横滚',
+    pitch: '俯仰',
+    yaw: '偏航',
+  })[ch] || ch;
   const head = `${name(s.horiz)}${sep}${name(s.vert)}`;
   return head.charAt(0).toUpperCase() + head.slice(1);
 }

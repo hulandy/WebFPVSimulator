@@ -69,9 +69,8 @@ const LIBRARY_KEY = 'webfpv.rates.library.v1';
  * term of art; "this browser, on this device" is the thing a pilot needs to
  * know, and the list of what clears it is the part that actually bites.
  */
-export const RATES_STORAGE_WARNING = 'Presets are saved in this browser on this device only. '
-  + 'Clearing site data, a private window, another browser or another device all start you from '
-  + 'nothing, and there is no account and nothing is uploaded.';
+export const RATES_STORAGE_WARNING = '预设仅保存在此设备的此浏览器中。'
+  + '清除网站数据、使用无痕窗口、切换浏览器或更换设备都会导致预设丢失；没有账户，也不会上传任何内容。';
 
 /* The longest name worth storing. Wider than the row can draw, so the row
  * truncates rather than the field refusing a name somebody meant. */

@@ -46,7 +46,7 @@ import { AXIS as AXIS_LINE, INK, LABEL, MINT, SAKURA, SLATE } from './ratespanel
 const NOTCH = 'rgba(244, 236, 214, 0.75)';
 
 const AXIS_COLOR = { roll: SAKURA, pitch: MINT, yaw: SLATE };
-const AXIS_LABEL = { roll: 'Roll', pitch: 'Pitch', yaw: 'Yaw' };
+const AXIS_LABEL = { roll: '横滚', pitch: '俯仰', yaw: '偏航' };
 /* Short group captions under the bars; the row notes carry the teaching. */
 const GROUP_LABEL = {
   p: 'P', i: 'I', d: 'D', dmax: 'D max', f: 'FF',
@@ -72,7 +72,7 @@ function el(tag, cls, text) {
 function describe(pids) {
   const line = (a) => `P ${a.p}, I ${a.i}, D ${a.d}, D max ${a.dmax}, feedforward ${a.f}`;
   const parts = PID_AXES.map((axis) => `${AXIS_LABEL[axis]} ${line(pids[axis])}`);
-  return `PID values the module is flying. ${parts.join('. ')}. Stock 4.5.1 roll is ${line(STOCK_PIDS.roll)}.`;
+  return `模块当前使用的 PID 数值。${parts.join('。')}。Betaflight 4.5.1 默认横滚数值为 ${line(STOCK_PIDS.roll)}。`;
 }
 
 export function mountPidsPanel() {
@@ -187,7 +187,7 @@ export function mountPidsPanel() {
     for (const axis of PID_AXES) {
       const dd = cells.get(axis);
       if (!pids) {
-        dd.textContent = 'reading the module';
+        dd.textContent = '正在读取模块';
       } else {
         const a = pids[axis];
         dd.textContent = PID_FIELDS
@@ -197,7 +197,7 @@ export function mountPidsPanel() {
     }
     canvas.setAttribute(
       'aria-label',
-      pids ? describe(pids) : 'PID values are being read from the module.',
+      pids ? describe(pids) : '正在从模块读取 PID 数值。',
     );
     draw();
   }

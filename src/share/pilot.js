@@ -60,5 +60,5 @@ export function writePilotName(raw) {
 }
 
 export function nameRules() {
-  return 'Two to twenty four letters, numbers, spaces, dots, underscores or hyphens.';
+  return '请使用 2 至 24 个字母、数字、空格、句点、下划线或连字符。';
 }

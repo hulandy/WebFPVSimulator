@@ -301,7 +301,7 @@ export function gateNumberOf(doc, seqId) {
 export function sequenceLabel(doc, seq) {
   const el = elementById(doc, seq.elementId);
   if (!el) {
-    return 'missing element';
+    return '元素不存在';
   }
   const def = ELEMENTS[el.type];
   const base = el.name || pieceLabel(el, trackClassOf(doc));
@@ -311,9 +311,9 @@ export function sequenceLabel(doc, seq) {
       const fig = matchingFigureOf(el, runContaining(doc, seq));
       const level = levelName(el, seq.apertureIndex);
       if (fig && fig !== 'single') {
-        return `${base}, ${FIGURES[fig].label}, ${level}`;
+        return `${base}，${FIGURES[fig].label}，${level}`;
       }
-      return `${base}, ${level}`;
+      return `${base}，${level}`;
     }
   }
   return base;
@@ -329,22 +329,22 @@ export function faceLabel(doc, seq) {
   }
   const kind = kindOf(el);
   if (kind === KIND.MARKER) {
-    return `pass on the ${seq.passSide}`;
+    return `从${seq.passSide === 'left' ? '左侧' : '右侧'}通过`;
   }
   if (kind !== KIND.APERTURE) {
     return '';
   }
   if (seq.entry === 0) {
-    return 'no face set';
+    return '未设置进入方向';
   }
   /* A steeply tilted aperture is flown up or down and saying "from the
    * front" about it would be a lie. */
   const n = el.pitch;
   if (Math.abs(n) > Math.PI / 4) {
     const upward = (n > 0 ? 1 : -1) * seq.entry > 0;
-    return upward ? 'enter from below' : 'enter from above';
+    return upward ? '从下方进入' : '从上方进入';
   }
-  return seq.entry === 1 ? 'enter from the back' : 'enter from the front';
+  return seq.entry === 1 ? '从后方进入' : '从前方进入';
 }
 
 /* Every element that could be in the order but is not. Feeds a warning and

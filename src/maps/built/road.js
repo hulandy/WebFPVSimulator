@@ -471,13 +471,13 @@ function plan(input, closed, radius, floor, elementId, ramp) {
     const nd = nodes[worst.i];
     if (worst.kink) {
       problems.push(problem('info', 'rd-kink',
-        `Node ${nd.node + 1} turns by under 2 degrees on legs too short to ease it, so the road runs straight past it.`,
+        `第 ${nd.node + 1} 个节点的转角小于 2°，且相邻路段太短，无法平缓过渡，因此道路会直线经过该节点。`,
         elementId, nd.node));
     } else {
       problems.push(problem('warn', worst.fold ? 'rd-fold' : 'rd-tight',
         worst.fold
-          ? `The road folds back on itself at node ${nd.node + 1}, so no car can turn there. That node was left out: pull it apart into two.`
-          : `The road turns too sharply at node ${nd.node + 1} for its legs: no bend of ${floor.toFixed(1)} m radius or more fits. That node was left out: give it longer legs or a gentler turn.`,
+          ? `道路在第 ${nd.node + 1} 个节点处折返，车辆无法在此转弯。该节点已被忽略：请将其拆分为两个节点。`
+          : `第 ${nd.node + 1} 个节点的转角过急，相邻路段无法容纳半径至少为 ${floor.toFixed(1)} m 的弯道。该节点已被忽略：请延长相邻路段或减缓转弯。`,
         elementId, nd.node));
     }
     nodes = nodes.filter((_, k) => k !== worst.i);
@@ -497,7 +497,7 @@ function mergeNodes(nodes, closed, problems, elementId) {
       const dy = nd.y - last.y;
       if (dx * dx + dy * dy < NODE_MERGE * NODE_MERGE) {
         problems.push(problem('info', 'rd-merged',
-          `Node ${nd.node + 1} is on top of node ${last.node + 1} and was read as the same node.`, elementId, nd.node));
+          `第 ${nd.node + 1} 个节点与第 ${last.node + 1} 个节点重叠，已合并为同一个节点。`, elementId, nd.node));
         continue;
       }
     }
@@ -510,7 +510,7 @@ function mergeNodes(nodes, closed, problems, elementId) {
     const dy = b.y - a.y;
     if (dx * dx + dy * dy < NODE_MERGE * NODE_MERGE) {
       problems.push(problem('info', 'rd-merged',
-        `Node ${b.node + 1} is on top of node ${a.node + 1}, where the loop closes, and was read as the same node.`, elementId, b.node));
+        `闭合环路处的第 ${b.node + 1} 个节点与第 ${a.node + 1} 个节点重叠，已合并为同一个节点。`, elementId, b.node));
       out.pop();
     }
   }
@@ -588,8 +588,8 @@ export function centreLine(nodesIn, closed, opts = {}) {
   if (nodes.length < (closed ? 3 : 2)) {
     problems.push(problem('error', 'rd-too-few',
       closed
-        ? 'A closed road needs three nodes that are not on top of each other and do not fold back. This one has no line to drive.'
-        : 'A road needs two nodes that are not on top of each other. This one has no line to drive.',
+        ? '闭合道路至少需要三个互不重叠且不会折返的节点。此道路没有可行驶路线。'
+        : '道路至少需要两个互不重叠的节点。此道路没有可行驶路线。',
       elementId));
     return empty;
   }
@@ -1016,12 +1016,12 @@ function segHit(a, b, c, d) {
 export function moduleCheck(xyz, closed) {
   const n = xyz.length / 3;
   if (n < (closed ? 3 : 2) || n > MODULE.MAX_POINTS) {
-    return { code: 'rd-points', message: `the module takes 2 to ${MODULE.MAX_POINTS} points (3 closed), and this is ${n}` };
+    return { code: 'rd-points', message: `模块要求开放道路包含 2 至 ${MODULE.MAX_POINTS} 个点、闭合道路至少包含 3 个点，当前有 ${n} 个点` };
   }
   for (let i = 0; i < 3 * n; i += 1) {
     const v = xyz[i];
     if (!Number.isFinite(v) || !((v < 0 ? -v : v) <= MODULE.COORD_MAX)) {
-      return { code: 'rd-far', message: `a point is past the ${MODULE.COORD_MAX} m the module reaches` };
+      return { code: 'rd-far', message: `有道路点超出模块支持的 ${MODULE.COORD_MAX} m 坐标范围` };
     }
   }
   const nseg = closed ? n : n - 1;
@@ -1034,7 +1034,7 @@ export function moduleCheck(xyz, closed) {
     const dy = xyz[b + 1] - xyz[a + 1];
     const dz = xyz[b + 2] - xyz[a + 2];
     if (!(Math.sqrt(dx * dx + dy * dy) >= MODULE.MIN_SEG)) {
-      return { code: 'rd-short', message: `two points are under ${MODULE.MIN_SEG * 100} cm apart` };
+      return { code: 'rd-short', message: `两个道路点之间的距离小于 ${MODULE.MIN_SEG * 100} cm` };
     }
     const len = Math.sqrt(dx * dx + dy * dy + dz * dz);
     let k = Math.ceil(len / MODULE.STEP);
@@ -1044,7 +1044,7 @@ export function moduleCheck(xyz, closed) {
     }
     total += k;
     if (total > MODULE.MAX_POINTS) {
-      return { code: 'rd-long', message: `the road would be over the ${MODULE.MAX_POINTS} points a road keeps` };
+      return { code: 'rd-long', message: `道路点数量将超过模块支持的 ${MODULE.MAX_POINTS} 个上限` };
     }
   }
   for (let i = closed ? 0 : 1; i < (closed ? n : n - 1); i += 1) {
@@ -1057,7 +1057,7 @@ export function moduleCheck(xyz, closed) {
     const vy = xyz[c + 1] - xyz[b + 1];
     const lens = Math.sqrt(ux * ux + uy * uy) * Math.sqrt(vx * vx + vy * vy);
     if (!(ux * vx + uy * vy >= MODULE.TURN_COS * lens)) {
-      return { code: 'rd-corner', message: 'a point turns by more than the 30 degrees the module takes' };
+      return { code: 'rd-corner', message: '道路点的转向角超过模块支持的 30°' };
     }
   }
   return { points: total };
@@ -1138,7 +1138,7 @@ function roadOfUncached(el) {
   const problems = centre.problems.slice();
   if (report.crossing) {
     problems.push(problem('warn', 'rd-crossing',
-      `The road crosses itself near (${report.crossing.x.toFixed(1)}, ${report.crossing.y.toFixed(1)}). Cars on it pass through each other there.`,
+      `道路在约 (${report.crossing.x.toFixed(1)}, ${report.crossing.y.toFixed(1)}) 处与自身交叉，车辆在此处会彼此穿过。`,
       el?.id));
   }
   return { el, width, lanes, radius, closed, laneOffset, centre, report, problems };

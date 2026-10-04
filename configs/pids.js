@@ -90,22 +90,22 @@ function slider(cli, label, cliMin, note) {
 export const SLIDER_KEYS = ['master', 'pi', 'i', 'd', 'dmax', 'ff', 'pitchPi', 'pitchD'];
 
 export const SLIDERS = {
-  master: slider('simplified_master_multiplier', 'Master multiplier', 30,
-    'Everything at once: P, I, D and feedforward all scale together, ratios kept. This is the "make it stiffer" knob, and the one the flight feel feedback asked for. Stock sits at 100; the stiff preset that used to ship here sat at 185, which is about the size of step that feedback was asking for.'),
-  pi: slider('simplified_pi_gain', 'Tracking, P and I', 30,
-    'How hard the quad chases the rate the stick asks for. Low is lazy and smooth, high snaps onto the setpoint and holds it.'),
-  i: slider('simplified_i_gain', 'Drift and wobble, I', 30,
-    'The slow-error term on its own. Too low drifts off attitude in wind-up moves; too high winds during a long throw and dumps it as a twitch when the stick centres. On this plant the twitch arrives well before the drift.'),
-  d: slider('simplified_d_gain', 'Damping, D', 30,
-    'Resists rotation, smooths stops, calms propwash. On a real quad D is paid for in motor heat and gyro noise; this model’s gyro is clean, so damping is nearly free and the stiff tunes run it high.'),
-  dmax: slider('simplified_dmax_gain', 'Dynamic damping, D max', 0,
-    'How much extra D arrives during fast moves and stops, on top of the base D. Zero holds D constant.'),
-  ff: slider('simplified_feedforward_gain', 'Stick response, FF', 0,
-    'Feedforward pushes on stick movement itself, before any error exists. High is immediate; too high overshoots the start of every move. Zero flies on P and D alone.'),
-  pitchPi: slider('simplified_pitch_pi_gain', 'Pitch tracking', 30,
-    'Pitch P and I relative to roll. A quad is longer than it is wide, so pitch usually carries a few percent more.'),
-  pitchD: slider('simplified_pitch_d_gain', 'Pitch damping', 30,
-    'Pitch D relative to roll, for the same reason pitch tracking exists.'),
+  master: slider('simplified_master_multiplier', '总倍率', 30,
+    '同时缩放 P、I、D 和前馈，并保持它们之间的比例。这是用于增强操控刚性的滑块，也是飞行手感反馈中最常提到的设置。默认值为 100；此前提供的增强预设为 185，大致对应反馈所建议的调整幅度。'),
+  pi: slider('simplified_pi_gain', '跟踪，P 与 I', 30,
+    '四轴追随摇杆目标转速的力度。数值低时响应迟缓且平滑，数值高时会迅速跟上并保持设定点。'),
+  i: slider('simplified_i_gain', '漂移与摆动，I', 30,
+    '仅调整慢速误差项。数值过低时，连续动作中姿态会漂移；数值过高时，长时间动作会累积过多修正量，摇杆回中时产生抖动。在此飞行模型中，抖动会先于漂移出现。'),
+  d: slider('simplified_d_gain', '阻尼，D', 30,
+    '抵抗旋转、平滑停止动作并减轻螺旋桨气流扰动。真实四轴上的 D 项会增加电机温度和陀螺仪噪声；此模型的陀螺仪信号较干净，因此增加阻尼几乎没有代价，增强型调校也会使用较高数值。'),
+  dmax: slider('simplified_dmax_gain', '动态阻尼，D max', 0,
+    '快速动作和停止时，在基础 D 项之上增加的阻尼量。零表示 D 项保持不变。'),
+  ff: slider('simplified_feedforward_gain', '摇杆响应，前馈', 0,
+    '在误差出现前，根据摇杆移动直接施加前馈。数值高时响应更快；过高则会在每次动作开始时过冲。零表示仅使用 P 项和 D 项飞行。'),
+  pitchPi: slider('simplified_pitch_pi_gain', '俯仰跟踪', 30,
+    '俯仰 P 项和 I 项相对横滚的比例。四轴机身前后长于左右宽，因此俯仰通常会高出几个百分点。'),
+  pitchD: slider('simplified_pitch_d_gain', '俯仰阻尼', 30,
+    '俯仰 D 项相对横滚的比例，原因与俯仰跟踪相同。'),
 };
 
 /* The expert table, Configurator's columns in Configurator's order. The
@@ -124,15 +124,15 @@ function pidField(label, cliMax, note) {
 
 export const PID_FIELD_SPECS = {
   p: pidField('P', 250,
-    'Proportional: how hard the quad pushes toward the rate the stick asks for, right now. The stiffness knob.'),
+    '比例项：四轴当前追随摇杆所要求转速的力度，也就是操控刚性调节项。'),
   i: pidField('I', 250,
-    'Integral: holds attitude against slow, persistent error. Too high winds during a held move and twitches when the stick centres.'),
+    '积分项：抵抗缓慢、持续误差以保持姿态。数值过高时，持续动作会累积修正量，并在摇杆回中时产生抖动。'),
   d: pidField('D', 250,
-    'Damping. This is the CLI’s d_min: the D flown most of the time. Configurator calls it D, the firmware calls it d_min, and both mean this number.'),
+    '阻尼项，对应 CLI 参数 d_min，也是大部分时间实际使用的 D 值。配置器称其为 D，固件称其为 d_min，两者均指此数值。'),
   dmax: pidField('D max', 250,
-    'The ceiling D rises to during fast moves and stops. This is the CLI’s d_roll / d_pitch / d_yaw. Careful at the bottom: at or below D the firmware turns the D-to-D-max range off and flies THIS value constant (pid_init.c gates on d_min < D), so D max 0 is zero damping, not damping held at D.'),
+    '快速动作和停止时 D 项上升到的上限，对应 CLI 参数 d_roll / d_pitch / d_yaw。请注意下限：D max 小于或等于 D 时，固件会关闭 D 到 D max 的动态范围，并始终使用此数值（pid_init.c 以 d_min < D 为启用条件）。因此，D max 为零表示零阻尼，而非保持 D 不变。'),
   f: pidField('Feedforward', 1000,
-    'Pushes on stick movement itself, before any error exists. The immediacy knob.'),
+    '在误差出现前，根据摇杆移动直接施力。此项用于调节响应的即时性。'),
 };
 
 export function pidCliKey(field, axis) {

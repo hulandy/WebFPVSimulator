@@ -622,11 +622,11 @@ export function virtualApertureDims(el, seq, cls = TRACK_CLASS_DEFAULT) {
 export const ELEMENTS = {
   gate: {
     id: 'gate',
-    label: 'Gate',
+    label: '赛门',
     key: 'G',
     group: 'track',
     kind: KIND.APERTURE,
-    note: 'Vertical square aperture. The standard element.',
+    note: '垂直方形门框，标准赛道元素。',
     /* "5x5 Gate: opening 5 feet by 5 feet." The chapter standard gate.
      * VERIFY: the 5 ft by 5 ft clear opening on multigp.com. */
     pitch: 0,
@@ -643,7 +643,7 @@ export const ELEMENTS = {
   },
   flaggedGate: {
     id: 'flaggedGate',
-    label: 'Flagged gate',
+    label: '旗门',
     key: 'A',
     group: 'track',
     kind: KIND.APERTURE,
@@ -652,7 +652,7 @@ export const ELEMENTS = {
      * inspector offers left, right or both; this is the default a newly
      * placed one gets. */
     flagSide: 'left',
-    note: 'Standard square gate with a pennant on the header. Put it left, right, both ends or on top, and set how tall the mast is.',
+    note: '带旗帜的标准方形赛门。旗帜可放在左侧、右侧、两侧或顶部，并可设置旗杆高度。',
     /* Same 5 ft opening as `gate`. The pennant is dress on the header, not
      * a second sequence marker: the hole is still one gate.
      * VERIFY: nothing on multigp.com dimensions a header flag. 1.45 m of
@@ -674,11 +674,11 @@ export const ELEMENTS = {
   },
   doubleStack: {
     id: 'doubleStack',
-    label: 'Double stack',
+    label: '双层门',
     key: '2',
     group: 'track',
     kind: KIND.APERTURE,
-    note: 'Two standard gates stacked. Each hole is its own gate. Placing one writes a spiral up; pick split-S or one opening in the inspector.',
+    note: '上下叠放的两个标准赛门，每个开口都单独计为一个门。放置后默认按向上螺旋路线通过，也可在属性面板中选择 Split-S 或单个开口。',
     /* "5x5 Double Gate Tower: two standard gates stacked vertically", sat
      * on the ground rather than elevated. The elevated version is `tower`.
      * VERIFY: whether the published double gate tower sits on the ground. */
@@ -697,14 +697,14 @@ export const ELEMENTS = {
   },
   flaggedDoubleStack: {
     id: 'flaggedDoubleStack',
-    label: 'Flagged double',
+    label: '双层旗门',
     key: 'H',
     group: 'track',
     kind: KIND.APERTURE,
     /* Same header pennant as `flaggedGate`, stood on the top board of a
      * two hole stack. The flags are dress: the holes are still two gates. */
     flagSide: 'left',
-    note: 'Two standard gates stacked, with a pennant on the top header. Put it left, right, both ends or on top, and set how tall the mast is.',
+    note: '上下叠放的两个标准赛门，顶部带旗帜。旗帜可放在左侧、右侧、两侧或顶部，并可设置旗杆高度。',
     pitch: 0,
     dims: {
       levels: 2, sillH: 0, clearW: 5 * FT, clearH: 5 * FT, levelPitch: 5 * FT + FRAME_TUBE_OD,
@@ -719,11 +719,11 @@ export const ELEMENTS = {
   },
   ladder: {
     id: 'ladder',
-    label: 'Triple stack',
+    label: '三层门',
     key: 'R',
     group: 'track',
     kind: KIND.APERTURE,
-    note: 'Three standard gates stacked. Each hole is its own gate. Placing one writes a spiral up; pick spiral down, split-S or one opening in the inspector.',
+    note: '上下叠放的三个标准赛门，每个开口都单独计为一个门。放置后默认按向上螺旋路线通过，也可选择向下螺旋、Split-S 或单个开口。',
     /* "5x5 Ladder: three standard gates stacked vertically." The openings
      * share a frame tube, so each sill sits one opening plus one tube above
      * the one below it.
@@ -743,11 +743,11 @@ export const ELEMENTS = {
   },
   tower: {
     id: 'tower',
-    label: 'Tower',
+    label: '高塔门',
     key: 'T',
     group: 'track',
     kind: KIND.APERTURE,
-    note: 'Tall structure, apertures at multiple heights.',
+    note: '高耸结构，在不同高度设置多个门框。',
     /* "5x5 Tower: opening 5 feet by 5 feet, elevation 5 feet off the
      * ground", and "5x5 Double Gate Tower: two standard gates stacked
      * vertically". The default here is the double gate tower standing on a
@@ -769,11 +769,11 @@ export const ELEMENTS = {
   },
   diveGate: {
     id: 'diveGate',
-    label: 'Dive gate',
+    label: '俯冲门',
     key: 'D',
     group: 'track',
     kind: KIND.APERTURE,
-    note: 'Aperture plane horizontal or angled, not vertical. Flown through vertically or on a slope.',
+    note: '门框平面为水平或倾斜方向，而非垂直方向。可垂直穿过或沿斜线穿过。',
     /* "7x6 Dive Gate: elevation 15 ft. Slight angle for entry facilitation."
      * The angle is described but never dimensioned, so the default here is a
      * fully horizontal aperture, which is the honest reading of "flown
@@ -874,11 +874,11 @@ export const ELEMENTS = {
   },
   barrier: {
     id: 'barrier',
-    label: 'Barrier',
+    label: '障碍物',
     key: 'B',
     group: 'track',
     kind: KIND.OBSTACLE,
-    note: 'Solid obstacle. Not flown through. Collision geometry only. The Hurdle on the palette is a low one with flags at its ends.',
+    note: '实体障碍物，不能穿过，仅用于碰撞判定。',
     /* A barrier MAY carry the pennants a gate carries, at the ends of its top: `flagSide` on
      * the piece and the mast height as `dims.flagH`, both written only when it has them. That
      * is the whole of what a hurdle is. See flagSideOf. */
@@ -935,11 +935,11 @@ export const ELEMENTS = {
   },
   flag: {
     id: 'flag',
-    label: 'Flag',
+    label: '旗帜',
     key: 'F',
     group: 'track',
     kind: KIND.MARKER,
-    note: 'Turn marker. The pass side is a virtual gate: a green square beside the pole that has to be flown through. Its inner edge is on the pole and it reaches past the clearance, so you do not have to shave the flag.',
+    note: '转弯标记。通过侧是一个虚拟赛门：立柱旁的绿色方框，飞行器必须穿过。方框内缘位于立柱上，并超出净空范围，因此无需贴着旗帜飞行。',
     /* "Split-S Gate: flag placement 1.5 ft behind and to the side of the
      * gate" is the only flag dimension MultiGP publishes, and it is an
      * offset rather than a flag. A turn flag on a course is a pole with a
@@ -955,11 +955,11 @@ export const ELEMENTS = {
   },
   cone: {
     id: 'cone',
-    label: 'Cone',
+    label: '锥桶',
     key: 'C',
     group: 'track',
     kind: KIND.MARKER,
-    note: 'Ground marker. The pass side is a virtual gate, exactly the same as a flag: same clearance, same square, same scoring.',
+    note: '地面标记。通过侧为虚拟赛门，与旗帜的净空、方框尺寸和计分规则完全相同。',
     /* A standard traffic cone: 28 in tall on a 14 in square base. Not a
      * MultiGP dimension, a highway one, and near enough for a ground marker.
      * VERIFY: nothing on multigp.com, this is a road cone.
@@ -982,11 +982,11 @@ export const ELEMENTS = {
   },
   waypoint: {
     id: 'waypoint',
-    label: 'Waypoint',
+    label: '航点',
     key: 'W',
     group: 'track',
     kind: KIND.MARKER,
-    note: 'Nothing is standing here. The line is required to pass through this point, at this height. Not drawn on the track.',
+    note: '此处没有实体物体。飞行路线必须经过此点和此高度。航点不会绘制在赛道中。',
     /* Nothing is built, so nothing can float: its height is where the line
      * passes, and it may be anywhere. See needsSeat in ./seat.js. */
     standsFree: true,
@@ -1052,7 +1052,7 @@ export const ELEMENTS = {
    */
   pole: {
     id: 'pole',
-    label: 'Pole',
+    label: '立柱',
     /* U for upright, not P. P has been the racing line toggle since before
      * this element existed and the key handler answers it first, so a pole
      * on P was a hotkey the palette advertised and the keyboard never
@@ -1060,7 +1060,7 @@ export const ELEMENTS = {
     key: 'U',
     group: 'track',
     kind: KIND.MARKER,
-    note: 'A bare upright pipe, flown around on one side. The pass side is a virtual gate, the same as a flag.',
+    note: '不带装饰的竖直立柱，需从一侧绕行。通过侧按虚拟赛门处理，与旗帜相同。',
     dims: { height: 2.5, poleRadius: 0.025, clearance: 1.5 },
     microDims: { height: 1.500, poleRadius: PIPE_OD / 2, clearance: POLE_FROM_GATE_MIN },
   },
@@ -1077,11 +1077,11 @@ export const ELEMENTS = {
    */
   horizontalPole: {
     id: 'horizontalPole',
-    label: 'Horizontal pole',
+    label: '横杆',
     key: 'Z',
     group: 'track',
     kind: KIND.OBSTACLE,
-    note: 'A single bar across the track on two legs. Solid: fly over it or under it.',
+    note: '由两条支腿支撑、横跨赛道的单根横杆。它是实体障碍，可从上方或下方飞过。',
     dims: { width: 3.0, depth: 0.08, height: 0.08 },
     /* Its legs reach down to the ground from the bar (hpoleLayout in
      * src/props/course.js), so position.z is the bar's height and not a base
@@ -1098,11 +1098,11 @@ export const ELEMENTS = {
   },
   startPads: {
     id: 'startPads',
-    label: 'Start pads',
+    label: '起飞垫',
     key: 'S',
     group: 'extra',
     kind: KIND.START,
-    note: 'Lap start position and heading. Exactly one per track.',
+    note: '设置圈速起点位置与朝向。每条赛道只能有一个。',
     /* A row of launch stands on the start line. MultiGP runs heats of four,
      * so four stands at 1.5 m spacing is the default grid. padSize is the
      * cell the stand sits in; the mesh is a two-rail wooden start block,
@@ -1121,18 +1121,18 @@ export const ELEMENTS = {
   },
   label: {
     id: 'label',
-    label: 'Label',
+    label: '文字标注',
     key: 'L',
     group: 'extra',
     kind: KIND.ANNOTATION,
-    note: 'Text annotation on the field. Not part of the track.',
+    note: '场地上的文字说明，不属于赛道本身。',
     /* Text height is a drawing size, not a course size, but it is a length
      * in metres on the field and so it lives here with the rest. */
     dims: { textHeight: 0.9 },
   },
   groundLogo: {
     id: 'groundLogo',
-    label: 'Ground logo',
+    label: '地面标志',
     key: 'O',
     group: 'extra',
     kind: KIND.DECAL,
@@ -1141,7 +1141,7 @@ export const ELEMENTS = {
      * dimension. Empty means the first logo the course carries, so a decal
      * dropped on a course with one sponsor needs no further decision. */
     logoId: '',
-    note: 'A sponsor logo painted on the grass. Pick which of the logos it wears, and its size, in the inspector.',
+    note: '绘制在草地上的赞助商标志。可在属性面板中选择标志图案并调整尺寸。',
     /*
      * The footprint the logo is fitted inside, width along the element's own
      * heading and depth across it, the same way a barrier reads. Ten by four
@@ -1219,29 +1219,29 @@ for (const [id, t] of Object.entries(PROP_TYPES)) {
  */
 ELEMENTS.road = {
   id: 'road',
-  label: 'Road',
+  label: '道路',
   key: '',
   group: 'freestyle',
   propGroup: 'roads',
   kind: KIND.ROAD,
   styles: null,
-  note: 'A road. Click to lay its nodes, click the first node to close it into a loop, or press Enter or double click to finish it open. Its bends are eased into curves a car can drive. Vehicles drive on it.',
+  note: '道路。单击以放置节点，单击第一个节点可闭合成环，也可按 Enter 或双击以开放道路结束。弯道会平滑处理，供车辆行驶。',
   dims: { width: 6, lanes: 2, radius: 12 },
   limits: { width: [3, 20, 'm'], lanes: [1, 2, 'int'], radius: [2, 60, 'm'] },
-  labels: { width: 'Width', lanes: 'Lanes', radius: 'Bend radius' },
+  labels: { width: '宽度', lanes: '车道数', radius: '弯道半径' },
 };
 ELEMENTS.vehicle = {
   id: 'vehicle',
-  label: 'Vehicle',
+  label: '车辆',
   key: '',
   group: 'freestyle',
   propGroup: 'roads',
   kind: KIND.VEHICLE,
   styles: CAR_STYLES,
-  note: 'A car driving a road, lap after lap of a loop, out and back along an open road. Put it on a road and slide it to where it starts. Drift makes it the drift car.',
+  note: '让车辆沿道路行驶：环形道路可持续绕行，开放道路则往返行驶。将车辆放到道路上并拖动到起点位置。启用漂移后可切换为漂移车。',
   dims: { offset: 0, speed: 12, variant: 1 },
   limits: { offset: [0, 10000, 'm'], speed: [1, 50, 'm/s'], variant: [1, 99, 'int'] },
-  labels: { offset: 'Start', speed: 'Top speed', variant: 'Variant' },
+  labels: { offset: '起点', speed: '最高速度', variant: '款式' },
 };
 
 /* The most nodes a road keeps, and how far from its position a node may
@@ -1298,19 +1298,19 @@ export function levelPitchFor(clearH) {
 export const GATE_PRESETS = [
   {
     id: 'standard',
-    label: 'Standard',
+    label: '标准',
     size: '5 x 5 ft',
     published: true,
-    hint: 'The MultiGP chapter gate, 5 ft by 5 ft. The size the whole world is scaled against.',
+    hint: 'MultiGP 俱乐部标准赛门，开口为 5×5 英尺，也是场景缩放的基准尺寸。',
     clearW: 5 * FT,
     clearH: 5 * FT,
   },
   {
     id: 'championship',
-    label: 'Championship',
+    label: '锦标赛',
     size: '7 x 6 ft',
     published: true,
-    hint: 'MultiGP championship size, 7 ft wide by 6 ft high. What a dive gate and a launch gate are built at.',
+    hint: 'MultiGP 锦标赛尺寸，宽 7 英尺、高 6 英尺，适用于俯冲门和起飞门。',
     clearW: 7 * FT,
     clearH: 6 * FT,
   },
@@ -1319,7 +1319,7 @@ export const GATE_PRESETS = [
     label: 'Whoop',
     size: '19 x 19 in',
     published: true,
-    hint: 'Tiny whoop size, 19 in square. For an indoor scale track flown on a 65 mm machine.',
+    hint: '微型 Whoop 尺寸，19 英寸见方，适用于 65 mm 飞行器的室内比例赛道。',
     clearW: 19 * IN,
     clearH: 19 * IN,
   },
@@ -1334,10 +1334,10 @@ export const GATE_PRESETS = [
   },
   {
     id: 'trainer',
-    label: 'Trainer',
+    label: '练习',
     size: '10 x 8 ft',
     published: false,
-    hint: 'Not a MultiGP size. A deliberately forgiving hole for a first track or a first pilot.',
+    hint: '非 MultiGP 标准尺寸。专为第一条赛道或初学飞手设计的宽松开口。',
     clearW: 10 * FT,
     clearH: 8 * FT,
   },
@@ -1368,10 +1368,10 @@ export const GATE_PRESETS = [
 export const MICRO_GATE_PRESETS = [
   {
     id: 'racegow28',
-    label: 'RaceGOW 28 in',
+    label: 'RaceGOW 28 英寸',
     size: '28 x 28 in',
     published: true,
-    hint: 'The maximum RaceGOW allows, and what a 3/4 inch pipe cut at 26.5 to 27.25 in assembles to. What everybody builds.',
+    hint: 'RaceGOW 允许的最大尺寸。使用 3/4 英寸管材切割成 26.5 至 27.25 英寸后组装即可达到此尺寸，也是通用建造规格。',
     clearW: GATE_OPENING_MAX,
     clearH: GATE_OPENING_MAX,
   },
@@ -1517,7 +1517,7 @@ export const PALETTE_EXTRA = ['startPads', 'label', 'groundLogo'];
  * armed tool (MENUS-PLAN.md 1.23). It carries a key so the hotkey table has
  * one source, and P is never a piece's letter on any canvas.
  */
-export const PATH_TOGGLE = { id: 'path', label: 'Path', key: 'P', note: 'Toggles display of the derived racing line.' };
+export const PATH_TOGGLE = { id: 'path', label: '路线', key: 'P', note: '切换显示自动生成的竞速路线。' };
 
 /*
  * Tuning. Every number the tool uses that is a length in metres, or that the
@@ -1912,14 +1912,9 @@ export function countElementsByType(elements, cls = TRACK_CLASS_DEFAULT) {
 /* "4 gates, 1 triple stack, 1 dive gate". Empty field: "no elements". */
 export function formatElementCounts(rows) {
   if (!rows || !rows.length) {
-    return 'no elements';
+    return '暂无元素';
   }
-  return rows.map((row) => {
-    /* A label that is plural already (Containers, a stack of them) keeps
-     * its one s: the Load list read "7 containerss". */
-    const word = row.count === 1 || /s$/.test(row.label) ? row.label : `${row.label}s`;
-    return `${row.count} ${word.toLowerCase()}`;
-  }).join(', ');
+  return rows.map((row) => `${row.count} 个${row.label}`).join('、');
 }
 
 /*

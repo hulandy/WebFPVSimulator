@@ -361,10 +361,10 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
   const src = (name) => new URL(`${assetBase}/${name}`, document.baseURI).href;
   host.textContent = '';
 
-  const lede = el('p', 'credits-lede', 'A browser FPV racing simulator. The controller is Betaflight. The track language comes from Track Draw. The rest is one pilot and the people who flew it until it felt right.');
+  const lede = el('p', 'credits-lede', '一款浏览器 FPV 竞速模拟器。飞控采用 Betaflight，赛道设计灵感来自 Track Draw，其余部分由一位飞手和反复试飞的伙伴共同完成。');
   host.append(lede);
 
-  const made = section('Made by', '');
+  const made = section('开发者', '');
   const makerMark = el('span', 'maker-mark');
   makerMark.append(document.createTextNode('andAgain'), el('span', 'fpv', 'FPV'));
   made.append(personCard({
@@ -372,13 +372,13 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
     src: src('andagain.jpg'),
     name: 'andAgainFPV',
     nameNode: makerMark,
-    note: 'Built this simulator, the builder, and the public board. Orchestrated a horde of Grok and Claude along the way.',
+    note: '开发了这款模拟器、赛道编辑器和公开排行榜，并与 Grok 和 Claude 合作完成项目。',
     channel: 'https://www.youtube.com/@andAgainFPV',
     handle: 'youtube.com/@andAgainFPV',
   }));
   host.append(made);
 
-  const partners = section('Partners', 'They back WebFPV.');
+  const partners = section('合作伙伴', '感谢他们对 WebFPV 的支持。');
   const partnerRow = el('div', 'credit-row partners');
   for (const p of PARTNERS) {
     partnerRow.append(partnerCard(p));
@@ -386,7 +386,7 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
   partners.append(partnerRow);
   host.append(partners);
 
-  const pilots = section('Beta test pilots', 'They flew it until it felt like a quad.');
+  const pilots = section('内测飞手', '他们反复试飞，直到手感接近真实四轴。');
   const row = el('div', 'credit-row pilots');
   for (const p of PILOTS) {
     row.append(personCard({
@@ -401,14 +401,14 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
   pilots.append(row);
   host.append(pilots);
 
-  const controller = section('The controller', '');
+  const controller = section('飞控', '');
   const bfBody = el('p');
   bfBody.append(
-    document.createTextNode('The rates, the PID loop, the filters, feedforward, TPA, iterm relax, airmode, anti-gravity. Compiled into this page, not rewritten. '),
+    document.createTextNode('速率、PID 控制环、滤波器、前馈、TPA、I 项松弛、空中模式和抗重力均直接编译到此页面中，并非重新实现。'),
     link('https://github.com/betaflight/betaflight', 'Betaflight'),
-    document.createTextNode(' is GPLv3, so this is too. The flight-controller screen is a homage of '),
+    document.createTextNode(' 采用 GPLv3 许可证，因此本项目也采用该许可证。飞控配置页面致敬了 '),
     link('https://github.com/betaflight/betaflight-configurator', 'Betaflight Configurator'),
-    document.createTextNode(' 10.10: tab names, 4.5.1 fields, and the classic dark grey and orange. It is not that app. No Vue, no MSP, no iframe. With thanks to the Betaflight developers.'),
+    document.createTextNode(' 10.10：沿用了标签页名称、4.5.1 参数以及经典的深灰与橙色风格，但它并不是该应用。没有使用 Vue、MSP 或 iframe。谨向 Betaflight 开发者致谢。'),
   );
   controller.append(projectCard({
     src: src('betaflight.svg'),
@@ -419,14 +419,14 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
   }));
   host.append(controller);
 
-  const tracks = section('The track language', '');
+  const tracks = section('赛道设计工具', '');
   const tdBody = el('p');
   tdBody.append(
-    document.createTextNode('The builder is inspired by '),
+    document.createTextNode('赛道编辑器的设计灵感来自 '),
     link('https://trackdraw.app/', 'Track Draw'),
-    document.createTextNode(', from the Dutch drone gods at '),
+    document.createTextNode('，由荷兰团队 '),
     link('https://dutchdronesquad.nl/', 'Dutch Drone Squad'),
-    document.createTextNode('. Real field scale, real obstacles, a plan you can hand to a crew.'),
+    document.createTextNode(' 制作。按真实场地比例构建障碍，并提供可交付团队使用的赛道平面图。'),
   );
   tracks.append(projectCard({
     src: src('trackdraw.svg'),
@@ -442,7 +442,7 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
    * A track is somebody's afternoon with a pipe cutter; the reconstruction
    * is not the design.
    */
-  const rooms = section('The RaceGOW5 rooms', 'Eight tracks, six builders, read off the official animations.');
+  const rooms = section('RaceGOW5 场地', '根据官方动画重建的八条赛道，出自六位设计者。');
   const roomList = el('div', 'credit-rooms');
   for (const r of RACEGOW) {
     const line = el('p', 'credit-room');
@@ -451,22 +451,22 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
     roomList.append(line);
   }
   const roomNote = el('p', 'credit-room-note');
-  roomNote.append(document.createTextNode('Series and animations by '));
+  roomNote.append(document.createTextNode('系列与动画由 '));
   roomNote.append(link('https://racegow.com/tracks', 'RaceGOW'));
-  roomNote.append(document.createTextNode('. Brought into this simulator by andAgainFPV.'));
+  roomNote.append(document.createTextNode(' 制作，并由 andAgainFPV 搬入本模拟器。'));
   roomList.append(roomNote);
   rooms.append(roomList);
   host.append(rooms);
 
-  const horde = section('The horde', 'Written with Grok. Built with Claude.');
+  const horde = section('协作工具', '与 Grok 一起撰写，与 Claude 一起构建。');
   const ai = el('div', 'credit-row pair');
   const grokBody = el('p');
   grokBody.append(
-    document.createTextNode('xAI\'s Grok. A lot of the lines, a lot of the arguments, and a lot of the stubbornness about flight feel.'),
+    document.createTextNode('xAI 的 Grok。参与了大量文案、讨论，以及对飞行手感的反复打磨。'),
   );
   const claudeBody = el('p');
   claudeBody.append(
-    document.createTextNode('Anthropic\'s Claude. The other half of the horde. Same human holding the sticks.'),
+    document.createTextNode('Anthropic 的 Claude。协作工具的另一半，摇杆始终由同一位飞手操控。'),
   );
   ai.append(
     projectCard({
@@ -491,9 +491,9 @@ export function fillCredits(host, { assetBase = 'assets/credits' } = {}) {
 
   const legal = el('p', 'credits-legal');
   legal.append(
-    document.createTextNode('Betaflight, Track Draw, Grok, Claude, Dutch Drone Squad, and their marks belong to their owners. The channel pictures belong to the pilots. Using them here is credit, not a claim they endorse this page. The partners\' marks belong to the partners, shown with their agreement. WebFPV is free software under '),
+    document.createTextNode('Betaflight、Track Draw、Grok、Claude、Dutch Drone Squad 及其标识均归各自所有者所有。频道图片归相应飞手所有。此处展示用于致谢，并不表示他们为本页面背书。合作伙伴标识归合作伙伴所有，并经其同意展示。WebFPV 是基于 '),
     link('https://www.gnu.org/licenses/gpl-3.0.html', 'GPLv3'),
-    document.createTextNode('.'),
+    document.createTextNode(' 许可协议发布的自由软件。'),
   );
   host.append(legal);
 }

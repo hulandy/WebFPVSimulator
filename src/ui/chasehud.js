@@ -109,8 +109,8 @@ export function chaseCallText(e) {
   }
   if (e.kind === 'lost') {
     return {
-      word: `${e.name} lost`,
-      line: e.why === 'contact' ? 'Hit a car' : 'Crashed',
+      word: `${e.name} 已脱离追逐`,
+      line: e.why === 'contact' ? '撞上其他飞行器' : '发生撞机',
       lost: true,
     };
   }
@@ -130,7 +130,7 @@ export class ChaseHud {
 
     this.box = el('div', 'chase-meter is-off');
     const head = el('div', 'chase-meter-head score-cut');
-    head.append(el('span', 'chase-meter-kind', 'Tail'));
+    head.append(el('span', 'chase-meter-kind', '追尾'));
     /* What the drift car's tail is worth against an ordinary car's: the
      * label already says which car it is, the chip says why it matters. */
     this.drift = el('span', 'chase-meter-drift', `x${TAIL_DRIFT_WEIGHT}`);
@@ -227,7 +227,7 @@ export class ChaseHud {
     }
     if (v.slot !== this.shownSlot) {
       this.shownSlot = v.slot;
-      this.car.textContent = v.label || 'Car';
+      this.car.textContent = v.label || '车辆';
       this.drift.hidden = !v.drift;
     }
     const tenths = Math.floor(v.heldMs / 100);

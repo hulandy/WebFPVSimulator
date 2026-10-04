@@ -132,7 +132,7 @@ function emptyCourse() {
   const micro = cls === 'micro';
   return {
     id: 'custom',
-    name: 'No track yet',
+    name: '尚未选择赛道',
     documentId: null,
     trackClass: cls,
     field: { width: T.fieldWidth, depth: T.fieldDepth },

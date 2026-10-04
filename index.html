@@ -28,7 +28,7 @@
   You should have received a copy of the GNU General Public License
   along with WebFPVSimulator. If not, see <https://www.gnu.org/licenses/>.
 -->
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <!-- viewport-fit is for flight on a phone: the thumb stick margins read
@@ -44,7 +44,7 @@
          root now carries touch-action: manipulation, which stops the
          double-tap and keeps the pinch. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>WebFPV, a browser FPV racing simulator</title>
+    <title>WebFPV, 一个浏览器FPV模拟器</title>
     <!--
       THE SCRIPTS OF THE DEPLOY THIS PAGE CAME FROM, ALWAYS. See src/fresh.js.
 
@@ -81,7 +81,7 @@
         document.write(`<script src="src/fresh.js${stamp ? `?d=${stamp}` : ''}" data-entry="src/boot.js" data-preload="boot"><\/script>`);
       })();
     </script>
-    <meta name="description" content="Fly a five inch quad in a browser, on a real Betaflight control loop compiled to WebAssembly. Build a track, set a lap, put it on the public board." />
+    <meta name="description" content="在浏览器中驾驶五寸四轴飞行器，体验编译为 WebAssembly 的真实 Betaflight 控制回路。创建赛道、挑战单圈，并将成绩发布到公共排行榜。" />
     <!--
       A link to this page posted anywhere renders a 1200 by 630 card, and
       og.png is a frame of the real shell rather than a drawing of one, so it
@@ -97,18 +97,18 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WebFPV" />
     <meta property="og:url" content="https://webfpv.org/sim/" />
-    <meta property="og:title" content="WebFPV, fly a quad in your browser" />
-    <meta property="og:description" content="A real Betaflight control loop compiled to WebAssembly, a race track, and a lap timer. Plug in a gamepad and go." />
+    <meta property="og:title" content="WebFPV, 在浏览器中驾驶5寸四轴" />
+    <meta property="og:description" content="在浏览器中驾驶五寸四轴飞行器，体验编译为 WebAssembly 的真实 Betaflight 控制回路。创建赛道、挑战单圈，并将成绩发布到公共排行榜。" />
     <meta property="og:image" content="https://webfpv.org/sim/og.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The WebFPV simulator: a lit start gate on mown grass, a five inch quad parked beside it, flags and track markers running away under a low sun." />
+    <meta property="og:image:alt" content="WebFPV 模拟器: 一个点亮的起点门在修剪过的草地上，一个五英寸的四轴飞行器停在旁边，旗帜和赛道标记在低太阳下远去。" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="WebFPV, fly a quad in your browser" />
-    <meta name="twitter:description" content="A real Betaflight control loop compiled to WebAssembly, a race track, and a lap timer. Plug in a gamepad and go." />
+    <meta name="twitter:title" content="WebFPV, 在浏览器中驾驶5寸四轴" />
+    <meta name="twitter:description" content="在浏览器中驾驶五寸四轴飞行器，体验编译为 WebAssembly 的真实 Betaflight 控制回路。创建赛道、挑战单圈，并将成绩发布到公共排行榜。" />
     <meta name="twitter:image" content="https://webfpv.org/sim/og.png" />
-    <meta name="twitter:image:alt" content="The WebFPV simulator: a lit start gate on mown grass, a five inch quad parked beside it, flags and track markers running away under a low sun." />
+    <meta name="twitter:image:alt" content="WebFPV 模拟器: 一个点亮的起点门在修剪过的草地上，一个五英寸的四轴飞行器停在旁边，旗帜和赛道标记在低太阳下远去。" />
 
     <!--
       The mark is four propellers, an X frame and the stack in the middle, one
@@ -5685,8 +5685,8 @@
     <canvas id="view"></canvas>
     <div id="ui"></div>
     <div id="loading">
-      <div class="loading-stage">loading</div>
-      <div class="loading-joke">"I complimented my quad on its propellers. It said thanks for the props."</div>
+      <div class="loading-stage">正在加载</div>
+      <div class="loading-joke">“我夸四轴的桨叶很棒，它说：多谢夸奖。”</div>
       <div class="loading-track"><div class="loading-fill"></div><div class="loading-sweep"></div></div>
       <div class="loading-meta"><span class="loading-step"></span><span class="loading-elapsed"></span></div>
       <!-- Empty until something fails. See fail() in src/ui/loading.js: a
@@ -5698,7 +5698,7 @@
            only here and the credits. Low priority, so it never queues
            ahead of the renderer the stage above is waiting on. -->
       <div class="loading-powered">
-        <span>Powered by</span>
+        <span>技术支持</span>
         <img src="assets/credits/betaflight-mono.svg" width="861" height="167" alt="Betaflight" decoding="async" fetchpriority="low" />
       </div>
     </div>

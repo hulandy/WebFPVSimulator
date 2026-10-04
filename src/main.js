@@ -2170,9 +2170,9 @@ export async function boot({ loading, bootStart, mapId }) {
    */
   function ghostRowChoices() {
     const list = [
-      { id: 'off', label: 'Off' },
-      { id: 'best', label: 'Your best lap' },
-      { id: 'previous', label: 'Your previous lap' },
+      { id: 'off', label: '关' },
+      { id: 'best', label: '你的最佳圈' },
+      { id: 'previous', label: '你的上一圈' },
     ];
     for (const t of ghostBoardTimes || []) {
       list.push({ id: `board:${t.id}`, label: `${t.name}  ${formatTime(t.lapMs)}` });
@@ -2182,14 +2182,14 @@ export async function boot({ loading, bootStart, mapId }) {
 
   function ghostRowNote() {
     if (ghostChoice === 'off') {
-      return 'Nobody to chase. Laps still record, so switching this on later has your session to race.';
+      return '没有对手可追。圈速仍会记录，所以之后再打开仍会有这次飞行的记录可追。';
     }
     if (ghostChoice.startsWith('board:')) {
       if (ghostBoardBusy) {
-        return 'Fetching that lap from the board.';
+        return '正在从榜单获取这条圈速。';
       }
       if (!ghostBoardLap) {
-        return 'That lap could not be fetched from the board.';
+        return '这条圈速无法从榜单获取。';
       }
       /* A lap flown off 100 was flown on a lighter or heavier quad, and the
        * board says so beside the name; so does this, where there is room. */
@@ -2202,7 +2202,7 @@ export async function boot({ loading, bootStart, mapId }) {
     const key = ghostCourseKey();
     const have = ghostChoice === 'previous' ? ghostBook.previous(key) : ghostBook.best(key);
     if (!have) {
-      return 'No lap on record this session yet. Finish one and it flies beside you as a translucent pacer.';
+      return '本次会话还没有记录圈速。完成一圈后，它会在你旁边以半透明陪跑者飞行。';
     }
     return `A translucent pacer flying that lap, ${formatTime(have.durationMs)}. The OSD reads your gap at every gate.`;
   }
@@ -2249,7 +2249,7 @@ export async function boot({ loading, bootStart, mapId }) {
 
   function adoptBoardGhost(payload, timeId) {
     const lap = new GhostLap(decodeGhost(ghostFromBase64(payload.ghost)), {
-      label: 'Board lap',
+      label: '榜单圈',
       name: payload.name || '',
       source: 'board',
     });
@@ -5687,7 +5687,7 @@ export async function boot({ loading, bootStart, mapId }) {
         .then((times) => times.map((t) => t.name))
         .catch(() => []);
       name = await ui.askName({
-        title: 'Your name',
+        title: '你的名字',
         detail: 'A time on the public board needs a name. It stays in this browser.',
         known,
       });
@@ -5925,7 +5925,7 @@ export async function boot({ loading, bootStart, mapId }) {
     let name = readPilotName();
     if (!name) {
       name = await ui.askName({
-        title: 'Your name',
+        title: '你的名字',
         detail: 'A run on the public board needs a name. It stays in this browser.',
       });
     }
@@ -5962,11 +5962,11 @@ export async function boot({ loading, bootStart, mapId }) {
   async function submitCoursePublish() {
     const listing = inspectCourse();
     if (!listing || !listing.doc) {
-      notice = { text: 'Nothing to publish.', untilMs: performance.now() + 2800 };
+      notice = { text: '没有可发布的内容。', untilMs: performance.now() + 2800 };
       return;
     }
     if (!listing.canPublishNew && !listing.canUpdateListing) {
-      notice = { text: 'This track is already on the public board.', untilMs: performance.now() + 2800 };
+      notice = { text: '这条赛道已经在公开榜单上了。', untilMs: performance.now() + 2800 };
       return;
     }
     const remix = listing.kind === 'remix';
@@ -5979,23 +5979,23 @@ export async function boot({ loading, bootStart, mapId }) {
         ? `This is your copy${of}${by}. It goes on the board as a new track. The original stays.`
         : 'The public board keeps a copy of this track, including every mark on the gates, the flags and the grass.';
     const values = await ui.askForm({
-      title: updating ? 'Update this track' : 'Publish this track',
+      title: updating ? '更新此赛道' : '发布此赛道',
       detail,
       confirmLabel: updating ? 'Update the board' : 'Publish',
       fields: [
         {
           key: 'course',
-          label: 'Track name',
+          label: '赛道名称',
           value: remix ? suggestRemixName(listing.name) : listing.name,
           maxLength: 80,
-          placeholder: 'Track name',
+          placeholder: '赛道名称',
         },
         {
           key: 'author',
-          label: 'Your name',
+          label: '你的名字',
           value: readPilotName() || '',
           maxLength: 24,
-          placeholder: 'Name',
+          placeholder: '名字',
           autocomplete: 'nickname',
           rules: nameRules(),
           save: writePilotName,
@@ -6617,7 +6617,7 @@ export async function boot({ loading, bootStart, mapId }) {
     } else if (action === 'setname') {
       (async () => {
         const name = await ui.askName({
-          title: 'Your name',
+          title: '你的名字',
           detail: 'Posted times and published tracks carry this name. Changing it updates the board for tracks you published from this browser.',
         });
         if (!name) {
@@ -10433,7 +10433,7 @@ export async function boot({ loading, bootStart, mapId }) {
    * so a capture can fly a chase without a board running. */
   window.__ghostLoad = (b64, name) => {
     const lap = new GhostLap(decodeGhost(ghostFromBase64(b64)), {
-      label: 'Board lap',
+      label: '榜单圈',
       name: name || 'Harness',
       source: 'board',
     });

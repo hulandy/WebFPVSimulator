@@ -215,7 +215,7 @@ export async function exportTrackGif(doc, {
   const path = buildPath(doc, { closeLoop: true });
   if (path.knots.length < 2 || path.length <= 0) {
     throw new Error(
-      'This track has no lap to animate yet. Sequence at least two elements, then try again.',
+      '此赛道尚无可供制作动画的圈速路线。请至少将两个元素加入飞行顺序后重试。',
     );
   }
 

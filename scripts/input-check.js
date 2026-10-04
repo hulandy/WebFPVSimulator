@@ -343,12 +343,12 @@ async function mousePage(page) {
   check('that room is named in its crumb', Boolean(signs.roomName), JSON.stringify(signs));
   check('the title has a row that opens it, named the same', Boolean(signs.titleRow) && signs.titleRow.label === signs.roomName,
     JSON.stringify(signs.titleRow));
-  check('and that row\'s note says calibration is inside', /Calibrate sticks/.test(signs.titleRow ? signs.titleRow.note : ''),
+  check('and that row\'s note says calibration is inside', /摇杆校准/.test(signs.titleRow ? signs.titleRow.note : ''),
     signs.titleRow ? signs.titleRow.note : 'no row');
   check('the Rates room\'s trail starts in it', signs.ratesTrail[0] === signs.roomName, JSON.stringify(signs.ratesTrail));
   check('the how-to for a radio sends the pilot there by the same name',
-    signs.howtoRadio.includes(`Calibrate sticks in ${signs.roomName}`), signs.howtoRadio.slice(0, 200));
-  check('the room is called Settings, which is what the pilot asked for', signs.roomName === 'Settings', signs.roomName);
+    signs.howtoRadio.includes('在“设置”中校准摇杆'), signs.howtoRadio.slice(0, 200));
+  check('the room is called Settings, which is what the pilot asked for', signs.roomName === '设置', signs.roomName);
 
   /* --------------------------------------------------------------------
    * 2. Hover. bug on the Rates screen: "the menu jumps when I move the
@@ -475,7 +475,7 @@ async function mousePage(page) {
   `).then(JSON.parse);
   check('the throttle parked, so the guess counts as a radio and nothing warns', before.usable && !before.calibrated && before.warn.length === 0,
     JSON.stringify(before));
-  const NO_YAW = 'This browser cannot see your yaw stick';
+  const NO_YAW = '浏览器未检测到偏航摇杆';
   const rowShown = `Array.from(window.__ui.screens.title.querySelectorAll('.row-warn .row-label')).some((n) => n.textContent === ${JSON.stringify(NO_YAW)})`;
   await page.evaluate(`(async () => {
     const pad = window.__pad;
@@ -508,7 +508,7 @@ async function mousePage(page) {
    *     seconds and not before, because before that it could be a thumb.
    * ------------------------------------------------------------------ */
   section('title: a throttle resting on the guessed yaw axis earns its own row');
-  const AS_YAW = 'This browser has your throttle as yaw';
+  const AS_YAW = '油门通道被识别成偏航';
   const asYawShown = `Array.from(window.__ui.screens.title.querySelectorAll('.row-warn .row-label')).some((n) => n.textContent === ${JSON.stringify(AS_YAW)})`;
   await page.evaluate('window.__pad.axes[3] = -1; window.__pad.timestamp += 1; 0');
   const parkedAt = Date.now();
@@ -549,7 +549,7 @@ async function mousePage(page) {
     return JSON.stringify({ cells: ui.calAxes.querySelectorAll('.cal-axis').length, kicker: ui.calKicker.textContent, hiddenStrip: ui.calAxes.hidden });
   `).then(JSON.parse);
   check('the strip shows one cell per axis, six, on the first step', strip.cells === 6 && !strip.hiddenStrip, JSON.stringify(strip));
-  check('and the wizard says it has eight steps', /of 8,/.test(strip.kicker), strip.kicker);
+  check('and the wizard says it has eight steps', /第 1\/8 步/.test(strip.kicker), strip.kicker);
   const drove = await page.evaluate(DRIVE({
     roll: 0, pitch: 1, yaw: 4, thr: 2, thrReturn: -1,
   }));
@@ -625,7 +625,7 @@ async function mousePage(page) {
   `).then(JSON.parse);
   check('the check step reads 50 percent with the stick at rest', offer.pct === 50, JSON.stringify(offer));
   check('the button is showing', offer.zeroHidden === false, JSON.stringify(offer));
-  check('and the hint says the number and names the key', /50 percent/.test(offer.hint) && /press T/.test(offer.hint), offer.hint);
+  check('and the hint says the number and names the key', /50%/.test(offer.hint) && /按 T 键/.test(offer.hint), offer.hint);
   await page.tap('KeyT');
   let zeroed = true;
   await page.until("window.__input.calibrationView().throttlePercent === 0 && window.__ui.calZeroBtn.hidden", 3000).catch(() => { zeroed = false; });
@@ -659,7 +659,7 @@ async function mousePage(page) {
       stop: i >= 0 ? ui.isStop(items[i]) : false, calibrated: input.map.stored });
   `).then(JSON.parse);
   check('there is a row in Settings for it', row.i >= 0 && row.stop, JSON.stringify(row));
-  check('and its note says what it is for', /reverses that channel/.test(row.note), row.note.slice(0, 120));
+  check('and its note says what it is for', /反转该通道/.test(row.note), row.note.slice(0, 120));
   check('the radio is calibrated going in, so there is a mapping to check', row.calibrated === true);
   await page.tap('Enter');
   let opened = true;
@@ -668,7 +668,7 @@ async function mousePage(page) {
   /* The view answers the instant the screen opens; the kicker and the
    * buttons are painted by the frame loop and still hold the last
    * section's text until it runs. Wait for the paint, not the state. */
-  await page.until("/Check sticks/.test(window.__ui.calKicker.textContent)", 5000).catch(() => {});
+  await page.until("/检查摇杆/.test(window.__ui.calKicker.textContent)", 5000).catch(() => {});
   const head = await ev(`
     const v = input.calibrationView();
     return JSON.stringify({ step: v.step, count: v.stepCount, checkOnly: v.checkOnly, kicker: ui.calKicker.textContent,
@@ -677,7 +677,7 @@ async function mousePage(page) {
   `).then(JSON.parse);
   check('it opens straight on the check step, one step long', head.step === 'confirm' && head.count === 1 && head.checkOnly === true,
     JSON.stringify(head));
-  check('named as the check rather than as the wizard', /Check sticks/.test(head.kicker), head.kicker);
+  check('named as the check rather than as the wizard', /检查摇杆/.test(head.kicker), head.kicker);
   check('carrying the saved mapping, yaw still on axis 4', head.yaw === 4 && head.axes === 6, JSON.stringify(head));
   check('Save is offered and the stick mode button is up; Reverse waits for a stick',
     head.canSave === true && head.modeHidden === false && head.revHidden === true, JSON.stringify(head));
@@ -693,19 +693,19 @@ async function mousePage(page) {
    * was live. The button label is the last thing to settle, so it is what
    * is waited on.
    */
-  await page.until("window.__ui.calCanReverse === true && window.__ui.calRevBtn.textContent === 'Reverse roll'", 5000).catch(() => {});
+  await page.until("window.__ui.calCanReverse === true && window.__ui.calRevBtn.textContent === '反转横滚通道'", 5000).catch(() => {});
   const moving = await ev(`
     const v = input.calibrationView();
     return JSON.stringify({ moving: v.moving, canReverse: v.canReverse, hint: ui.calHint.textContent,
       revHidden: ui.calRevBtn.hidden, revLabel: ui.calRevBtn.textContent, roll: v.channels.roll });
   `).then(JSON.parse);
   check('holding one stick names its channel', moving.moving === 'roll' && moving.canReverse === true, JSON.stringify(moving));
-  check('the button appears and names it', moving.revHidden === false && moving.revLabel === 'Reverse roll', moving.revLabel);
-  check('the hint offers both keys', /press R to reverse roll/.test(moving.hint) && /press M/.test(moving.hint), moving.hint);
+  check('the button appears and names it', moving.revHidden === false && moving.revLabel === '反转横滚通道', moving.revLabel);
+  check('the hint offers both keys', /按 R 反转横滚/.test(moving.hint) && /按 M/.test(moving.hint), moving.hint);
   check('and roll reads full one way', moving.roll === 1, String(moving.roll));
   await page.tap('KeyR');
   let flipped = true;
-  await page.until("window.__input.calibrationView().channels.roll === -1 && window.__ui.calRevBtn.textContent === 'Un-reverse roll'", 5000)
+  await page.until("window.__input.calibrationView().channels.roll === -1 && window.__ui.calRevBtn.textContent === '取消反转横滚通道'", 5000)
     .catch(() => { flipped = false; });
   check('R turns it round under the stick they are still holding', flipped);
   const after = await ev(`
@@ -714,7 +714,7 @@ async function mousePage(page) {
       savedRev: input.map.reverse.roll });
   `).then(JSON.parse);
   check('the draft records it', after.rev.roll === true && after.rev.pitch === false, JSON.stringify(after.rev));
-  check('the button becomes the way back', after.label === 'Un-reverse roll', after.label);
+  check('the button becomes the way back', after.label === '取消反转横滚通道', after.label);
   check('and the SAVED map is untouched until Save', after.savedRev === false);
 
   /* And the other ticket: the drawn sticks on the wrong hands. */
@@ -730,7 +730,7 @@ async function mousePage(page) {
    * setting was a race that a slow frame lost: under SwiftShader it failed
    * one run in nine on 2026-09-28, with the setting and the input layer
    * already at mode 3 and the label still reading mode 2. */
-  await page.until('window.__ui.calModeBtn.textContent === "Stick mode " + window.__ui.settings.stickMode', 4000).catch(() => {});
+  await page.until('window.__ui.calModeBtn.textContent === "摇杆模式 " + window.__ui.settings.stickMode', 4000).catch(() => {});
   const modeAfter = await ev(`
     return JSON.stringify({ mode: ui.settings.stickMode, left: ui.calStickLeft.cap.textContent,
       inputMode: input.stickMode, btn: ui.calModeBtn.textContent });
@@ -738,7 +738,7 @@ async function mousePage(page) {
   check('the drawn gimbal is re-captioned where they can see it', modeAfter.left !== modeBefore.left,
     `${modeBefore.left} -> ${modeAfter.left}`);
   check('and the input layer and the button agree with the setting',
-    modeAfter.inputMode === modeAfter.mode && modeAfter.btn === `Stick mode ${modeAfter.mode}`, JSON.stringify(modeAfter));
+    modeAfter.inputMode === modeAfter.mode && modeAfter.btn === `摇杆模式 ${modeAfter.mode}`, JSON.stringify(modeAfter));
 
   await page.tap('Enter');
   let kept = true;
@@ -938,9 +938,9 @@ async function mousePage(page) {
     return JSON.stringify({ left: at(g[0]), right: at(g[1]), caps: [cap(g[0]).textContent, cap(g[1]).textContent],
       shown: cap(g[0]).offsetHeight > 0 && cap(g[1]).offsetHeight > 0, hint: ui.padHint.textContent });`).then(JSON.parse);
   check('the plates are captioned the way every other drawn stick is, and the captions show',
-    pick0.caps[0] === 'Yaw, throttle' && pick0.caps[1] === 'Roll, pitch' && pick0.shown, JSON.stringify(pick0));
+    pick0.caps[0] === '偏航、油门' && pick0.caps[1] === '横滚、俯仰' && pick0.shown, JSON.stringify(pick0));
   check('calibrated earlier in this run, it says the sticks follow the saved calibration',
-    /saved calibration/.test(pick0.hint), pick0.hint);
+    /已保存的校准结果/.test(pick0.hint), pick0.hint);
   await page.evaluate('window.__pad.axes[0] = 1; window.__pad.timestamp += 1;');
   /* Waited on, not slept on: the plates are repainted by the frame loop,
    * and with two browsers on this machine a frame took longer than the
@@ -979,7 +979,7 @@ async function mousePage(page) {
     });
   `).then(JSON.parse);
   check('uncalibrated, it says the picture is a guess and sends the pilot to Calibrate sticks in the room that holds it',
-    /a guess until you calibrate/.test(guessHint.hint) && guessHint.hint.includes(`Calibrate sticks in ${signs.roomName}`),
+    /尚未校准/.test(guessHint.hint) && guessHint.hint.includes('在“设置”中校准摇杆'),
     guessHint.hint);
   check('and the saved mapping is back afterwards', guessHint.restored === true);
   await ev("ui.act('padpick-cancel'); return ui.screen;");
@@ -992,22 +992,22 @@ async function mousePage(page) {
    *     flipped in flight. This radio's axis 5 sits at -1 like an AUX.
    * ------------------------------------------------------------------ */
   section('the restart switch: assigned by flipping it, and a flip in flight is the start line');
-  const restartRow = await ev(`ui.show('pilot'); const items = ui.items(); const i = items.findIndex((it) => it && it.label === 'Restart switch');
+  const restartRow = await ev(`ui.show('pilot'); const items = ui.items(); const i = items.findIndex((it) => it && it.action === 'restart-switch');
     ui.setCursor(i); return JSON.stringify({ i, value: i >= 0 ? items[i].value : null });`).then(JSON.parse);
-  check('with a radio, Settings has a Restart switch row, not set', restartRow.i >= 0 && restartRow.value === 'Not set', JSON.stringify(restartRow));
+  check('with a radio, Settings has a Restart switch row, not set', restartRow.i >= 0 && restartRow.value === '未设置', JSON.stringify(restartRow));
   await page.tap('Enter');
   await page.until('window.__input.padSummary().restartCapturing === true', 3000).catch(() => {});
-  await page.until("window.__ui.items().some((it) => it && it.label === 'Restart switch' && it.value === 'Flip it now')", 3000).catch(() => {});
-  const listening = await ev("const it = ui.items().find((x) => x && x.label === 'Restart switch'); return JSON.stringify({ value: it && it.value });")
+  await page.until("window.__ui.items().some((it) => it && it.action === 'restart-switch' && it.value === '现在拨动开关')", 3000).catch(() => {});
+  const listening = await ev("const it = ui.items().find((x) => x && x.action === 'restart-switch'); return JSON.stringify({ value: it && it.value });")
     .then(JSON.parse);
-  check('choosing it listens, and the row says to flip it', listening.value === 'Flip it now', JSON.stringify(listening));
+  check('choosing it listens, and the row says to flip it', listening.value === '现在拨动开关', JSON.stringify(listening));
   await page.evaluate('window.__pad.axes[5] = 1; window.__pad.timestamp += 1; 0');
-  await page.until("window.__ui.items().some((it) => it && it.label === 'Restart switch' && it.value === 'Switch on axis 5')", 3000).catch(() => {});
-  const assigned = await ev(`const it = ui.items().find((x) => x && x.label === 'Restart switch');
-    return JSON.stringify({ value: it && it.value, forget: ui.items().some((x) => x && x.label === 'Forget restart switch'),
+  await page.until("window.__ui.items().some((it) => it && it.action === 'restart-switch' && it.value === '轴 5 上的开关')", 3000).catch(() => {});
+  const assigned = await ev(`const it = ui.items().find((x) => x && x.action === 'restart-switch');
+    return JSON.stringify({ value: it && it.value, forget: ui.items().some((x) => x && x.action === 'restart-switch-clear'),
       kept: JSON.parse(localStorage.getItem('webfpv.restart.v1') || 'null') });`).then(JSON.parse);
   check('the AUX flipped is the switch: the row names it, offers to forget it, and it is kept',
-    assigned.value === 'Switch on axis 5' && assigned.forget && assigned.kept && assigned.kept.index === 5, JSON.stringify(assigned));
+    assigned.value === '轴 5 上的开关' && assigned.forget && assigned.kept && assigned.kept.index === 5, JSON.stringify(assigned));
   /* In the air, well above the ground, so it is still flying when the
    * switch goes. The pad's throttle is parked, so it is falling. */
   await ev('const sp = window.__map().spawn; window.__placeCraft(sp.x + 6, sp.y + 30, sp.z); return 1;');
@@ -1091,7 +1091,7 @@ async function mousePage(page) {
   await ev('const sp = window.__map().spawn; window.__placeCraft(sp.x + 6, sp.y + 30, sp.z); return 1;');
   await page.until("window.__ui.screen === 'flight'", 5000).catch(() => {});
   await ev("input.deadList = ['pitch']; return 1;");
-  const LOST = 'Pitch is not reaching the sim.\nPause for Stick help.';
+  const LOST = '俯仰通道没有输入。\n请暂停并查看“摇杆帮助”。';
   const lostShown = `window.__ui.banner.textContent === ${JSON.stringify(LOST)}`;
   let lostSaid = true;
   await page.until(lostShown, 3000).catch(() => { lostSaid = false; });
@@ -1114,8 +1114,8 @@ async function mousePage(page) {
     return JSON.stringify({ i, label: i >= 0 ? items[i].label : null, action: i >= 0 ? items[i].action : null,
       first: items[0] && items[0].label });`).then(JSON.parse);
   check('the pause menu carries the row, under Resume, and it opens Stick help',
-    pauseRow.label === 'Pitch is not reaching the sim' && pauseRow.action === 'stickhelp'
-    && pauseRow.i > 0 && pauseRow.first === 'Resume', JSON.stringify(pauseRow));
+    pauseRow.label === '俯仰没有输入到模拟器' && pauseRow.action === 'stickhelp'
+    && pauseRow.i > 0 && pauseRow.first === '继续飞行', JSON.stringify(pauseRow));
   await ev(`ui.setCursor(${Math.max(0, pauseRow.i)}); return 1;`);
   await page.tap('Enter');
   await page.until("window.__ui.screen === 'stickhelp'", 3000).catch(() => {});
@@ -1135,7 +1135,7 @@ async function mousePage(page) {
     helpOpen.screen === 'stickhelp' && helpOpen.watch && helpOpen.cells.length === 6
     && helpOpen.cells.join() === helpOpen.want.join(), JSON.stringify(helpOpen));
   check('and before anything moves, it names the dead stick and asks for it',
-    /Pitch did not move once in flight/.test(helpOpen.say), helpOpen.say);
+    /俯仰通道在飞行中没有移动/.test(helpOpen.say), helpOpen.say);
   const stray = helpOpen.want.indexOf('unread');
   const sweep = (axis) => page.evaluate(`(async () => {
     const pad = window.__pad;
@@ -1146,14 +1146,14 @@ async function mousePage(page) {
   })()`);
   await sweep(stray);
   let named = true;
-  await page.until(`/Axis ${stray} is moving like a stick/.test(window.__ui.stickSay.textContent)`, 3000).catch(() => { named = false; });
+  await page.until(`/通道 ${stray} 正在随摇杆移动/.test(window.__ui.stickSay.textContent)`, 3000).catch(() => { named = false; });
   check('a stick pushed on an axis the map does not read: named as a stick on the wrong channel',
     named, `axis ${stray}: ${await ev('return ui.stickSay.textContent;')}`);
   await page.evaluate(`window.__pad.axes[${stray}] = 0; window.__pad.timestamp += 1; 0`);
   await page.sleep(100);
   await sweep(helpOpen.yaw);
   let arrives = true;
-  await page.until(`window.__ui.stickSay.textContent === 'That is yaw, on axis ${helpOpen.yaw}, and it is reaching the sim.'`, 3000)
+  await page.until(`window.__ui.stickSay.textContent === '这是偏航，对应通道 ${helpOpen.yaw}，输入已到达模拟器。'`, 3000)
     .catch(() => { arrives = false; });
   check('and the yaw stick, where the map reads it: named, and said to reach the sim',
     arrives, await ev('return ui.stickSay.textContent;'));
@@ -1198,9 +1198,11 @@ async function mousePage(page) {
  */
 async function safariPage(page) {
   const ev = (expr) => page.evaluate(`(() => { const ui = window.__ui; const input = window.__input; ${expr} })()`);
+
   const SAFARI = '/Safari usually cannot see USB radios: try Chrome, Edge or Firefox\\./';
   const banner = () => ev('return ui.menuNotice.textContent;');
   /* Ask for a radio one way, and read what the notice says of it. */
+
   const ask = async (expr) => {
     await page.until("window.__ui.menuNotice.textContent === ''", 9000).catch(() => {});
     await ev(expr);
@@ -1219,13 +1221,15 @@ async function safariPage(page) {
     const it = ui.items().find((x) => x && x.action === 'choosepad');
     return JSON.stringify({ note: it ? it.note : null });`).then(JSON.parse);
   check('Settings\' Choose joystick row says Safari in its help column, and not to plug one in',
-    /^Safari usually cannot see USB radios/.test(row.note || '') && !/Plug in a radio in joystick mode/.test(row.note || ''),
+    /^Safari 通常无法识别 USB 遥控器/.test(row.note || '') && /请在遥控器处于摇杆模式时/.test(row.note || ''),
     JSON.stringify(row));
 
   const chose = await ask("ui.act('choosepad'); return 1;");
+
   check('Choose joystick with none listed: the notice names Safari and the browsers to use, over two lines',
     chose.said && /^No radio or gamepad found\.\n/.test(chose.text) && chose.text.split('\n').length === 2
     && !/Plug one in/.test(chose.text) && chose.screen === 'pilot', JSON.stringify(chose));
+
   const calibrated = await ask("ui.act('calibrate'); return 1;");
   check('Calibrate sticks with none listed says the same, and does not open a wizard with nothing to calibrate',
     calibrated.said && calibrated.screen !== 'calibrate', JSON.stringify(calibrated));
@@ -1241,20 +1245,20 @@ async function safariPage(page) {
     return JSON.stringify({ screen: ui.screen, pad: ui.stickPad.textContent, say: ui.stickSay.textContent,
       title: h ? h.textContent : null, block: ui.stickSteps.textContent });`).then(JSON.parse);
   check('Stick help with nothing listed: no pad, and a sentence that names Safari and does not ask for a stick to be moved',
-    help.screen === 'stickhelp' && help.pad === 'No radio or gamepad.' && /^Safari is not showing this page/.test(help.say)
-    && !/move a stick/.test(help.say), JSON.stringify({ pad: help.pad, say: help.say }));
+    help.screen === 'stickhelp' && help.pad === '未检测到遥控器或游戏手柄。' && /^Safari 没有向此页面提供/.test(help.say)
+    && !/拨动摇杆/.test(help.say), JSON.stringify({ pad: help.pad, say: help.say }));
   check('and its block is the Mac one, leading with the test that settles it: the same radio in another browser',
-    help.title === 'If no bar moves: Mac' && /Try Chrome, Edge or Firefox before anything else/.test(help.block)
-    && /If it shows up there, it was Safari/.test(help.block), JSON.stringify({ title: help.title }));
+    help.title === '指示条不动？Mac' && /请先将遥控器切换到摇杆模式并连接/.test(help.block)
+    && /如果在那里能识别，问题就在 Safari/.test(help.block), JSON.stringify({ title: help.title }));
   await ev("ui.show('pilot'); return 1;");
 
   const howto = await ev(`ui.show('howto'); ui.setHowtoSource('radio');
     const dt = Array.from(ui.howtoKeys.querySelectorAll('dt')).map((n) => n.textContent);
     const dd = Array.from(ui.howtoKeys.querySelectorAll('dd')).map((n) => n.textContent);
     ui.show('pilot');
-    return JSON.stringify(dd[dt.indexOf('Before you fly')] || '');`).then(JSON.parse);
+    return JSON.stringify(dd[dt.indexOf('起飞前')] || '');`).then(JSON.parse);
   check('How to fly, on the radio tab: Before you fly leads with Safari, where the pilot looking for radio setup reads',
-    /^Safari usually cannot see USB radios\. Open this page in Chrome, Edge or Firefox first/.test(howto), howto);
+    /^Safari 通常无法识别 USB 遥控器。请先用 Chrome、Edge 或 Firefox 打开此页面/.test(howto), howto);
 
   const snap = await ev(`const s = ui.bugSnapshot();
     return JSON.stringify({ pads: s.stick && s.stick.pads, map: s.stick && s.stick.map, keys: Object.keys(s).length,
@@ -1447,7 +1451,7 @@ async function touchPage(page) {
     ${PAST_GATE}
     ui.show('pilot');
     const items = ui.items();
-    const i = items.findIndex((it) => it && it.label === 'Stick mode');
+    const i = items.findIndex((it) => it && it.label === '摇杆模式');
     ui.setCursor(i);
     const cap = (side) => { const n = document.querySelector('.touch-zone-' + side + ' .osd-gimbal-cap'); return n ? n.textContent : null; };
     return JSON.stringify({ row: i, mode: ui.settings.stickMode, value: i >= 0 ? items[i].value : null, left: cap('left'), right: cap('right'),
@@ -1455,14 +1459,14 @@ async function touchPage(page) {
   `).then(JSON.parse);
   check('the thumb sticks are mounted on a touch device', start.mounted);
   check('there is a Stick mode row in Settings', start.row >= 0, JSON.stringify(start));
-  check('it starts on Mode 2, and the plates say so', start.mode === 2 && start.value === 'Mode 2' && start.left === 'Yaw · throttle' && start.right === 'Roll · pitch',
+  check('it starts on Mode 2, and the plates say so', start.mode === 2 && start.value === '模式 2' && start.left === '偏航 · 油门' && start.right === '横滚 · 俯仰',
     JSON.stringify(start));
   check('and W is the throttle', start.thrUp === 'KeyW', start.thrUp);
   await page.tap('ArrowLeft');
   let moved = true;
   await page.until('window.__ui.settings.stickMode === 1', 3000).catch(() => { moved = false; });
   check('one arrow left is Mode 1', moved);
-  await page.until("document.querySelector('.touch-zone-left .osd-gimbal-cap').textContent === 'Yaw · pitch'", 3000).catch(() => {});
+  await page.until("document.querySelector('.touch-zone-left .osd-gimbal-cap').textContent === '偏航 · 俯仰'", 3000).catch(() => {});
   const after = await ev(`
     const cap = (side) => { const n = document.querySelector('.touch-zone-' + side + ' .osd-gimbal-cap'); return n ? n.textContent : null; };
     ui.show('howto');
@@ -1476,15 +1480,15 @@ async function touchPage(page) {
       value: ui.items()[ui.cursor].value });
   `).then(JSON.parse);
   check('the plates now read yaw and pitch on the left, roll and throttle on the right',
-    after.left === 'Yaw · pitch' && after.right === 'Roll · throttle', JSON.stringify(after));
+    after.left === '偏航 · 俯仰' && after.right === '横滚 · 油门', JSON.stringify(after));
   check('the input manager has the mode and the arrows are the throttle',
     after.inputMode === 1 && after.thrUp === 'ArrowUp' && after.thrDown === 'ArrowDown', JSON.stringify(after));
   check('the how-to for thumbs names the same hands',
-    after.howtoLeft.startsWith('Yaw, pitch') && after.howtoRight.startsWith('Roll, throttle'), JSON.stringify([after.howtoLeft, after.howtoRight]));
+    after.howtoLeft.startsWith('偏航、俯仰。') && after.howtoRight.startsWith('横滚、油门。'), JSON.stringify([after.howtoLeft, after.howtoRight]));
   check('the calibrate and OSD gimbals are captioned the same way',
-    after.calLeft === 'Yaw, pitch' && after.calRight === 'Roll, throttle' && after.osdLeft === 'Yaw, pitch' && after.osdRight === 'Roll, throttle',
+    after.calLeft === '偏航、俯仰' && after.calRight === '横滚、油门' && after.osdLeft === '偏航、俯仰' && after.osdRight === '横滚、油门',
     JSON.stringify(after));
-  check('and the row reads Mode 1', after.value === 'Mode 1', after.value);
+  check('and the row reads Mode 1', after.value === '模式 1', after.value);
   await page.tap('ArrowRight');
   await page.until('window.__ui.settings.stickMode === 2', 3000).catch(() => {});
   check('one arrow right puts it back', await ev("return ui.settings.stickMode === 2 && input.throttleKeys.up === 'KeyW';"));
@@ -1622,7 +1626,9 @@ async function keyboardPage(page) {
   /* The menu notice, as in safariPage: asked from Settings, said on Settings. */
   await ev(`${PAST_GATE} ui.show('pilot'); ui.act('choosepad'); return 1;`);
   let plain = true;
+
   await page.until('/Plug one in, set it to joystick mode, then move it\\./.test(window.__ui.menuNotice.textContent)', 3000)
+
     .catch(() => { plain = false; });
   check('Choose joystick with no radio, in Chrome: plug one in, joystick mode, then move it, and no word about Safari',
     plain && await ev('return ui.radioBlind === null && !/Safari/.test(ui.menuNotice.textContent);'),
@@ -1658,12 +1664,12 @@ async function keyboardPage(page) {
   const row = await ev(`
     ui.show('pilot');
     const items = ui.items();
-    const i = items.findIndex((it) => it && it.label === 'Keyboard throttle');
+    const i = items.findIndex((it) => it && it.label === '键盘油门');
     ui.setCursor(i);
     return JSON.stringify({ i, before: i > 0 ? items[i - 1].label : null, value: i >= 0 ? items[i].value : null, mode: input.keyThrottle });
   `).then(JSON.parse);
-  check('Settings has a Keyboard throttle row, beside Stick mode', row.i >= 0 && row.before === 'Stick mode', JSON.stringify(row));
-  check('and it starts on the spring, which is what the keys always did', row.value === 'Springs back' && row.mode === 'hover',
+  check('Settings has a Keyboard throttle row, beside Stick mode', row.i >= 0 && row.before === '摇杆模式', JSON.stringify(row));
+  check('and it starts on the spring, which is what the keys always did', row.value === '自动回位' && row.mode === 'hover',
     JSON.stringify(row));
   await page.tap('ArrowRight');
   await page.until("window.__input.keyThrottle === 'hold'", 3000).catch(() => {});
@@ -1675,11 +1681,11 @@ async function keyboardPage(page) {
     const dt = Array.from(ui.howtoKeys.querySelectorAll('dt')).map((n) => n.textContent);
     const dd = Array.from(ui.howtoKeys.querySelectorAll('dd')).map((n) => n.textContent);
     ui.show('pilot');
-    return JSON.stringify({ value: it.value, mode: input.keyThrottle, stored, ws: dd[dt.indexOf('W and S')] || '' });
+    return JSON.stringify({ value: it.value, mode: input.keyThrottle, stored, ws: dd[dt.indexOf('W 和 S')] || '' });
   `).then(JSON.parse);
   check('one arrow right is Stays put, in the keys and in storage',
-    held.value === 'Stays put' && held.mode === 'hold' && held.stored === 'hold', JSON.stringify(held));
-  check('and the how-to says so', /stays where you leave it/.test(held.ws), held.ws);
+    held.value === '保持位置' && held.mode === 'hold' && held.stored === 'hold', JSON.stringify(held));
+  check('and the how-to says so', /松开后会停在当前位置/.test(held.ws), held.ws);
   await page.tap('ArrowLeft');
   await page.until("window.__input.keyThrottle === 'hover'", 3000).catch(() => {});
   check('one arrow left is the spring again', await ev("return input.keyThrottle === 'hover' && ui.settings.keyThrottle === 'hover';"));
@@ -1985,13 +1991,13 @@ async function freestylePage(page) {
   /* Settled: the fallback has built the track and adopted it. */
   await page.until(`(() => { const m = window.__map(); const ui = window.__ui;
     return m.ready && m.id === 'custom' && ui.settings.map === 'custom' && !!ui.loadFailure; })()`, 60000).catch(() => {});
-  const left = await ev(`const town = ui.items().find((x) => x && x.label === 'Map');
+  const left = await ev(`const town = ui.items().find((x) => x && x.action === 'freestyle');
     return JSON.stringify({ mode: ui.mode, map: ui.settings.map, screen: ui.screen,
       value: town && town.value, note: town && town.note, failure: ui.bugSnapshot().loadFailure || null });`).then(JSON.parse);
   check('the failed town leaves freestyle with the track under it, the state the ticket was sent from',
     townRequests === 1 && left.mode === 'freestyle' && left.map === 'custom', JSON.stringify({ townRequests, ...left }));
   check('the town row says it did not load, and what Fly will do about it',
-    left.value === 'Not loaded' && /did not load\. Fly reloads the page and tries again/.test(left.note || ''), JSON.stringify(left));
+    left.value === '尚未加载' && /未能加载。点击“飞行”将重新加载页面并重试/.test(left.note || ''), JSON.stringify(left));
   check('a report carries the failure: the town, and the error the browser gave',
     !!left.failure && left.failure.map === 'city' && /dynamically imported module/.test(left.failure.message),
     JSON.stringify(left.failure));
@@ -2078,7 +2084,7 @@ async function flyMapPages() {
     const builder = await page.evaluate(`(() => { const app = window.trackBuilder;
       return JSON.stringify({ mode: app && app.doc.mode, name: app && app.doc.name, fly: app && app.flyBtn && app.flyBtn.textContent }); })()`).then(JSON.parse);
     check('the builder opens the seeded map, and its button says Fly this map',
-      builder.mode === 'freestyle' && builder.name === FLY_MAP.name && builder.fly === 'Fly this map', JSON.stringify(builder));
+      builder.mode === 'freestyle' && builder.name === FLY_MAP.name && builder.fly === '驾驶此地图', JSON.stringify(builder));
     await page.evaluate('(() => { window.trackBuilder.flyBtn.click(); return 1; })()');
     await page.until("window.__shellReady === true && window.__mode === 'flight'", 120000).catch(() => {});
     const air = await page.evaluate(`(() => { const ui = window.__ui; const m = window.__map ? window.__map() : null;
@@ -2145,7 +2151,7 @@ async function flyMapPages() {
       return JSON.stringify({ mode: app && (app.doc.mode || 'race'), cls: app && app.doc.trackClass, name: app && app.doc.name,
         fly: app && app.flyBtn && app.flyBtn.textContent }); })()`).then(JSON.parse);
     check('the builder opens the seeded whoop track, and its button says Fly this track',
-      builder.mode === 'race' && builder.name === FLY_TRACK.name && builder.fly === 'Fly this track', JSON.stringify(builder));
+      builder.mode === 'race' && builder.name === FLY_TRACK.name && builder.fly === '飞行此赛道', JSON.stringify(builder));
     await page.evaluate('(() => { window.trackBuilder.flyBtn.click(); return 1; })()');
     await page.until("window.__shellReady === true && window.__mode === 'flight'", 120000).catch(() => {});
     const air = await page.evaluate(`(() => { const ui = window.__ui; const m = window.__map ? window.__map() : null;
@@ -2200,10 +2206,12 @@ async function builderChooserPages() {
     const gate = await page.evaluate(`(() => { const items = window.__ui.items();
       return JSON.stringify({ cards: items.filter((it) => it.card).map((it) => it.label),
         at: items.findIndex((it) => it.action === 'builder') }); })()`).then(JSON.parse);
+
     /* Builder, its one name since MENUS-PLAN.md 4.1: this card said Map
      * builder and the builder's own bar said Track builder. */
     check('the gate carries a fourth card, Builder, after the three ways in',
       gate.cards.join() === 'Five inch racing,Whoop racing,Freestyle,Builder' && gate.at === 3, JSON.stringify(gate));
+
     await page.evaluate(`(() => { window.__ui.setCursor(${gate.at}); return 1; })()`);
     await page.tap('Enter');
     await page.until("location.pathname.endsWith('/src/trackbuilder/index.html') && !!window.trackBuilder", 60000).catch(() => {});
@@ -2213,7 +2221,7 @@ async function builderChooserPages() {
     check('Enter on it opens the builder with nothing in the address, and the builder asks',
       asked.path.endsWith('/src/trackbuilder/index.html') && asked.search === '' && asked.choosing, JSON.stringify(asked));
     check('the question is the gate\'s three cards, each with its picture loaded',
-      asked.cards.join() === 'Five inch racing,Whoop racing,Freestyle' && asked.imgs.length === 3
+      asked.cards.join() === '5 英寸竞速,室内微型机竞速,自由式' && asked.imgs.length === 3
         && asked.imgs.every((w) => w > 0), JSON.stringify(asked));
     check('the cursor opens on the canvas behind it, the five inch field for a five inch pilot',
       asked.canvas === 'full' && asked.focus === 'full', JSON.stringify(asked));
@@ -2231,17 +2239,21 @@ async function builderChooserPages() {
     await page.until('!window.trackBuilder.choosing()', 10000).catch(() => {});
     const picked = await page.evaluate(CHOOSER_STATE).then(JSON.parse);
     check('Enter on Freestyle is the switch\'s Freestyle: the map canvas, and the bar says so',
+
       !picked.choosing && picked.canvas === 'freestyle' && picked.bar.join() === 'Freestyle', JSON.stringify(picked));
     /* Five inch, the switch's words since MENUS-PLAN.md 4.1: it read 5 inch
      * beside Whoop and Freestyle, the only one of the three in figures. */
     const pressed = await page.evaluate(`(() => { const b = [...document.querySelectorAll('.tb-class-btn')]
       .find((x) => x.textContent === 'Five inch');
+
       if (!b) { return false; }
       b.click();
       return true; })()`).catch(() => false);
     const back = await page.evaluate(CHOOSER_STATE).then(JSON.parse);
     check('the switch in the bar is still there and still changes it back',
+
       pressed && back.canvas === 'full' && back.bar.join() === 'Five inch' && !back.choosing, JSON.stringify(back));
+
     await page.evaluate('(() => { location.reload(); return 1; })()').catch(() => {});
     await page.until('!!window.trackBuilder', 60000).catch(() => {});
     const reloaded = await page.evaluate(CHOOSER_STATE).then(JSON.parse);

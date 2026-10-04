@@ -215,10 +215,10 @@ export function seatedNote(moved, nameOf, elementOf) {
     const m = moved[0];
     const what = called(m.id, m.type);
     return m.on
-      ? `${what} was ${m.from.toFixed(1)} m up and now stands on ${called(m.on, 'the element under it')}.`
-      : `${what} was ${m.from.toFixed(1)} m up with nothing under it, so it now stands on the ground.`;
+      ? `${what}原本位于 ${m.from.toFixed(1)} m 高处，现在放置在${called(m.on, '下方的元素')}上。`
+      : `${what}原本位于 ${m.from.toFixed(1)} m 高处，下方没有支撑物，因此已放置在地面上。`;
   }
   const names = moved.slice(0, 3).map((m) => called(m.id, m.type));
-  const more = moved.length > names.length ? ` and ${moved.length - names.length} more` : '';
-  return `${moved.length} things were up in the air with nothing under them (${names.join(', ')}${more}). They now stand on what is below them, or on the ground.`;
+  const more = moved.length > names.length ? `等另外 ${moved.length - names.length} 个` : '';
+  return `${moved.length} 个悬空元素（${names.join('、')}${more}）已放置到下方物体上或地面上。`;
 }

@@ -503,55 +503,55 @@ export function hasFlyableTrack() {
  */
 export function courseChip(listing) {
   if (!listing || listing.kind === 'none') {
-    return { label: 'No track', tone: 'none', note: 'Nothing loaded to fly.' };
+    return { label: '无赛道', tone: 'none', note: '尚未加载可供飞行的赛道。' };
   }
   if (listing.kind === 'owned') {
     if (listing.layoutDrift) {
       return {
-        label: 'Layout not on the board',
+        label: '赛道布局未同步',
         tone: 'warn',
-        note: 'The layout changed since it was published. Update the board before uploading a time.',
+        note: '发布后赛道布局有所更改。请先更新排行榜，再提交成绩。',
       };
     }
     if (listing.nameDrift) {
       return {
-        label: 'Rename waiting',
+        label: '名称待更新',
         tone: 'warn',
-        note: 'The board still carries the old name. Updating it keeps the times.',
+        note: '排行榜上仍显示旧名称。更新名称不会清除成绩。',
       };
     }
-    return { label: 'On the board', tone: 'live', note: 'Yours, published. Fly it and upload a time.' };
+    return { label: '已发布', tone: 'live', note: '这是你发布的赛道。飞行后可提交成绩。' };
   }
   if (listing.kind === 'community') {
-    const by = listing.author ? ` by ${listing.author}` : '';
+    const by = listing.author ? `，作者：${listing.author}` : '';
     return {
-      label: 'On the board',
+      label: '已发布',
       tone: 'live',
-      note: `Published${by}. Fly it and upload a time, or edit a copy under your own name.`,
+      note: `已发布${by}。你可以飞行并提交成绩，也可以编辑副本并以自己的名义发布。`,
     };
   }
   if (listing.kind === 'stock') {
-    const by = listing.author ? ` by ${listing.author}` : '';
+    const by = listing.author ? `，作者：${listing.author}` : '';
     return {
-      label: 'Shipped with the simulator',
+      label: '模拟器内置',
       tone: 'none',
-      note: `Ships with the simulator${by}. Fly it here, or open a copy in the builder to make it yours and publish it.`,
+      note: `随模拟器提供${by}。可直接飞行，也可在编辑器中打开副本，修改后发布。`,
     };
   }
   if (listing.kind === 'remix') {
-    const of = listing.sourceName ? ` of ${listing.sourceName}` : '';
+    const of = listing.sourceName ? `：${listing.sourceName}` : '';
     return {
-      label: `Copy${of}`,
+      label: `副本${of}`,
       tone: 'warn',
-      note: 'Your copy. Publish it under a new name to put it on the board.',
+      note: '这是你的副本。请使用新名称发布到排行榜。',
     };
   }
   return {
-    label: 'Not on the board',
+    label: '未发布',
     tone: 'none',
     note: listing.canPublishNew
-      ? 'Lives in this browser. Publish it to put it on the board, then you can upload a time.'
-      : 'Lives in this browser. It needs a flying order before it can be published.',
+      ? '仅保存在此浏览器中。发布后即可提交成绩。'
+      : '仅保存在此浏览器中。添加飞行顺序后才能发布。',
   };
 }
 

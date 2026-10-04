@@ -70,9 +70,9 @@ const SEG_MS = 1500;
 const HOLD_MS = 700;
 
 export const VIEW_LABEL = {
-  side: 'seen from the side',
-  above: 'seen from above',
-  behind: 'seen from behind',
+  side: '侧面视角',
+  above: '俯视视角',
+  behind: '后方视角',
 };
 
 /* ------------------------------------------------------------------ *
@@ -107,15 +107,15 @@ export function viewFor(steps) {
 /* Turns as the workbook says them: a count, not an angle. */
 function turnWords(n) {
   const t = Math.abs(n);
-  if (t === 0.25) { return 'a quarter turn'; }
-  if (t === 0.5) { return 'a half turn'; }
-  if (t === 0.75) { return 'three quarters of a turn'; }
-  if (t === 1) { return 'a whole turn'; }
-  if (t === 2) { return 'two whole turns'; }
-  return `${t} turns`;
+  if (t === 0.25) { return '四分之一圈'; }
+  if (t === 0.5) { return '半圈'; }
+  if (t === 0.75) { return '四分之三圈'; }
+  if (t === 1) { return '一整圈'; }
+  if (t === 2) { return '两整圈'; }
+  return `${t} 圈`;
 }
 
-const AXIS_WORD = { roll: 'roll', pitch: 'flip', yaw: 'yaw spin' };
+const AXIS_WORD = { roll: '横滚', pitch: '翻转', yaw: '偏航旋转' };
 
 /*
  * WHAT TO DO, in a sentence, and built from the same steps the film is. A
@@ -126,43 +126,42 @@ export function describeSteps(steps) {
   const parts = [];
   for (const s of steps) {
     if (s.path !== undefined) {
-      const thing = s.path === 'pole' ? 'a post' : 'a rail';
+      const thing = s.path === 'pole' ? '立柱' : '横杆';
       let lap;
       if (s.turnsAtLeast !== undefined) {
-        lap = `${turnWords(s.turnsAtLeast)} or more around ${thing}`;
+        lap = `绕${thing}旋转至少${turnWords(s.turnsAtLeast)}`;
       } else if (s.turns === 0.5) {
-        lap = `half a lap around ${thing}`;
+        lap = `绕${thing}半圈`;
       } else if (s.turns === 1) {
-        lap = `a whole lap around ${thing}`;
+        lap = `绕${thing}一整圈`;
       } else {
-        lap = `${turnWords(s.turns)} around ${thing}`;
+        lap = `绕${thing}${turnWords(s.turns)}`;
       }
-      if (s.from === 'under') { lap += ', entered from underneath'; }
-      if (s.from === 'over') { lap += ', entered from over the top'; }
-      if (s.inverted === true) { lap += ', flown belly up'; }
-      if (s.track === true) { lap += ', with the post held on the screen'; }
+      if (s.from === 'under') { lap += '，从下方进入'; }
+      if (s.from === 'over') { lap += '，从顶部进入'; }
+      if (s.inverted === true) { lap += '，倒置飞行'; }
+      if (s.track === true) { lap += '，保持立柱在画面中的位置'; }
       const rot = [];
       if (s.rot) {
         for (const key of Object.keys(s.rot)) {
           if (s.rot[key] === 0) { continue; }
-          rot.push(`${turnWords(s.rot[key])} of ${AXIS_WORD[key]}`);
+          rot.push(`${AXIS_WORD[key]}${turnWords(s.rot[key])}`);
         }
       }
-      if (rot.length) { lap += `, carrying ${rot.join(' and ')}`; }
+      if (rot.length) { lap += `，同时进行${rot.join('和')}`; }
       parts.push(lap);
       continue;
     }
-    let r = `${turnWords(s.turns)} of ${AXIS_WORD[s.axis] || s.axis || 'rotation'}`;
-    if (s.oppTo !== undefined) { r += ' back the other way'; }
-    if (s.sameAs !== undefined) { r += ' the same way again'; }
-    if (s.stallMs) { r += ', after a pause'; }
-    if (s.tap) { r += ', touching the object as you go'; }
-    if (s.inverted === true) { r += ', upside down'; }
+    let r = `${AXIS_WORD[s.axis] || s.axis || '旋转'}${turnWords(s.turns)}`;
+    if (s.oppTo !== undefined) { r += '，反向旋转'; }
+    if (s.sameAs !== undefined) { r += '，再同向旋转一次'; }
+    if (s.stallMs) { r += '，短暂停顿后'; }
+    if (s.tap) { r += '，经过时触碰障碍物'; }
+    if (s.inverted === true) { r += '，倒置飞行'; }
     parts.push(r);
   }
   if (!parts.length) { return ''; }
-  const line = parts.join(', then ');
-  return `${line.charAt(0).toUpperCase()}${line.slice(1)}.`;
+  return `${parts.join('，然后')}。`;
 }
 
 /*

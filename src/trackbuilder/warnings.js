@@ -142,11 +142,11 @@ export function collectWarnings(doc, path) {
   /* -------- the course itself, no line needed -------- */
 
   if (!doc.sequence.length) {
-    out.push(note('empty', 'Nothing is in the flying order yet. Place an element and it joins the order automatically.'));
+    out.push(note('empty', '飞行顺序中尚无元素。放置赛道元素后，它会自动加入飞行顺序。'));
   }
 
   if (!startPadsOf(doc)) {
-    out.push(note('no-start', 'No start pads. The line runs from the first element to the last and the lap does not close. Press S to place them.'));
+    out.push(note('no-start', '尚未放置起飞垫。路线将从第一个元素延伸到最后一个元素，不会闭合成圈。按 S 放置起飞垫。'));
   }
 
   /* A cube is one piece however many gates it is made of, so it is said once, by its first face. */
@@ -162,11 +162,11 @@ export function collectWarnings(doc, path) {
       groupsSaid.add(el.group);
     }
     const def = ELEMENTS[el.type];
-    const called = el.group ? 'Cube' : (el.name || def.label);
+    const called = el.group ? '立方体' : (el.name || def.label);
     /* A gate the order leaves out is not built in the world; a cube is (see `loose` in src/game/trackdoc.js), and
      * the difference is worth saying to whoever took its passes away. */
-    const aside = el.group ? ' It is still built, and solid.' : '';
-    out.push(warn('unsequenced', `${called} is on the field but not in the flying order, so the line ignores it.${aside}`, {
+    const aside = el.group ? '它仍会实体生成并参与碰撞。' : '';
+    out.push(warn('unsequenced', `${called}位于场地上，但未加入飞行顺序，因此路线会忽略它。${aside}`, {
       elementId: el.id,
     }));
   }
@@ -184,15 +184,15 @@ export function collectWarnings(doc, path) {
       if (gap && across < GAP_ADVISORY) {
         const name = `${gateNumberOf(doc, s.id) ?? i + 1}. ${sequenceLabel(doc, s)}`;
         out.push(warn('letter-gap', across === 0
-          ? `${name} is too small for its pipe: the gap it is flown through has nothing left once the pipe is round it, so nothing can score there. Make the letter bigger.`
-          : `${name} has a gap only ${across.toFixed(2)} m across at its widest, against a standard gate's 1.5 m, so a quad has little room to fly it. If the track means it, ignore this; otherwise make the letter bigger.`, {
+          ? `${name}的开口太小，管材占满了可通过空间，因此无法计分。请放大字母。`
+          : `${name}的开口最宽处仅 ${across.toFixed(2)} m，而标准赛门宽 1.5 m，四轴通过空间较小。若这是赛道设计意图可忽略，否则请放大字母。`, {
           seqId: s.id,
           elementId: el.id,
         }));
       }
     }
     if (kindOf(el) === KIND.APERTURE && s.entry === 0) {
-      out.push(warn('no-face', `${gateNumberOf(doc, s.id) ?? i + 1}. ${sequenceLabel(doc, s)} has no entry face set, so the line guessed one.`, {
+      out.push(warn('no-face', `${gateNumberOf(doc, s.id) ?? i + 1}. ${sequenceLabel(doc, s)}尚未设置进入方向，路线已自动推测。`, {
         seqId: s.id,
         elementId: el.id,
       }));
@@ -205,7 +205,7 @@ export function collectWarnings(doc, path) {
   for (const el of doc.elements) {
     const { x, y } = el.position;
     if (x < 0 || y < 0 || x > doc.field.width || y > doc.field.depth) {
-      out.push(warn('element-out-of-field', `${el.name || ELEMENTS[el.type].label} is standing outside the field.`, {
+      out.push(warn('element-out-of-field', `${el.name || ELEMENTS[el.type].label}位于场地范围之外。`, {
         elementId: el.id,
       }));
     }
@@ -226,19 +226,19 @@ export function collectWarnings(doc, path) {
     const b = path.knots[i + 1];
     const span = dist(a.pos, b.pos);
     if (span < 1e-6) {
-      out.push(warn('coincident', `${describe(doc, a)} and ${describe(doc, b)} are in the same place, so the line has no direction between them.`, {
+      out.push(warn('coincident', `${describe(doc, a)}和${describe(doc, b)}位于同一位置，路线无法确定两者之间的方向。`, {
         seqId: a.seq?.id ?? b.seq?.id ?? null,
       }));
       continue;
     }
     if (hasFace(a) && reversed(a.tangent, a.pos, b.pos, square)) {
-      out.push(warn('reversal', `${describe(doc, a)} faces away from ${describe(doc, b)}. The line leaves it backwards. Press X to flip the face.`, {
+      out.push(warn('reversal', `${describe(doc, a)}的朝向背离${describe(doc, b)}，路线离开该元素时方向相反。按 X 翻转通过方向。`, {
         seqId: a.seq?.id ?? null,
         elementId: a.elementId,
       }));
     }
     if (hasFace(b) && reversed(b.tangent, a.pos, b.pos, square)) {
-      out.push(warn('reversal', `${describe(doc, b)} faces back towards ${describe(doc, a)}. The line arrives at it backwards. Press X to flip the face.`, {
+      out.push(warn('reversal', `${describe(doc, b)}的朝向指回${describe(doc, a)}，路线进入该元素时方向相反。按 X 翻转通过方向。`, {
         seqId: b.seq?.id ?? null,
         elementId: b.elementId,
       }));
@@ -250,7 +250,7 @@ export function collectWarnings(doc, path) {
   if (pads && first && first.role !== 'finish') {
     const heading = yawVector(pads.yaw);
     if (reversed(heading, pads.position, first.pos, square)) {
-      out.push(warn('reversal', `The lap sets off away from ${describe(doc, first)}. Turn the start pads, or reorder the track.`, {
+      out.push(warn('reversal', `圈速路线的起步方向背离${describe(doc, first)}。请旋转起飞垫或调整赛道顺序。`, {
         elementId: pads.id,
       }));
     }
@@ -258,7 +258,7 @@ export function collectWarnings(doc, path) {
   if (path.closed && path.knots.length >= 2) {
     const lastReal = path.knots[path.knots.length - 2];
     if (first.role === 'aperture' && reversed(first.tangent, lastReal.pos, first.pos, square)) {
-      out.push(warn('reversal', `The lap comes back to ${describe(doc, first)} from in front of it, after ${describe(doc, lastReal)}. Flip that face, or move the last element behind it.`, {
+      out.push(warn('reversal', `经过${describe(doc, lastReal)}后，圈速路线会从${describe(doc, first)}前方返回。请翻转其通过方向，或将最后一个元素移到它后方。`, {
         seqId: first.seq?.id ?? null,
         elementId: first.elementId,
       }));
@@ -315,8 +315,8 @@ export function collectWarnings(doc, path) {
   if (worst) {
     /* A field's author is told where the limit is, because a track that means a tight turn (a slalom, a loop) has no
      * other way to find out that it can be lowered, one track at a time. */
-    const ending = field ? 'A quad at racing speed does not fly that. If the track means it, lower Warn under radius in the field settings.' : 'Nothing flies that.';
-    out.push(warn('tight-corner', `The line turns tighter than ${limit.toFixed(1)} m at ${worst.s.toFixed(1)} m along the lap: ${worst.radius.toFixed(2)} m radius. ${ending}`, {
+    const ending = field ? '竞速速度下四轴无法完成如此急的转弯。若这是赛道设计意图，请在场地设置中调低“最小转弯半径警告”。' : '四轴无法完成如此急的转弯。';
+    out.push(warn('tight-corner', `路线在圈速的 ${worst.s.toFixed(1)} m 处转弯半径仅 ${worst.radius.toFixed(2)} m，小于设定的 ${limit.toFixed(1)} m。${ending}`, {
       s: worst.s,
       pos: worst.pos,
     }));
@@ -332,7 +332,7 @@ export function collectWarnings(doc, path) {
   for (const bar of barriers) {
     const hit = firstBarrierHit(path, bar, barrierPad);
     if (hit) {
-      out.push(warn('barrier', `The line passes through ${bar.name || ELEMENTS[bar.type].label} at ${hit.s.toFixed(1)} m along the lap.`, {
+      out.push(warn('barrier', `路线在圈速 ${hit.s.toFixed(1)} m 处穿过了${bar.name || ELEMENTS[bar.type].label}。`, {
         elementId: bar.id,
         s: hit.s,
         pos: hit.pos,
@@ -355,13 +355,13 @@ export function collectWarnings(doc, path) {
     }
   }
   if (outside) {
-    out.push(warn('out-of-field', `The line leaves the field at ${outside.s.toFixed(1)} m along the lap.`, {
+    out.push(warn('out-of-field', `路线在圈速 ${outside.s.toFixed(1)} m 处超出场地范围。`, {
       s: outside.s,
       pos: outside.pos,
     }));
   }
   if (under) {
-    out.push(warn('underground', `The line goes below the ground at ${under.s.toFixed(1)} m along the lap.`, {
+    out.push(warn('underground', `路线在圈速 ${under.s.toFixed(1)} m 处低于地面。`, {
       s: under.s,
       pos: under.pos,
     }));
@@ -422,7 +422,7 @@ function closeStationWarnings(doc, path, out) {
       continue;
     }
     const name = (e) => `${gateNumberOf(doc, e.s.id) ?? doc.sequence.indexOf(e.s) + 1}. ${sequenceLabel(doc, e.s)}`;
-    out.push(warn('close-stations', `${name(a)} and ${name(b)} stand ${d.toFixed(2)} m apart, one after the other in the flying order, so one pass can reach both. The race counts ${name(b)} only after ${min} m more flying. If a lap between them is meant, move one away.`, {
+    out.push(warn('close-stations', `${name(a)}和${name(b)}在飞行顺序中相邻，间距仅为 ${d.toFixed(2)} m，一次通过就可能同时触发两者。比赛只有在额外飞行 ${min} m 后才会计入${name(b)}。如果希望两者之间有一段路线，请将其中一个移远。`, {
       seqId: b.s.id,
       elementId: b.s.elementId,
     }));
@@ -693,7 +693,7 @@ function collectRaceGowWarnings(doc, out, legs) {
       const skew = Math.abs(off - Math.round(off / q) * q);
       if (skew > 0.02) {
         out.push(warn('rg-square-headings',
-          `${label(el)} is ${(skew * 180 / Math.PI).toFixed(1)} deg off square from ${label(gates[0])}. Every gate faces along one of the two track axes: turn it to a right angle from theirs.`,
+          `${label(el)}相对${label(gates[0])}偏离直角 ${(skew * 180 / Math.PI).toFixed(1)}°。所有赛门应沿两条赛道轴线之一朝向，请将其旋转至与另一赛门成直角。`,
           { elementId: el.id }));
       }
     }
@@ -713,11 +713,11 @@ function collectRaceGowWarnings(doc, out, legs) {
     }
     if (big > GATE_OPENING_MAX + 1e-6) {
       out.push(warn('rg-opening-max',
-        `${label(el)} opens ${inches(big)}. A RaceGOW gate fits inside a 28 in square.`,
+        `${label(el)}的开口为 ${inches(big)}。RaceGOW 赛门必须能放入 28 英寸见方的范围内。`,
         { elementId: el.id }));
     } else if (small < GATE_OPENING_MIN - 1e-6) {
       out.push(warn('rg-opening-min',
-        `${label(el)} opens ${inches(small)}. RaceGOW's minimum gate is 24 in.`,
+        `${label(el)}的开口为 ${inches(small)}。RaceGOW 赛门的最小尺寸为 24 英寸。`,
         { elementId: el.id }));
     }
   }
@@ -738,7 +738,7 @@ function collectRaceGowWarnings(doc, out, legs) {
         && Math.abs(ap.clearH - refOpening.clearH) > 0.002)));
     if (odd.length) {
       out.push(warn('rg-opening-mixed',
-        `${odd.length === 1 ? label(odd[0]) : `${odd.length} gates`} ${odd.length === 1 ? 'is' : 'are'} a different size from ${label(ref)}. Every gate on a RaceGOW track is the same size.`,
+        `${odd.length === 1 ? label(odd[0]) : `${odd.length} 个赛门`}与${label(ref)}尺寸不同。RaceGOW 赛道上的所有赛门都必须尺寸一致。`,
         { elementId: odd[0].id }));
     }
   }
@@ -757,18 +757,18 @@ function collectRaceGowWarnings(doc, out, legs) {
       if (i === 0 && el.dims.sillH < 0.001 && el.position.z < 0.001) {
         if (centre > GROUND_GATE_CENTRE_MAX + 1e-6) {
           out.push(warn('rg-ground-centre',
-            `${label(el)} has its bottom opening's centre at ${inches(centre)}. A gate on the ground has its centre at 20 in or lower.`,
+            `${label(el)}底部开口的中心高度为 ${inches(centre)}。地面赛门的中心高度不得超过 20 英寸。`,
             { elementId: el.id }));
         }
       }
       if (i === 1 && centre < STACK2_CENTRE_MIN - 1e-6) {
         out.push(warn('rg-stack2',
-          `${label(el)}'s second opening is centred at ${inches(centre)}. The top gate of a two high stack must be at least 42 in up.`,
+          `${label(el)}第二层开口的中心高度为 ${inches(centre)}。双层赛门的顶部赛门高度至少为 42 英寸。`,
           { elementId: el.id }));
       }
       if (i === 2 && centre < STACK3_CENTRE_MIN - 1e-6) {
         out.push(warn('rg-stack3',
-          `${label(el)}'s third opening is centred at ${inches(centre)}. A third gate must be at least 69 in up.`,
+          `${label(el)}第三层开口的中心高度为 ${inches(centre)}。第三层赛门高度至少为 69 英寸。`,
           { elementId: el.id }));
       }
       /* Not a RaceGOW rule: a ceiling. These are flown indoors and a
@@ -776,7 +776,7 @@ function collectRaceGowWarnings(doc, out, legs) {
        * track nobody can build in the room this class assumes. */
       if (sill + holes[i].clearH > ROOM_HEIGHT) {
         out.push(warn('rg-ceiling',
-          `${label(el)} reaches ${inches(sill + holes[i].clearH)}, through the ${ROOM_HEIGHT.toFixed(1)} m ceiling. RaceGOW tracks are flown indoors.`,
+          `${label(el)}的顶部达到 ${inches(sill + holes[i].clearH)}，超过 ${ROOM_HEIGHT.toFixed(1)} m 的室内天花板。RaceGOW 赛道用于室内飞行。`,
           { elementId: el.id }));
       }
     }
@@ -791,7 +791,7 @@ function collectRaceGowWarnings(doc, out, legs) {
     }
     if (levels > 1 && (pitch < GATE_SPACING_MIN - 1e-6 || pitch > GATE_SPACING_MAX + 1e-6)) {
       out.push(warn('rg-stack-pitch',
-        `${label(el)} stacks its openings ${inches(pitch)} apart. Adjacent gates are 27 to 33 in centre to centre, stacked or side by side.`,
+        `${label(el)}各层开口的中心间距为 ${inches(pitch)}。无论上下叠放还是并排，相邻赛门的中心间距都必须为 27 至 33 英寸。`,
         { elementId: el.id }));
     }
   }
@@ -865,11 +865,11 @@ function collectRaceGowWarnings(doc, out, legs) {
       const aligned = Math.max(...off) > 0.94 * d;
       if (d < GATE_SPACING_MIN - 1e-6) {
         out.push(warn('rg-spacing',
-          `${label(a)} and ${label(b)} are ${inches(d)} apart. Two gates that close are adjacent, and adjacent gates are 27 to 33 in centre to centre.`,
+          `${label(a)}和${label(b)}相距 ${inches(d)}。距离如此接近的赛门属于相邻赛门，其中心间距应为 27 至 33 英寸。`,
           { elementId: a.id, also: [b.id] }));
       } else if (aligned && d > GATE_SPACING_MAX + 1e-6 && d < GATE_SPACING_MAX * 1.25) {
         out.push(note('rg-spacing-near',
-          `${label(a)} and ${label(b)} are ${inches(d)} apart. If they are meant to be a side by side pair, adjacent gates are 27 to 33 in centre to centre, nominally 30.`,
+          `${label(a)}和${label(b)}相距 ${inches(d)}。如果它们预期并排设置，相邻赛门的中心间距应为 27 至 33 英寸，标准间距为 30 英寸。`,
           { elementId: a.id, also: [b.id] }));
       }
     }
@@ -884,7 +884,7 @@ function collectRaceGowWarnings(doc, out, legs) {
       const d = Math.hypot(p.position.x - g.position.x, p.position.y - g.position.y);
       if (d < POLE_FROM_GATE_MIN - 1e-6) {
         out.push(warn('rg-pole-gate',
-          `${label(p)} is ${inches(d)} from ${label(g)}. A pole sits at least 14 in from the centre of a gate.`,
+          `${label(p)}距${label(g)}仅 ${inches(d)}。立柱应至少距离赛门中心 14 英寸。`,
           { elementId: p.id, also: [g.id] }));
       }
     }
@@ -898,7 +898,7 @@ function collectRaceGowWarnings(doc, out, legs) {
         poles[i].position.y - poles[j].position.y);
       if (d < POLE_FROM_POLE_MIN - 1e-6) {
         out.push(warn('rg-pole-pole',
-          `${label(poles[i])} and ${label(poles[j])} are ${inches(d)} apart. Two poles sit at least 36 in apart.`,
+          `${label(poles[i])}和${label(poles[j])}相距 ${inches(d)}。两根立柱之间应至少相距 36 英寸。`,
           { elementId: poles[i].id, also: [poles[j].id] }));
       }
     }
@@ -931,7 +931,7 @@ function collectRaceGowWarnings(doc, out, legs) {
       || (d <= env.width + 0.02 && w <= env.depth + 0.02);
     if (!fits) {
       out.push(note('rg-envelope',
-        `The track spans ${w.toFixed(2)} by ${d.toFixed(2)} m. A RaceGOW track fits ${env.width.toFixed(2)} by ${env.depth.toFixed(2)} m at this gate size.`));
+        `赛道范围为 ${w.toFixed(2)}×${d.toFixed(2)} m。使用此赛门尺寸时，RaceGOW 赛道应能放入 ${env.width.toFixed(2)}×${env.depth.toFixed(2)} m 的范围内。`));
     }
   }
 }
@@ -1038,17 +1038,17 @@ export const SPAWN_CLEAR = OPEN_CLEAR;
  */
 function noStartNote(placed) {
   const sp = placed.spawn;
-  const press = 'Press S and click where they should start.';
+  const press = '按 S 并单击起飞位置以放置起飞垫。';
   if (sp.from === 'open') {
     const x = (sp.x + placed.W / 2).toFixed(1);
     const y = (placed.D / 2 - sp.z).toFixed(1);
-    return `No start pads, and ${OPEN_POINT_IN} m in from the left edge of the plot, halfway up it, is not in the open, so the pilot starts at the nearest spot that is: ${x} m in from the left edge and ${y} m up, facing right. In the open is ${OPEN_CLEAR} m clear of everything, with nothing overhead and no road beside it. ${press}`;
+    return `尚未放置起飞垫，场地左侧向内 ${OPEN_POINT_IN} m、垂直居中的位置并非空旷区域，因此飞手会从最近的空旷位置起飞：距场地左侧 ${x} m、向上 ${y} m，朝向右侧。该位置周围 ${OPEN_CLEAR} m 内无障碍物、上方无遮挡，旁边也没有道路。${press}`;
   }
   if (sp.from === 'off') {
     const edge = sp.yaw === -Math.PI / 2 ? 'left' : sp.yaw === Math.PI / 2 ? 'right' : sp.yaw === 0 ? 'bottom' : 'top';
-    return `No start pads, and nowhere on the plot is in the open, ${OPEN_CLEAR} m clear of everything with nothing overhead and no road beside it, so the pilot starts at its ${edge} edge, facing into it. ${press}`;
+    return `尚未放置起飞垫，场地内没有周围 ${OPEN_CLEAR} m 无障碍、上方无遮挡且旁边没有道路的空旷位置，因此飞手会从场地${({ left: '左', right: '右', bottom: '下', top: '上' })[edge]}侧边缘朝内起飞。${press}`;
   }
-  return `No start pads, so the pilot starts ${OPEN_POINT_IN} m in from the left edge of the plot, halfway up it, facing right. ${press}`;
+  return `尚未放置起飞垫，飞手将从距场地左侧 ${OPEN_POINT_IN} m、垂直居中的位置朝右起飞。${press}`;
 }
 
 /* How far two solids have to run into each other before it is an overlap
@@ -1145,23 +1145,23 @@ export function freestyleReport(doc) {
      * Base says, so that is said too. */
     const split = pads ? splitMat(placed, pads) : null;
     const across = split
-      ? `The row also stands across two heights: mat ${split.n} sits at ${split.y.toFixed(2)} m and the craft's mat at ${sp.y.toFixed(2)} m, so the mats are drawn at ${sp.y.toFixed(2)} m and some float or are buried. Move the row onto one surface.`
+      ? `起飞垫横跨两个高度：第 ${split.n} 个垫位于 ${split.y.toFixed(2)} m，飞行器所在垫位于 ${sp.y.toFixed(2)} m。所有垫子都会绘制在 ${sp.y.toFixed(2)} m 高度，因此部分垫子会悬空或埋入地面。请将它们移动到同一表面。`
       : '';
     if (pads && Math.abs(sp.base - sp.y) > SEAT_SLACK) {
-      const where = seatEl ? `on top of ${names(seatEl)} at ${sp.y.toFixed(2)} m` : 'on the ground';
-      out.push(warn('fs-pads-seat', `The start pads have a Base of ${sp.base.toFixed(2)} m, but in the simulator they sit ${where}, and the craft starts there. Set Base to ${sp.y.toFixed(2)} m to see them where they will be.${across ? ` ${across}` : ''}`, {
+      const where = seatEl ? `${names(seatEl)}顶部 ${sp.y.toFixed(2)} m 处` : '地面';
+      out.push(warn('fs-pads-seat', `起飞垫的底部高度为 ${sp.base.toFixed(2)} m，但在模拟器中它们位于${where}，飞行器也会从该处起飞。请将底部高度设置为 ${sp.y.toFixed(2)} m，以显示实际位置。${across ? ` ${across}` : ''}`, {
         elementId: pads.id,
       }));
     } else if (split) {
-      out.push(warn('fs-pads-seat', `The start pads stand across two heights: mat ${split.n} sits at ${split.y.toFixed(2)} m and the craft's mat at ${sp.y.toFixed(2)} m. The mats are drawn at ${sp.y.toFixed(2)} m, so some float or are buried. Move the row onto one surface.`, {
+      out.push(warn('fs-pads-seat', `起飞垫横跨两个不同高度：第 ${split.n} 个垫位于 ${split.y.toFixed(2)} m，飞行器所在垫位于 ${sp.y.toFixed(2)} m。所有垫子都会绘制在 ${sp.y.toFixed(2)} m 高度，因此部分垫子会悬空或埋入地面。请将它们移动到同一表面。`, {
         elementId: pads.id,
       }));
     }
     if (worst) {
-      const where = worst.d <= 0 ? 'inside' : `${worst.d.toFixed(2)} m from`;
+      const where = worst.d <= 0 ? '内部' : `外侧 ${worst.d.toFixed(2)} m`;
       out.push(pads
-        ? warn('fs-spawn', `The start pads are ${where} ${names(worst.el)}. The craft needs a metre of clear air round it to take off: move the pads into the open.`, { elementId: pads.id })
-        : warn('fs-spawn', `With no start pads the pilot starts ${where} ${names(worst.el)}. Press S and put the start pads in the open.`, { elementId: worst.el.id }));
+        ? warn('fs-spawn', `起飞垫位于${names(worst.el)}${where}。飞行器起飞时周围需要 1 m 的净空：请将起飞垫移到空旷区域。`, { elementId: pads.id })
+        : warn('fs-spawn', `尚未放置起飞垫，飞手将在${names(worst.el)}${where}起飞。按 S 并将起飞垫放在空旷区域。`, { elementId: worst.el.id }));
     }
   }
 
@@ -1196,12 +1196,12 @@ export function freestyleReport(doc) {
        * author has just put down. */
       const [first, later] = docIndex.get(A.el.id) < docIndex.get(B.el.id) ? [A.el, B.el] : [B.el, A.el];
       if (d < -OVERLAP_EPS) {
-        out.push(warn('fs-overlap', `${cap(names(later))} runs into ${names(first)}: one is built through the other. Move one of them.`, {
+        out.push(warn('fs-overlap', `${cap(names(later))}与${names(first)}发生重叠，一个物体穿过了另一个。请移动其中一个。`, {
           elementId: later.id,
           otherId: first.id,
         }));
       } else if (d > SLOT_FLOOR && d < GAP_MIN) {
-        out.push(warn('fs-slot', `${cap(names(later))} and ${names(first)} leave a ${d.toFixed(2)} m slot between them. A five inch needs ${GAP_MIN} m to get through, so close it up or open it out.`, {
+        out.push(warn('fs-slot', `${cap(names(later))}和${names(first)}之间留有 ${d.toFixed(2)} m 的空隙。5 英寸飞行器需要 ${GAP_MIN} m 才能通过，请封闭此处或扩大间隙。`, {
           elementId: later.id,
           otherId: first.id,
           clearance: d,
@@ -1222,7 +1222,7 @@ export function freestyleReport(doc) {
         continue;
       }
       if (b.solids.some((s, k) => boxesTouch(win.box, b.boxes[k]) && solidCrossesWindow(s, win))) {
-        out.push(warn('fs-gap-blocked', `${zone.name || 'A named gap'} has ${names(b.el)} across its window, so nothing flies through it clean. Move the gap or what is in it.`, {
+        out.push(warn('fs-gap-blocked', `${zone.name || '命名间隙'}的计分区域被${names(b.el)}挡住，无法顺利穿过。请移动间隙或障碍物。`, {
           elementId: zone.el.id,
           otherId: b.el.id,
         }));
@@ -1237,13 +1237,13 @@ export function freestyleReport(doc) {
   for (const el of doc.elements) {
     const { x, y } = el.position;
     if (x < 0 || y < 0 || x > doc.field.width || y > doc.field.depth) {
-      out.push(warn('fs-outside', `${cap(names(el))} is standing outside the plot.`, { elementId: el.id }));
+      out.push(warn('fs-outside', `${cap(names(el))}位于场地范围之外。`, { elementId: el.id }));
       continue;
     }
     const b = bodyOf.get(el.id);
     if (b && (b.box[0] < -W / 2 - PLOT_SLACK || b.box[3] > W / 2 + PLOT_SLACK
       || b.box[2] < -D / 2 - PLOT_SLACK || b.box[5] > D / 2 + PLOT_SLACK)) {
-      out.push(warn('fs-outside', `${cap(names(el))} reaches past the edge of the plot.`, { elementId: el.id }));
+      out.push(warn('fs-outside', `${cap(names(el))}超出场地边界。`, { elementId: el.id }));
     }
   }
 
@@ -1271,7 +1271,7 @@ export function freestyleReport(doc) {
 
   if (placed.solids.length > FREESTYLE_SOLIDS_MAX) {
     const biggest = bodies.reduce((m, b) => (!m || b.solids.length > m.solids.length ? b : m), null);
-    out.push(warn('fs-solids', `This map has ${placed.solids.length} solids, over the ${FREESTYLE_SOLIDS_MAX} a map is kept under so it loads and flies smoothly on a slow machine. The biggest is ${names(biggest.el)}, at ${biggest.solids.length}.`, {
+    out.push(warn('fs-solids', `此地图包含 ${placed.solids.length} 个实体，超过了为保证低性能设备顺畅加载和飞行而设定的 ${FREESTYLE_SOLIDS_MAX} 个上限。${names(biggest.el)}占用最多，共 ${biggest.solids.length} 个实体。`, {
       elementId: biggest.el.id,
     }));
   }
@@ -1293,7 +1293,7 @@ export function freestyleReport(doc) {
       at += b.solids.length;
     }
     const most = [...own.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    out.push(warn('fs-crowded', `Round ${names(most.el)} the physics would have ${crowd.max} shapes to check against a craft, and it checks ${CANDIDATES_MAX} at most: the rest are left out, and a craft there could pass through them. Spread these elements further apart or use fewer of them.`, {
+    out.push(warn('fs-crowded', `${names(most.el)}附近有 ${crowd.max} 个实体需要进行碰撞检测，物理模块最多检测 ${CANDIDATES_MAX} 个，其余实体会被忽略，飞行器可能直接穿过它们。请将这些元素分散放置或减少数量。`, {
       elementId: most.el.id,
     }));
   }
@@ -1376,9 +1376,9 @@ function roadWarnings(doc, placed, bodies, names, out) {
     if (p.code === 'tr-no-road') {
       const target = el.road ? byId.get(el.road) : null;
       const why = !el.road
-        ? 'it was never put on one'
-        : (target ? `it names ${names(target)}, which is not a road` : `its road, ${el.road}, is not on the map any more`);
-      out.push(warn('tr-no-road', `${cap(names(el))} has no road: ${why}. It stays parked, and is drawn in the row along the south edge of the plot. Drag it onto a road, or delete it.`, {
+        ? '尚未指定道路'
+        : (target ? `指定的${names(target)}不是道路` : `指定道路 ${el.road} 已不在地图中`);
+      out.push(warn('tr-no-road', `${cap(names(el))}没有道路可行驶：${why}。它会保持停放，并显示在场地南侧边缘的一排车辆中。请将它拖到道路上，或将其删除。`, {
         elementId: el.id,
       }));
       continue;
@@ -1397,8 +1397,8 @@ function roadWarnings(doc, placed, bodies, names, out) {
     }
     /* A vehicle the physics has no room for, in trafficOf's own words, the
      * limits included, so the builder never says a different number. */
-    const message = /^A vehicle/.test(p.message)
-      ? p.message.replace(/^A vehicle/, cap(names(el)))
+    const message = /^车辆/.test(p.message)
+      ? p.message.replace(/^车辆/, cap(names(el)))
       : `${cap(names(el))}: ${p.message}`;
     out.push({ level, code: p.code, message, elementId: el.id });
   }
@@ -1435,7 +1435,7 @@ function roadWarnings(doc, placed, bodies, names, out) {
       y1 = Math.max(y1, p.y);
     }
     if (x0 < -PLOT_SLACK || y0 < -PLOT_SLACK || x1 > doc.field.width + PLOT_SLACK || y1 > doc.field.depth + PLOT_SLACK) {
-      out.push(warn('fs-outside', `${cap(names(road))} runs past the edge of the plot.`, { elementId: road.id }));
+      out.push(warn('fs-outside', `${cap(names(road))}超出场地边界。`, { elementId: road.id }));
     }
     for (const b of bodies) {
       if (b.el === pads) {
@@ -1459,21 +1459,21 @@ function roadWarnings(doc, placed, bodies, names, out) {
         hit = lineShapeDist(pts, line.closed, shape, pb, reach) < reach;
       }
       if (hit) {
-        out.push(warn('rd-solid', `${cap(names(road))} runs through ${names(b.el)}: a car on it would drive into it. Move the road, or ${names(b.el)}, until a car has room to pass.`, {
+        out.push(warn('rd-solid', `${cap(names(road))}穿过了${names(b.el)}，车辆行驶时会与其碰撞。请移动道路或${names(b.el)}，为车辆留出通行空间。`, {
           elementId: road.id,
           otherId: b.el.id,
         }));
       }
     }
     if (padsPoly && lineShapeDist(pts, line.closed, { poly: padsPoly }, polyBox(padsPoly), reach) < reach) {
-      out.push(warn('rd-start', `${cap(names(road))} runs over the start pads, so a car on it drives through the craft waiting to launch. Move the road or the pads.`, {
+      out.push(warn('rd-start', `${cap(names(road))}经过起飞垫上方，车辆会撞上等待起飞的飞行器。请移动道路或起飞垫。`, {
         elementId: road.id,
         otherId: pads.id,
       }));
     } else if (lineShapeDist(pts, line.closed, { point: spawn }, [spawn[0], spawn[1], spawn[0], spawn[1]], reach + SPAWN_CLEAR) < reach + SPAWN_CLEAR) {
       out.push(warn('rd-start', pads
-        ? `${cap(names(road))} passes within a metre of where the craft starts, so a car on it clips the craft before it has left the pad. Move the road or the pads.`
-        : `${cap(names(road))} runs through where the pilot starts with no start pads, so a car on it drives through the craft. Move the road, or press S and put the start pads clear of it.`, {
+        ? `${cap(names(road))}距离飞行器起飞位置不到 1 m，车辆会在飞行器离开起飞垫前与其碰撞。请移动道路或起飞垫。`
+        : `${cap(names(road))}经过未放置起飞垫时的飞手起飞点，车辆会撞上飞行器。请移动道路，或按 S 放置起飞垫并远离道路。`, {
         elementId: road.id,
         ...(pads ? { otherId: pads.id } : {}),
       }));
@@ -1493,20 +1493,20 @@ function roadWarnings(doc, placed, bodies, names, out) {
     const B = names(b);
     let message;
     if (c.kind === 'open') {
-      message = `${A} and ${B} are both on ${names(road)}, an open road: every car drives its middle out to the end and back, so the two meet head on and drive through each other. Close the road into a loop, or keep one car on it.`;
+      message = `${A}和${B}都在开放式道路${names(road)}上：每辆车都会从中点驶向道路尽头再返回，因此两车会迎面相撞并彼此穿过。请将道路闭合成环，或只保留一辆车。`;
     } else if (c.kind === 'head-on') {
-      message = `${A} and ${B} drive ${names(road)}'s one lane in opposite directions, so they meet head on and drive through each other. Give the road two lanes, or turn one of them round.`;
+      message = `${A}和${B}在${names(road)}的单车道上朝相反方向行驶，因此会迎面相撞并彼此穿过。请将道路改为双车道，或调转其中一辆车的方向。`;
     } else {
-      const when = c.at < 1 ? 'at once' : (c.at < 90 ? `${Math.round(c.at)} s in` : `about ${Math.round(c.at / 60)} minutes in`);
+      const when = c.at < 1 ? '立即' : (c.at < 90 ? `${Math.round(c.at)} 秒后` : `约 ${Math.round(c.at / 60)} 分钟后`);
       const fix = roadOf(road).lanes === 2
-        ? 'Give them the same top speed and the same drift, or set one to Reverse so it drives the other lane.'
-        : 'Give them the same top speed and the same drift, or give the road two lanes and set one to Reverse.';
-      message = `${A} (${speedWords(c.a)}) and ${B} (${speedWords(c.b)}) share a lane of ${names(road)} but not a lap time, so ${when} one drives through the other: cars never touch each other. ${fix}`;
+        ? '请为两辆车设置相同的最高速度和漂移参数，或将其中一辆设为反向行驶，让它驶入另一条车道。'
+        : '请为两辆车设置相同的最高速度和漂移参数，或将道路改为双车道并将其中一辆设为反向行驶。';
+      message = `${A}（${speedWords(c.a)}）和${B}（${speedWords(c.b)}）共用${names(road)}的一条车道，但圈速不同，因此${when}会有一辆穿过另一辆：车辆之间不会发生实体碰撞。${fix}`;
     }
     out.push(warn('tr-lane-clash', message, { elementId: b.id, otherId: a.id }));
   }
   for (const [a, b] of startOverlaps(doc)) {
-    out.push(warn('tr-overlap', `${cap(names(b))} starts on top of ${names(a)}. Slide one of them along the road.`, {
+    out.push(warn('tr-overlap', `${cap(names(b))}的起点与${names(a)}重叠。请沿道路移动其中一个。`, {
       elementId: b.id,
       otherId: a.id,
     }));

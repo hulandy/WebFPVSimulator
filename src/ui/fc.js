@@ -78,9 +78,9 @@ const TABS_SHOWN = TABS.filter((t) => t.id !== 'cli');
 const SEARCH_CAP = 60;
 
 const PID_PAGES = [
-  { id: 'pid', label: 'PID Profile Settings' },
-  { id: 'filters', label: 'Filter Settings' },
-  { id: 'rates', label: 'Rateprofile Settings' },
+  { id: 'pid', label: 'PID 配置' },
+  { id: 'filters', label: '滤波器设置' },
+  { id: 'rates', label: '速率配置' },
 ];
 
 /* Step through a list with wraparound. */
@@ -96,7 +96,7 @@ function clamp(n, lo, hi) {
 
 function formatField(field, raw) {
   if (raw == null || raw === '') {
-    return 'unset';
+    return '未设置';
   }
   if (field.units) {
     return `${raw} ${field.units}`;
@@ -108,66 +108,66 @@ function sectionFor(field, page) {
   const k = field.key;
   if (page === 'pid') {
     if (k.startsWith('simplified_')) {
-      return 'Simplified tuning';
+      return '简化调校';
     }
     if (/^[pidf]_/.test(k) || k.startsWith('d_min')) {
       return 'PID';
     }
     if (k.startsWith('iterm_')) {
-      return 'Iterm relax';
+      return 'I 项松弛';
     }
     if (k.startsWith('anti_gravity')) {
-      return 'Anti gravity';
+      return '抗重力';
     }
     if (k.startsWith('tpa_') || k.startsWith('throttle_boost')) {
-      return 'TPA';
+      return '油门 PID 衰减';
     }
     if (k.startsWith('feedforward_')) {
-      return 'Feedforward';
+      return '前馈';
     }
     if (k.startsWith('angle_') || k.startsWith('horizon_') || k.startsWith('level_')) {
-      return 'Angle';
+      return '角度模式';
     }
-    return 'Advanced';
+    return '高级';
   }
   if (page === 'filters') {
     if (k.startsWith('simplified_')) {
-      return 'Simplified filters';
+      return '简化滤波器';
     }
     if (k.startsWith('gyro_lpf')) {
-      return 'Gyro lowpass';
+      return '陀螺仪低通';
     }
     if (k.startsWith('dyn_notch')) {
-      return 'Dynamic gyro notch';
+      return '陀螺仪动态陷波';
     }
     if (k.startsWith('dterm_') || k.startsWith('yaw_lowpass')) {
-      return 'D term';
+      return 'D 项';
     }
     if (k.startsWith('rpm_')) {
-      return 'RPM filter';
+      return 'RPM 滤波器';
     }
-    return 'Filters';
+    return '滤波器';
   }
   if (page === 'rates') {
-    return 'Throttle and limits';
+    return '油门与限制';
   }
   if (field.tab === 'receiver') {
     if (k.startsWith('rc_smoothing')) {
-      return 'RC smoothing';
+      return '遥控输入平滑';
     }
     if (/check$|mid_rc|airmode_start/.test(k)) {
-      return 'Receiver';
+      return '接收机';
     }
-    return 'Radio link';
+    return '遥控链路';
   }
   if (field.tab === 'motors') {
     if (/^dshot_|^motor_poles|^bidir/.test(k)) {
       return 'DShot';
     }
-    return 'Mixer';
+    return '混控器';
   }
   if (field.tab === 'configuration') {
-    return 'Configuration';
+    return '配置';
   }
   return '';
 }
@@ -445,14 +445,14 @@ export class FcSession {
     if (this.confirm === 'save-run') {
       return [
         {
-          label: 'Save and restart the run',
+          label: '保存并重新开始飞行',
           action: 'fc-save-restart',
-          note: 'Save writes the dump through sim_init, which resets the craft and puts it back on the start line. Escape cancels and stays here.',
+          note: '保存会通过 sim_init 写入配置并重置飞行器，与当前更改速率的效果相同。按 Escape 取消并留在此页面。',
         },
         {
-          label: 'Wait until the result screen',
+          label: '等到结果页面再保存',
           action: 'fc-wait',
-          note: 'Keeps the draft. Save when the run is over. Live PID mid-lap is out of this round. Escape cancels and stays here.',
+          note: '保留草稿，飞行结束后再保存。本版本不支持在飞行途中实时修改 PID。按 Escape 取消并留在此页面。',
         },
       ];
     }
@@ -466,21 +466,21 @@ export class FcSession {
     if (this.confirm === 'leave') {
       return [
         {
-          label: 'Keep editing',
+          label: '继续编辑',
           action: 'fc-keep-editing',
-          note: 'Stays here with the draft intact. Escape does the same.',
+          note: '留在此页面，保留当前草稿。按 Escape 效果相同。',
         },
         {
-          label: 'Save and leave',
+          label: '保存并退出',
           action: 'fc-save-exit',
           note: this.runActive
-            ? 'Writes the dump, then asks whether to restart the run.'
-            : 'Writes the draft through sim_init, then leaves.',
+            ? '写入配置，然后询问是否重新开始飞行。'
+            : '通过 sim_init 写入草稿，然后退出。',
         },
         {
-          label: 'Discard and leave',
+          label: '放弃更改并退出',
           action: 'fc-discard-leave',
-          note: 'Throws the draft away and restores the dump that was live when this screen opened. This cannot be undone.',
+          note: '放弃草稿并恢复打开此页面时使用的配置。此操作无法撤销。',
         },
       ];
     }
@@ -497,37 +497,37 @@ export class FcSession {
     if (this.search != null) {
       const found = this.searchHits(this.search);
       rows.push({
-        label: 'Search',
+        label: '搜索',
         key: 'fc-search',
         note: this.search
-          ? `${found.total} key(s) match, across every tab. Escape leaves search and puts you back on ${tab.label}.`
-          : 'Type part of a key name. It looks across every tab, including the ones this build does not implement, because knowing a key is missing is an answer too. Escape leaves search.',
+          ? `在所有标签页中找到 ${found.total} 个匹配参数。按 Escape 退出搜索并返回“${tab.label}”。`
+          : '输入部分参数名进行搜索。搜索范围包括所有标签页，也包括此版本尚未实现的参数，这样也能确认参数是否缺失。按 Escape 退出搜索。',
         /*
          * Its own control, not the typed number row's. That one commits on
          * blur, carries stepper arrows and declares a decimal input mode,
          * and all three are wrong for a name being typed a letter at a
          * time. See makeSearch in ui.js.
          */
-        text: { value: this.search, placeholder: 'part of a key name' },
+        text: { value: this.search, placeholder: '输入部分参数名' },
         onText: (v) => { this.search = String(v == null ? '' : v); },
       });
       if (!this.search) {
         rows.push({
-          label: 'Nothing typed yet',
+          label: '尚未输入',
           info: true,
           disabled: true,
           rowClass: 'row-grey',
-          note: 'Every key in the catalog is still here under its own tab. Escape leaves search.',
+          note: '目录中的参数仍位于各自的标签页中。按 Escape 退出搜索。',
         });
         return rows;
       }
       if (!found.total) {
         rows.push({
-          label: `No key contains "${this.search}"`,
+          label: `没有参数包含“${this.search}”`,
           info: true,
           disabled: true,
           rowClass: 'row-grey',
-          note: 'Not in Betaflight 4.5.1 under that spelling, and not in this build either. Betaflight renames keys between versions, so a name from an older guide may be spelled differently now.',
+          note: `Betaflight 4.5.1 和此版本中都没有此拼写的参数。Betaflight 可能会在不同版本中更改参数名，因此旧指南中的名称可能有所不同。`,
         });
         return rows;
       }
@@ -542,19 +542,19 @@ export class FcSession {
          * the key is missing.
          */
         rows.push({
-          label: `${found.total - found.hits.length} more not shown`,
+          label: `另有 ${found.total - found.hits.length} 项未显示`,
           info: true,
           disabled: true,
           rowClass: 'row-grey',
-          note: `${found.total} keys match and the first ${found.hits.length} are listed, because rendering all of them costs about 57 ms per keystroke. Type more of the name to narrow it.`,
+          note: `共找到 ${found.total} 个匹配参数，目前列出前 ${found.hits.length} 项；完整渲染这些内容每次按键约需 57 毫秒。输入更完整的名称可缩小范围。`,
         });
       }
       return rows;
     }
 
     rows.push({
-      label: 'Tab',
-      note: tab.grey ? tab.reason : 'Configurator tabs. Grey tabs can be read, not edited.',
+      label: '标签页',
+      note: tab.grey ? tab.reason : '飞控配置器标签页。灰色标签页可查看，但不可编辑。',
       value: tab.label,
       current: tab.id,
       options: TABS_SHOWN.map((t) => ({ value: t.id, label: t.label })),
@@ -572,16 +572,16 @@ export class FcSession {
     if (skipped > 0) {
       rows.push({
         /* A switch, not a two item popup. See toggle() in ui.js. */
-        label: 'Walk every key',
+        label: '逐项浏览所有参数',
         sw: true,
         on: this.walkAll,
-        value: this.walkAll ? 'On' : 'Off',
+        value: this.walkAll ? '开' : '关',
         current: this.walkAll,
         adjust: (d) => { this.walkAll = d > 0; },
         flip: () => { this.walkAll = !this.walkAll; },
         note: this.walkAll
-          ? `Up and Down stop on all ${skipped} key(s) this build does not implement, so their reason can be read. Off makes the arrows travel only the live rows.`
-          : `Up and Down skip the ${skipped} key(s) this build does not implement. Turn this on to walk them and read why each one is missing. They are still on screen either way.`,
+          ? `上下方向键会停在此版本未实现的 ${skipped} 个参数上，方便查看原因。关闭后，方向键只会在可用项目间移动。`
+          : `上下方向键会跳过此版本未实现的 ${skipped} 个参数。开启后可逐项浏览并查看缺失原因；这些参数始终会显示在页面上。`,
       });
     }
 
@@ -594,24 +594,24 @@ export class FcSession {
     const changedCount = this.modifiedKeys().size;
     if (changedCount > 0 || this.onlyModified) {
       rows.push({
-        label: 'Only what I changed',
+        label: '仅显示已修改项',
         sw: true,
         on: this.onlyModified,
-        value: this.onlyModified ? 'On' : 'Off',
+        value: this.onlyModified ? '开' : '关',
         current: this.onlyModified,
         adjust: (d) => { this.onlyModified = d > 0; },
         flip: () => { this.onlyModified = !this.onlyModified; },
         note: this.onlyModified
-          ? `Showing only the ${changedCount} key(s) this draft has moved off the dump it opened with. Every tab still has the rest.`
-          : `${changedCount} key(s) differ from the dump this screen opened with. Turn this on to see exactly what Save is about to write, tab by tab.`,
+          ? `仅显示草稿中与打开页面时配置不同的 ${changedCount} 个参数。其他参数仍保留在各标签页中。`
+          : `有 ${changedCount} 个参数与打开页面时的配置不同。开启后可逐标签页查看保存时将写入的内容。`,
       });
     }
 
     if (this.tab === 'pid') {
       const page = PID_PAGES.find((p) => p.id === this.page) ?? PID_PAGES[0];
       rows.push({
-        label: 'Page',
-        note: 'PID Tuning in 4.5.1 is PID Profile, Filters, and Rateprofile.',
+        label: '页面',
+        note: 'Betaflight 4.5.1 的 PID 调校包含 PID 配置、滤波器和速率配置。',
         value: page.label,
         current: page.id,
         options: PID_PAGES.map((p) => ({ value: p.id, label: p.label })),
@@ -621,55 +621,55 @@ export class FcSession {
     }
 
     rows.push({
-      label: 'Save',
+      label: '保存',
       action: 'fc-save',
       rowClass: 'fc-btn',
       note: this.dirty()
-        ? 'Writes the draft dump through sim_init and stays here. It becomes Your edits on the Tune row.'
-        : 'No edits. Save does not re-init, so a live race is not killed for nothing.',
+        ? '通过 sim_init 写入草稿并留在此页面。该配置会显示为“调校”中的“你的修改”。'
+        : '没有待保存的修改。保存不会重新初始化，因此不会无故中断正在进行的比赛。',
     });
     if (this.dirty()) {
       rows.push({
-        label: 'Save and exit',
+        label: '保存并退出',
         action: 'fc-save-exit',
         rowClass: 'fc-btn',
         note: this.runActive
-          ? 'Writes the dump, then asks whether to restart the run.'
-          : 'Writes the dump through sim_init, then leaves this screen.',
+          ? '写入配置，然后询问是否重新开始飞行。'
+          : '通过 sim_init 写入配置，然后退出此页面。',
       });
     }
     rows.push({
-      label: 'Discard',
+      label: '放弃更改',
       action: 'fc-discard',
       rowClass: 'fc-btn',
-      note: 'Restores the dump that was live when this screen opened. Stays here.',
+      note: '恢复打开此页面时使用的配置，并留在此页面。',
     });
     rows.push({
-      label: 'Export',
+      label: '导出',
       action: 'fc-export',
       rowClass: 'fc-btn',
-      note: 'Downloads CLI text a 4.5 Configurator can read. Does not Save. Text goes OUT of this simulator only; there is no door for pasting any back in.',
+      note: '下载可由 Betaflight 4.5 配置器读取的 CLI 文本。此操作不会保存更改。文本只能从模拟器导出，无法粘贴或导入回来。',
     });
     rows.push({
-      label: this.dirty() ? 'Exit without saving' : 'Exit',
+      label: this.dirty() ? '不保存并退出' : '退出',
       action: 'fc-back',
       rowClass: 'fc-btn',
       note: this.dirty()
-        ? 'Leaves and restores the dump that was live when this screen opened. Escape does the same.'
-        : 'Leaves this screen. Escape does the same.',
+        ? '退出并恢复打开此页面时使用的配置。按 Escape 效果相同。'
+        : '退出此页面。按 Escape 效果相同。',
     });
 
     if (this.tab === 'pid' && this.page === 'rates') {
       rows.push({
-        label: 'Rates',
-        value: 'On the Rates screen',
-        note: 'Rates belong to you, not to a tune or a dump, and their own screen draws the curve your sticks ride. The Rates screen is the one editor; whatever it holds is appended to every Save from here. Below are the throttle and limit keys that are not part of the stick curve.',
+        label: '速率',
+        value: '位于速率页面',
+        note: '速率属于飞手，而非调校或配置文件；专属页面会绘制摇杆所使用的速率曲线。速率页面是唯一的编辑入口，其中的设置会附加到此处每次保存的配置中。下方列出不属于摇杆曲线的油门和限制参数。',
         info: true,
       });
       rows.push({
-        label: 'Open the Rates screen',
+        label: '打开速率页面',
         action: 'rates',
-        note: 'Leaves the flight controller. Unsaved edits here are kept until you exit.',
+        note: '离开飞控配置器。未保存的修改会保留，直到退出此页面。',
       });
     }
 
@@ -682,9 +682,9 @@ export class FcSession {
         });
       }
       rows.push({
-        label: 'firmware-presets',
-        value: 'Unavailable',
-        note: 'Optional later: fetch from betaflight/firmware-presets 4.5 branch only. Master presets would be a version lie.',
+        label: '固件预设',
+        value: '不可用',
+        note: '后续可选功能：仅从 betaflight/firmware-presets 的 4.5 分支获取。使用主分支预设会导致版本信息不准确。',
         info: true,
         disabled: true,
         rowClass: 'row-grey',
@@ -696,44 +696,44 @@ export class FcSession {
       const angle = this.getFlightMode() === 'angle';
       rows.push({
         label: 'ARM',
-        value: 'Always on',
-        note: 'The sim is always armed. A real board uses an AUX range.',
+        value: '始终开启',
+        note: '模拟器始终处于解锁状态。真实飞控使用 AUX 通道范围控制。',
         info: true,
         disabled: true,
         rowClass: 'row-grey',
       });
       rows.push({
         label: 'ANGLE',
-        note: 'On or off, same sim_set_angle_mode as Flight mode in Quad. A real board uses an AUX range. Races on keys start in Angle; M switches.',
+        note: '与设置中的“飞行模式”共用 sim_set_angle_mode。真实飞控使用 AUX 通道范围控制。键盘竞速默认以角度模式开始，按 M 切换。',
         sw: true,
         on: angle,
-        value: angle ? 'On' : 'Off',
+        value: angle ? '开' : '关',
         current: angle,
         adjust: (d) => this.setFlightMode(d > 0),
         flip: () => this.setFlightMode(!angle),
       });
       rows.push({
         label: 'LAUNCH CONTROL',
-        note: 'On or off, same as Launch control in Quad. L on the keyboard is the mode switch on the start line. A real board uses an AUX range.',
+        note: '与设置中的“起飞控制”共用此开关。键盘上的 L 键可在起点切换模式。真实飞控使用 AUX 通道范围控制。',
         sw: true,
         on: this.getLaunchControl(),
-        value: this.getLaunchControl() ? 'On' : 'Off',
+        value: this.getLaunchControl() ? '开' : '关',
         current: this.getLaunchControl(),
         adjust: (d) => this.setLaunchControl(d > 0),
         flip: () => this.setLaunchControl(!this.getLaunchControl()),
       });
       rows.push({
         label: 'HORIZON',
-        value: 'Unavailable',
-        note: 'No AUX channels until they are fed from the gamepad.',
+        value: '不可用',
+        note: '当前没有从游戏手柄传入 AUX 通道。',
         info: true,
         disabled: true,
         rowClass: 'row-grey',
       });
       rows.push({
         label: 'GPS RESCUE',
-        value: 'Unavailable',
-        note: 'No GPS sensor in the plant.',
+        value: '不可用',
+        note: '飞行模型中没有 GPS 传感器。',
         info: true,
         disabled: true,
         rowClass: 'row-grey',
@@ -743,25 +743,25 @@ export class FcSession {
 
     if (this.tab === 'setup') {
       rows.push({
-        label: 'Attitude',
-        value: 'Live',
-        note: 'Horizon from the plant quaternion (sim_state). The simulated gyro needs no calibration.',
+        label: '姿态',
+        value: '实时',
+        note: '地平仪根据飞行模型四元数（sim_state）绘制。模拟陀螺仪无需校准。',
         info: true,
       });
     }
 
     if (this.tab === 'configuration') {
       rows.push({
-        label: 'Features',
+        label: '功能',
         info: true,
         disabled: true,
         rowClass: 'fc-section',
-        note: 'feature lines in the dump. Same path a preset uses.',
+        note: '配置文件中的 feature 行，与预设使用相同的写入方式。',
       });
       for (const feat of FEATURES) {
         const live = feat.status === STATUS.LIVE;
         const on = featureEnabled(this.draft, feat.name);
-        const shown = on == null ? (live ? 'unset' : 'Off') : (on ? 'On' : 'Off');
+        const shown = on == null ? (live ? '未设置' : '关') : (on ? '开' : '关');
         if (!live) {
           rows.push({
             label: `feature ${feat.name}`,
@@ -780,7 +780,7 @@ export class FcSession {
           note: feat.reason,
           sw: true,
           on: current,
-          value: current ? 'On' : 'Off',
+          value: current ? '开' : '关',
           current,
           adjust: (d) => this.setFeature(feat.name, d > 0),
           flip: () => this.setFeature(feat.name, !current),
@@ -792,34 +792,34 @@ export class FcSession {
       const allowed = this.motorTestAllowed();
       if (!allowed) {
         rows.push({
-          label: 'Motor test',
-          value: 'Unavailable',
-          note: 'Motor test uses sim_motor_override on the title, never mid-race. Open the Firmware bench from Quad on the title.',
+          label: '电机测试',
+          value: '不可用',
+          note: '电机测试使用标题页中的 sim_motor_override，比赛途中不可用。请从标题页的设置中打开飞控配置器。',
           info: true,
           disabled: true,
           rowClass: 'row-grey',
         });
       } else {
         rows.push({
-          label: 'All motors',
-          note: 'Title only. sim_motor_override, the same ABI check 8 uses. Stop before you Save.',
+          label: '所有电机',
+          note: '仅限标题页。使用 sim_motor_override，与 ABI 检查 8 相同。保存前请先停止电机。',
           value: `${Math.round(this.motorDuty[0] * 100)} %`,
           step: true,
           adjust: (d) => this.setMotorDuty(-1, this.motorDuty[0] + d * 0.05),
         });
         for (let i = 0; i < 4; i += 1) {
           rows.push({
-            label: `Motor ${i + 1}`,
-            note: 'Betaflight order: 1 rear right, 2 front right, 3 rear left, 4 front left.',
+            label: `电机 ${i + 1}`,
+            note: 'Betaflight 排序：1 右后，2 右前，3 左后，4 左前。',
             value: `${Math.round(this.motorDuty[i] * 100)} %`,
             step: true,
             adjust: (d) => this.setMotorDuty(i, this.motorDuty[i] + d * 0.05),
           });
         }
         rows.push({
-          label: 'Stop motors',
+          label: '停止电机',
           action: 'fc-motors-stop',
-          note: 'Clears sim_motor_override.',
+          note: '清除 sim_motor_override。',
         });
       }
     }
@@ -828,7 +828,7 @@ export class FcSession {
     if (tab.grey && fields.length === 0) {
       rows.push({
         label: tab.label,
-        value: 'Unavailable',
+        value: '不可用',
         note: tab.reason,
         info: true,
         disabled: true,
@@ -845,7 +845,7 @@ export class FcSession {
           info: true,
           disabled: true,
           rowClass: 'fc-section',
-          note: 'Configurator group. Values still travel as CLI.',
+          note: '配置器分组。数值仍会通过 CLI 传递。',
         });
       }
       rows.push(this.fieldItem(field, tab.grey));

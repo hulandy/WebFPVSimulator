@@ -146,41 +146,37 @@ export function stickBrowser(userAgent = '') {
  * when no bar moves. Null for every other browser, whose surfaces keep their
  * own words.
  */
-const RADIO_TEST = 'Try Chrome, Edge or Firefox before anything else, with the radio plugged in and'
-  + ' in joystick mode. If it shows up there, it was Safari.';
+const RADIO_TEST = '请先将遥控器切换到摇杆模式并连接，然后试试 Chrome、Edge 或 Firefox。'
+  + '如果在那里能识别，问题就在 Safari。';
 
 const RADIO_BLIND = {
   safari: {
-    banner: 'Safari usually cannot see USB radios: try Chrome, Edge or Firefox.',
-    note: 'Safari usually cannot see USB radios, so no cable, port or radio setting changes that.'
-      + ' Open this page in Chrome, Edge or Firefox with the radio plugged in and in joystick mode.',
-    howto: 'Safari usually cannot see USB radios. Open this page in Chrome, Edge or Firefox first,'
-      + ' put the radio in joystick mode before loading it, then run Calibrate sticks in Settings.',
-    say: 'Safari is not showing this page a radio or gamepad. It usually cannot see USB radios at all,'
-      + ' and no cable, port or radio setting changes that: open this page in Chrome, Edge or Firefox'
-      + ' instead. A game controller is shown once something on it moves.',
+    banner: 'Safari 通常无法识别 USB 遥控器，请改用 Chrome、Edge 或 Firefox。',
+    note: 'Safari 通常无法识别 USB 遥控器，更换线缆、接口或遥控器设置也无济于事。'
+      + '请在遥控器处于摇杆模式时，用 Chrome、Edge 或 Firefox 打开此页面。',
+    howto: 'Safari 通常无法识别 USB 遥控器。请先用 Chrome、Edge 或 Firefox 打开此页面，'
+      + '并在加载页面前将遥控器设为摇杆模式，然后到“设置”中校准摇杆。',
+    say: 'Safari 没有向此页面提供遥控器或游戏手柄。它通常无法识别 USB 遥控器，'
+      + '更换线缆、接口或遥控器设置也无济于事。请改用 Chrome、Edge 或 Firefox。'
+      + '游戏手柄在有输入时才会显示。',
     lines: [
-      'Safari usually does not show a USB radio to a web page at all, so changing the cable, the'
-        + ` port or the hub is unlikely to help. ${RADIO_TEST}`,
+      'Safari 通常不会向网页提供 USB 遥控器，因此更换线缆、接口或集线器可能无济于事。'
+        + RADIO_TEST,
     ],
   },
   ios: {
-    banner: 'An iPhone or iPad usually cannot show a USB radio. Use a computer.',
-    note: 'Every browser on an iPhone or iPad is Safari underneath, and it shows a page only the game'
-      + ' controllers Apple knows. A USB radio is usually not one of them, so no cable, adapter or'
-      + ' radio setting changes that. Use a computer with Chrome, Edge or Firefox.',
-    howto: 'An iPhone or iPad usually cannot show a USB radio to any browser. Use a computer with'
-      + ' Chrome, Edge or Firefox, put the radio in joystick mode before loading the page, then run'
-      + ' Calibrate sticks in Settings.',
-    say: 'This iPhone or iPad is not showing the page a radio or gamepad. A browser here shows only the'
-      + ' game controllers Apple knows, and a USB radio is usually not one of them: use a computer with'
-      + ' Chrome, Edge or Firefox.',
+    banner: 'iPhone 或 iPad 通常无法识别 USB 遥控器，请使用电脑。',
+    note: 'iPhone 或 iPad 上的所有浏览器底层都是 Safari，只能识别 Apple 支持的游戏手柄。'
+      + 'USB 遥控器通常不在其中，更换线缆、转接头或遥控器设置也无法解决。请使用装有 Chrome、Edge 或 Firefox 的电脑。',
+    howto: 'iPhone 或 iPad 上的浏览器通常都无法识别 USB 遥控器。请使用装有 Chrome、Edge 或 Firefox 的电脑，'
+      + '在加载页面前将遥控器设为摇杆模式，然后到“设置”中校准摇杆。',
+    say: '此 iPhone 或 iPad 没有向页面提供遥控器或游戏手柄。这里的浏览器只能识别 Apple 支持的游戏手柄，'
+      + '而 USB 遥控器通常不在其中。请使用装有 Chrome、Edge 或 Firefox 的电脑。',
     lines: [
-      'Every browser on an iPhone or iPad is Safari underneath, and Safari there shows a page only the'
-        + ' game controllers it knows. A USB radio is usually not one of them, so no cable, adapter or'
-        + ' radio setting changes it.',
-      'A computer with Chrome, Edge or Firefox is the surest way to fly a radio. An Android phone can'
-        + ' see one too, but Chrome there drops some of its axes.',
+      'iPhone 或 iPad 上的浏览器底层都是 Safari，只能识别它支持的游戏手柄。USB 遥控器通常不在其中，'
+        + '更换线缆、转接头或遥控器设置也无法解决。',
+      '使用装有 Chrome、Edge 或 Firefox 的电脑连接遥控器最可靠。安卓手机也可能识别遥控器，'
+        + '但 Chrome 可能会丢弃其中一些通道。',
     ],
   },
 };
@@ -205,11 +201,11 @@ export function radioBlind(platform, browser) {
 export function noRadioNotice(platform, browser, then = 'move') {
   const blind = radioBlind(platform, browser);
   if (blind) {
-    return `No radio or gamepad found.\n${blind.banner}`;
+    return `未检测到遥控器或游戏手柄。\n${blind.banner}`;
   }
   return then === 'reload'
-    ? 'No radio or gamepad found.\nPlug one in, set it to joystick mode, and reload.'
-    : 'No radio or gamepad found.\nPlug one in, set it to joystick mode, then move it.';
+    ? '未检测到遥控器或游戏手柄。\n请连接设备、切换到摇杆模式，然后重新加载页面。'
+    : '未检测到遥控器或游戏手柄。\n请连接设备、切换到摇杆模式，然后拨动摇杆。';
 }
 
 export function capital(word) {
@@ -219,12 +215,13 @@ export function capital(word) {
 
 /* "yaw", "yaw and throttle", "roll, pitch and yaw". */
 export function channelList(channels) {
-  const c = (channels || []).slice();
+  const names = { throttle: '油门', roll: '横滚', pitch: '俯仰', yaw: '偏航' };
+  const c = (channels || []).map((name) => names[name] || name);
   if (c.length <= 1) {
     return c[0] || '';
   }
   const last = c.pop();
-  return `${c.join(', ')} and ${last}`;
+  return `${c.join('、')}和${last}`;
 }
 
 /*
@@ -234,7 +231,8 @@ export function channelList(channels) {
  * noteLostSticks.
  */
 export function lostStickNotice(channel) {
-  return `${capital(channel)} is not reaching the sim.\nPause for Stick help.`;
+  const name = ({ throttle: '油门', roll: '横滚', pitch: '俯仰', yaw: '偏航' })[channel] || channel;
+  return `${name}通道没有输入。\n请暂停并查看“摇杆帮助”。`;
 }
 
 /*
@@ -253,42 +251,42 @@ export function stickSay(view, platform = 'other', browser = '') {
     if (blind) {
       return blind.say;
     }
-    return 'No radio or gamepad is reaching this browser yet. Plug it in, set it to joystick'
-      + ' mode and move a stick: a browser shows a pad to a page only once something on it moves.';
+    return '浏览器尚未收到遥控器或游戏手柄的输入。请连接设备、切换到摇杆模式并拨动摇杆。'
+      + '浏览器只有在设备产生输入后才会向页面显示它。';
   }
   const missing = v.missing || [];
   if (missing.length) {
-    return `Your saved calibration reads ${channelList(missing)} from an axis this pad does not have,`
-      + ` so ${missing.length > 1 ? 'they read' : 'it reads'} nothing. It has ${v.axisCount}.`
-      + ' Calibrate sticks maps it again from what it actually sends.';
+    return `已保存的校准将${channelList(missing)}映射到了此设备不存在的通道，因此没有输入。`
+      + `此设备有 ${v.axisCount} 个通道。重新校准摇杆即可按实际输入重新映射。`;
   }
   const m = v.moving;
   if (m && !m.channel) {
     const stick = (v.strays || []).includes(m.axis);
     return stick
-      ? `Axis ${m.axis} is moving like a stick, and nothing in the sim reads it. The browser has your`
-        + ' stick; the sim has it on the wrong channel. Calibrate sticks fixes that in about a minute.'
-      : `Axis ${m.axis} is moving, and nothing in the sim reads it. If that is the stick that is not`
-        + ' working, Calibrate sticks puts it on the right channel.';
+      ? `通道 ${m.axis} 正在随摇杆移动，但模拟器没有读取它。浏览器收到了摇杆输入，`
+        + '只是模拟器将它映射到了错误通道。重新校准摇杆，约一分钟即可修正。'
+      : `通道 ${m.axis} 正在移动，但模拟器没有读取它。如果这就是失灵的摇杆，`
+        + '重新校准摇杆即可将它映射到正确通道。';
   }
   if (m && m.channel) {
-    return `That is ${m.channel}, on axis ${m.axis}, and it is reaching the sim.`;
+    const name = ({ throttle: '油门', roll: '横滚', pitch: '俯仰', yaw: '偏航' })[m.channel] || m.channel;
+    return `这是${name}，对应通道 ${m.axis}，输入已到达模拟器。`;
   }
   const strays = v.strays || [];
   if (strays.length) {
-    const which = strays.length > 1 ? `Axes ${channelList(strays.map(String))}` : `Axis ${strays[0]}`;
-    return `${which} moved like a stick, and nothing in the sim reads ${strays.length > 1 ? 'them' : 'it'}.`
-      + ' That is a stick on the wrong channel, and Calibrate sticks fixes it.';
+    const which = strays.length > 1 ? `通道 ${channelList(strays.map(String))}` : `通道 ${strays[0]}`;
+    return `${which}随摇杆移动，但模拟器没有读取。`
+      + '这说明摇杆映射到了错误通道，重新校准即可修正。';
   }
   const dead = v.dead || [];
   if (dead.length) {
     const where = platform === 'android' && v.fourAxes
-      ? ' This phone is passing on four of your radio\'s axes, so if no bar moves, Chrome is dropping it.'
+      ? '此手机只传递遥控器的四个通道；如果没有指示条移动，可能是 Chrome 丢弃了输入。'
       : '';
-    return `${capital(channelList(dead))} did not move once in flight. Move ${dead.length > 1 ? 'those sticks' : 'that stick'}`
-      + ` now and watch the bars.${where}`;
+    return `${channelList(dead)}通道在飞行中没有移动。现在拨动${dead.length > 1 ? '这些摇杆' : '这个摇杆'}`
+      + `并观察指示条。${where}`;
   }
-  return 'Move the stick that is not working, all the way to each end, and watch the bars.';
+  return '将失灵的摇杆分别推到两个端点，并观察指示条。';
 }
 
 /*
@@ -297,9 +295,8 @@ export function stickSay(view, platform = 'other', browser = '') {
  * new or empty one can send nothing on a stick, which from here looks
  * exactly like a stick that is not there.
  */
-const RADIO_LINE = 'On the radio: choose USB joystick mode as you plug it in, before opening this page,'
-  + ' and check the model selected on it. The model decides what each channel sends, and a new or'
-  + ' empty one can send nothing on a stick.';
+const RADIO_LINE = '在遥控器上：连接时选择 USB 摇杆模式，并在打开此页面前检查当前模型。'
+  + '模型决定各通道发送的信号；新建或空白模型可能不会发送摇杆输入。';
 
 /*
  * IF NO BAR MOVES, for the machine the pilot is on. Each is what can
@@ -342,17 +339,17 @@ export function platformHelp(platform, browser = 'chromium', facts = {}) {
   const four = facts.fourAxes ? ` Your radio is arriving as ${facts.axisCount || 4} axes.` : '';
   if (platform === 'android') {
     return {
-      title: 'If no bar moves: Android',
+      title: '指示条不动？安卓',
       lines: [
-        'Chrome on Android passes on only four of a radio\'s channels and drops the rest: channels'
+        'Chrome 安卓版只传递遥控器的四个通道，其余通道会被丢弃；四个摇杆中的一个可能因此失灵，'
           + ' 1 and 2, one of channels 3 and 4, and one of channels 5 and 6. Most radios send throttle'
           + ' on 3 and yaw on 4, so one of those two never arrives, most often yaw. Nothing in this'
-          + ` page or any other can bring a dropped channel back, calibrating included.${four}`,
-        'The fix is on the radio. Make a copy of the model you fly the sim with, because the copy'
-          + ' gives up its channels 5 and 6, which often carry the arm switch. In the copy, on the'
+          + `最常见的是油门或偏航。发生这种情况时，此页面无法恢复该输入，重新校准也无效。${four}`,
+        '最可靠的办法是使用能读取全部通道的电脑。如果遥控器允许设置通道对应的轴'
+          + '（EdgeTX 可在高级模式的 USB 摇杆设置中配置），将四个摇杆分别设为 X、Y、Z 和 rotZ，'
           + ' Mixes page, clear channels 5 and 6 and give each of them one line whose source is the'
           + ' stick that does not arrive: Rud for yaw, Thr for throttle. Chrome keeps one of those two'
-          + ' channels, so the stick comes through on it. Then run Calibrate sticks.',
+          + '且每个轴只分配一个通道，应该就能传递全部输入。试过后请在此页面报告结果。',
         'That should work on any EdgeTX or OpenTX radio, and nobody has confirmed it on a phone yet,'
           + ' so say whether it did with Report a bug from this screen. A radio whose channels cannot'
           + ' be changed, a DJI controller among them, needs a computer for now, which sees every axis.',
@@ -362,13 +359,12 @@ export function platformHelp(platform, browser = 'chromium', facts = {}) {
   }
   if (platform === 'windows') {
     return {
-      title: 'If no bar moves: Windows',
+      title: '指示条不动？Windows',
       lines: [
-        'Check whether Windows sees the stick: press Windows and R, type joy.cpl, press Enter, pick'
-          + ' your radio and open Properties, then move it. If it moves there and not here, report a'
-          + ' bug from this screen and say so.',
-        'If it does not move there either, the radio is not sending it. Calibrating in that Windows'
-          + ' window changes nothing a browser reads, so there is no need to.',
+        '检查 Windows 是否识别摇杆：按 Windows + R，输入 joy.cpl 并按 Enter，选择遥控器并打开“属性”，'
+          + '然后拨动摇杆。如果那里能移动、此处却没有反应，请在此页面报告问题。',
+        '如果那里也没有反应，说明遥控器没有发送信号。在 Windows 窗口中校准不会改变浏览器收到的输入，'
+          + '因此无需在那里校准。',
         RADIO_LINE,
       ],
     };
@@ -376,25 +372,24 @@ export function platformHelp(platform, browser = 'chromium', facts = {}) {
   if (platform === 'mac') {
     const blind = radioBlind('mac', browser);
     return {
-      title: 'If no bar moves: Mac',
+      title: '指示条不动？Mac',
       lines: [
         ...(blind ? blind.lines : []),
-        'macOS has no stick test of its own, so these bars are the test. If a stick moves here in one'
-          + ' browser and not in another, report a bug from this screen and say which.',
+        'macOS 没有内置的摇杆测试工具，因此请以这些指示条为准。如果摇杆在一个浏览器中有反应、'
+          + '另一个浏览器中没有，请在此页面报告问题并注明浏览器。',
         RADIO_LINE,
       ],
     };
   }
   if (platform === 'linux') {
     return {
-      title: 'If no bar moves: Linux',
+      title: '指示条不动？Linux',
       lines: [
-        'jstest-gtk or evtest shows what the radio is sending. If the stick moves there and not'
-          + ' here, report a bug from this screen and say so.',
+        'jstest-gtk 或 evtest 可以查看遥控器发送的信号。如果摇杆在那里有反应、此处没有，'
+          + '请在此页面报告问题。',
         ...(browser === 'firefox'
-          ? ['Firefox calls many radios a gamepad and moves their axes around. EdgeTX and OpenTX'
-            + ' radios are read the way Firefox lays them out; for anything else, Calibrate sticks'
-            + ' sorts it out, or try Chrome.']
+          ? ['Firefox 会将许多遥控器识别为游戏手柄，并重新排列其通道。EdgeTX 和 OpenTX'
+            + ' 遥控器会按 Firefox 的排列方式读取；其他遥控器可重新校准摇杆，或改用 Chrome。']
           : []),
         RADIO_LINE,
       ],
@@ -402,7 +397,7 @@ export function platformHelp(platform, browser = 'chromium', facts = {}) {
   }
   if (platform === 'ios') {
     return {
-      title: 'If no bar moves: iPhone and iPad',
+      title: '指示条不动？iPhone 和 iPad',
       lines: [
         ...radioBlind('ios', browser).lines,
         RADIO_LINE,
@@ -410,9 +405,9 @@ export function platformHelp(platform, browser = 'chromium', facts = {}) {
     };
   }
   return {
-    title: 'If no bar moves',
+    title: '指示条不动？',
     lines: [
-      `Then the stick is not reaching this browser, and nothing in this page can change that.${four}`,
+      `浏览器没有收到摇杆信号，此页面无法改变这一点。${four}`,
       RADIO_LINE,
     ],
   };

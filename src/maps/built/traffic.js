@@ -267,18 +267,18 @@ export function trafficOf(doc) {
     const r = target && ELEMENTS[target.type]?.kind === KIND.ROAD ? roadInfo.get(target.id) : null;
     if (!r) {
       out.problems.push(problem('warn', 'tr-no-road',
-        el.road ? `A vehicle names ${target ? `${target.type} ${el.road}, which is not a road` : `road ${el.road}, which is not on the map`}, so it stays parked. Put it on a road.`
-          : 'A vehicle has no road, so it stays parked. Put it on a road.', el.id));
+        el.road ? `车辆指定的${target ? `元素 ${el.road} 不是道路` : `道路 ${el.road} 已不在地图中`}，因此会保持停放。请将车辆放到道路上。`
+          : '车辆未指定道路，因此会保持停放。请将车辆放到道路上。', el.id));
       continue;
     }
     if (r.centre.points.length < 2) {
       out.problems.push(problem('warn', 'tr-road-unusable',
-        `A vehicle is on road ${r.el.id}, which has no line to drive, so it stays parked.`, el.id));
+        `车辆所在的道路 ${r.el.id} 没有可行驶路线，因此车辆会保持停放。`, el.id));
       continue;
     }
     if (out.vehicles.length >= MOVER_SLOTS) {
       out.problems.push(problem('warn', 'tr-slots',
-        `The physics drives ${MOVER_SLOTS} vehicles at most, and this map has more: this one stays parked.`, el.id));
+        `物理模块最多驱动 ${MOVER_SLOTS} 辆车，但此地图中的车辆数量超出上限：当前车辆将保持停放。`, el.id));
       continue;
     }
     const dv = drive(r, el);
@@ -289,11 +289,11 @@ export function trafficOf(doc) {
       const w = toWorld(dv.line, W, D);
       const check = moduleCheck(w.xyz, dv.line.closed);
       if (check.code) {
-        entry.refused = `the physics would refuse its line: ${check.message}`;
+        entry.refused = `物理模块无法接受此路线：${check.message}`;
       } else if (out.roads.length >= MODULE.MAX_ROADS) {
-        entry.refused = `the physics holds ${MODULE.MAX_ROADS} lanes of road, and this map needs more`;
+        entry.refused = `物理模块最多支持 ${MODULE.MAX_ROADS} 条道路车道，但此地图需要更多车道`;
       } else if (worldPoints + check.points > MODULE.WORLD_POINTS) {
-        entry.refused = `the physics holds ${MODULE.WORLD_POINTS} points of road in all, and this lane would pass that`;
+        entry.refused = `物理模块最多支持 ${MODULE.WORLD_POINTS} 个道路点，此车道会超出上限`;
       } else {
         worldPoints += check.points;
         entry.road = {
@@ -311,7 +311,7 @@ export function trafficOf(doc) {
       }
     }
     if (entry.refused) {
-      out.problems.push(problem('warn', 'tr-lane', `A vehicle on road ${r.el.id} stays parked: ${entry.refused}.`, el.id));
+      out.problems.push(problem('warn', 'tr-lane', `道路 ${r.el.id} 上的车辆将保持停放：${entry.refused}。`, el.id));
       continue;
     }
     const style = CAR_STYLES.includes(el.style) ? el.style : CAR_STYLES[0];
@@ -326,7 +326,7 @@ export function trafficOf(doc) {
     if (!tables.has(tkey)) {
       if (tables.size >= MODULE.MAX_PROFILES || tablePoints + entry.road.modulePoints > MODULE.PROFILE_POINTS) {
         out.problems.push(problem('warn', 'tr-tables',
-          'The physics has no room for another speed table: give this vehicle the same top speed as another on its lane, or use fewer.', el.id));
+          '物理模块无法再容纳更多速度表：请为此车辆设置与同车道另一辆车相同的最高速度，或减少车辆数量。', el.id));
         continue;
       }
       tables.set(tkey, true);
@@ -369,21 +369,21 @@ export function uploadTraffic(sim, traffic) {
     try {
       index.set(r.index, uploadRoad(sim, r.points, r.closed));
     } catch (e) {
-      problems.push(problem('warn', 'tr-refused', `road ${r.element} (${r.lane}): ${e.message}`, r.element));
+      problems.push(problem('warn', 'tr-refused', `道路 ${r.element}（车道 ${r.lane}）：${e.message}`, r.element));
     }
   }
   let vehicles = 0;
   for (const v of traffic.vehicles) {
     const road = index.get(v.road);
     if (road === undefined) {
-      problems.push(problem('warn', 'tr-refused', `vehicle ${v.element}: its road was not taken`, v.element));
+      problems.push(problem('warn', 'tr-refused', `车辆 ${v.element}：其道路未被接受`, v.element));
       continue;
     }
     try {
       addVehicle(sim, v.slot, road, v);
       vehicles += 1;
     } catch (e) {
-      problems.push(problem('warn', 'tr-refused', `vehicle ${v.element}: ${e.message}`, v.element));
+      problems.push(problem('warn', 'tr-refused', `车辆 ${v.element}：${e.message}`, v.element));
     }
   }
   return { roads: index.size, vehicles, problems };

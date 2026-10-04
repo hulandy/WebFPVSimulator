@@ -665,7 +665,7 @@ function nameTexture(THREE, name, width = NAME_TEXTURE_W, outline = false) {
   ctx.fillStyle = `#${COL_TEXT.toString(16).padStart(6, '0')}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  const text = String(name || 'Untitled track');
+  const text = String(name || '未命名赛道');
   const font = (px) => `600 ${px}px system-ui, -apple-system, Segoe UI, Roboto, sans-serif`;
   const fit = fitName((t, px) => {
     ctx.font = font(px);

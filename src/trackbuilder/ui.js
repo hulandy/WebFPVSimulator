@@ -291,7 +291,7 @@ function figureIcon(figId, levels) {
 }
 
 const FLAG_SIDE_LABEL = {
-  left: 'Left', right: 'Right', both: 'Both', top: 'On top',
+  left: '左侧', right: '右侧', both: '两侧', top: '顶部',
 };
 
 /*
@@ -304,11 +304,11 @@ const FLAG_SIDE_LABEL = {
  * had to ask about: "what is level spacing".
  */
 const DIM_LABELS = {
-  levels: 'Levels', sillH: 'Sill height', clearW: 'Opening width', clearH: 'Opening height',
-  levelPitch: 'Level spacing', width: 'Width', depth: 'Depth', height: 'Height',
-  flagH: 'Flag height',
-  poleRadius: 'Pole radius', baseRadius: 'Base radius', clearance: 'Clearance',
-  pads: 'Pads', spacing: 'Pad spacing', padSize: 'Pad size', textHeight: 'Text height',
+  levels: '层数', sillH: '门槛高度', clearW: '开口宽度', clearH: '开口高度',
+  levelPitch: '层间距', width: '宽度', depth: '深度', height: '高度',
+  flagH: '旗杆高度',
+  poleRadius: '立柱半径', baseRadius: '底座半径', clearance: '净空距离',
+  pads: '起飞垫数量', spacing: '起飞垫间距', padSize: '起飞垫尺寸', textHeight: '文字高度',
 };
 
 /*
@@ -317,30 +317,30 @@ const DIM_LABELS = {
  * get words. A style missing here is shown capitalised rather than hidden.
  */
 const STYLE_LABELS = {
-  flats: 'Flats', office: 'Office', warehouse: 'Warehouse', shop: 'Shop',
-  '40ft': '40 ft', '20ft': '20 ft', '40ft open': '40 ft open',
-  open: 'Open', netted: 'Netted',
-  road: 'Road', footbridge: 'Footbridge',
-  kei: 'Kei car', keivan: 'Kei van', hatch: 'Hatch', sedan: 'Sedan', wagon: 'Wagon',
-  minivan: 'Minivan', van: 'Van', boxtruck: 'Box truck', minibus: 'Minibus', r32: 'R32', e82: 'E82',
-  sakura: 'Sakura', street: 'Street', pine: 'Pine',
+  flats: '公寓楼', office: '办公楼', warehouse: '仓库', shop: '商铺',
+  '40ft': '40 英尺', '20ft': '20 英尺', '40ft open': '40 英尺露天箱',
+  open: '露天', netted: '网围栏',
+  road: '道路', footbridge: '人行天桥',
+  kei: '轻型车', keivan: '轻型面包车', hatch: '掀背车', sedan: '轿车', wagon: '旅行车',
+  minivan: '小型厢式车', van: '厢式车', boxtruck: '厢式货车', minibus: '小巴', r32: 'R32', e82: 'E82',
+  sakura: '樱花', street: '街道', pine: '松树',
 };
 
 /* A map's scene, as the Map panel names and explains it. What each looks
  * like is src/maps/built/looks.js; this is only what the author reads. */
-const TIME_LABELS = { golden: 'Golden', noon: 'Noon', dusk: 'Dusk', overcast: 'Overcast' };
+const TIME_LABELS = { golden: '黄金时刻', noon: '正午', dusk: '黄昏', overcast: '阴天' };
 const TIME_HELP = {
-  golden: 'Golden hour: a low warm sun and long violet shadows. The town\u2019s own light.',
-  noon: 'A high white sun, short hard shadows and a deep blue sky.',
-  dusk: 'The sun on the horizon and a violet sky. Windows, street lamps, billboards and vending machines light up.',
-  overcast: 'A flat grey violet day with soft shadows and a nearer haze.',
+  golden: '黄金时刻：温暖的低角度阳光与绵长的紫色阴影，呈现城镇原有光照。',
+  noon: '高空白色日光、短而清晰的阴影，以及深蓝色天空。',
+  dusk: '太阳停留在地平线上，天空呈紫色。窗户、路灯、广告牌和自动售货机都会亮起。',
+  overcast: '灰紫色阴天，阴影柔和，远处笼罩着薄雾。',
 };
-const GROUND_LABELS = { concrete: 'Concrete', tarmac: 'Tarmac', grass: 'Grass', dirt: 'Dirt' };
+const GROUND_LABELS = { concrete: '混凝土', tarmac: '沥青', grass: '草地', dirt: '泥地' };
 const GROUND_HELP = {
-  concrete: 'A yard of sawn concrete slabs, with a yellow line round it.',
-  tarmac: 'A dark car park, with bays and arrows painted round whatever you place.',
-  grass: 'A lawn inside the kerb. No lines are painted on it except the launch box.',
-  dirt: 'A worked earth yard with tyre ruts across it.',
+  concrete: '由切割混凝土板铺成的场地，边缘带有黄色标线。',
+  tarmac: '深色停车场，可在放置的物体周围绘制车位和箭头。',
+  grass: '路缘内的草坪，除起飞框外不会绘制其他标线。',
+  dirt: '经过压实的泥土地面，带有轮胎辙痕。',
 };
 
 function styleLabel(id) {
@@ -359,10 +359,10 @@ const LIMIT_PLACES = { int: 0, m: 2, frac: 2, x: 2 };
 /* The frame toggles' words. Upright rather than pole, because a pole is
  * RaceGOW's own element, flown round, and this is a side of a gate. */
 const FRAME_SIDE_LABEL = {
-  top: 'Top bar',
-  bottom: 'Bottom bar',
-  left: 'Left upright',
-  right: 'Right upright',
+  top: '顶部横杆',
+  bottom: '底部横杆',
+  left: '左侧立柱',
+  right: '右侧立柱',
 };
 
 function flagSideIcon(side) {
@@ -464,9 +464,9 @@ export class Panels {
     }
 
     const track = el('div', 'tb-group');
-    track.append(el('h3', null, 'Track'));
+    track.append(el('h3', null, '赛道元素'));
     const extra = el('div', 'tb-group');
-    extra.append(el('h3', null, 'Extra'));
+    extra.append(el('h3', null, '其他元素'));
 
     const place = CANVAS_WORDS[cls === 'micro' ? 'micro' : 'full'].place;
     const ground = CANVAS_WORDS[cls === 'micro' ? 'micro' : 'full'].ground;
@@ -513,8 +513,8 @@ export class Panels {
      */
     host.append(...(tools ? [track, tools, extra] : [track, extra]));
     host.append(el('p', 'tb-help', cls === 'micro'
-      ? `Press a key or click a tool, then click the ${place}. The tool stays armed, so ten gates are ten clicks. Escape or right click puts it away.`
-      : `Press a key or click a tool, then click the ${place}. A gate stays armed, so ten gates are ten clicks; a wall, a hurdle and an up gate are one at a time. Escape or right click puts it away.`));
+       ? `按快捷键或点击工具，再点击${place}进行放置。工具会保持启用，因此放置十个赛门只需点击十次。按 Escape 或右键可取消工具。`
+       : `按快捷键或点击工具，再点击${place}进行放置。赛门会保持启用，因此放置十个赛门只需点击十次；墙、跨栏和上升门每次只能放置一个。按 Escape 或右键可取消工具。`));
   }
 
   /*
@@ -539,8 +539,8 @@ export class Panels {
     const notOnBoard = BOARD_UNKNOWN_TYPES.includes(id) || id === 'cube';
     if (notOnBoard) {
       b.classList.add('tb-tool-local');
-      words.append(el('span', 'tb-tool-note', 'Not on the board yet'));
-      b.title = `${note} Not on the board yet: a track with one flies and shares as a link, and cannot be published until the board learns it.`;
+      words.append(el('span', 'tb-tool-note', '排行榜暂不支持'));
+      b.title = `${note} 排行榜暂不支持此元素：包含此元素的赛道仍可飞行并通过链接分享，但在排行榜支持之前无法发布。`;
     } else {
       b.title = note;
     }
@@ -568,15 +568,15 @@ export class Panels {
      * by node and a car is put on a road, so they come once there is a
      * place for them to run through. */
     const roads = el('div', 'tb-group');
-    roads.append(el('h3', null, 'Roads and vehicles'));
+    roads.append(el('h3', null, '道路与车辆'));
     groups.set('roads', roads);
     const course = el('div', 'tb-group');
     /* The race palette's gates and markers, placed as furniture: a map has
      * no track, so the heading names what they are. */
-    course.append(el('h3', null, 'Gates and markers'));
+    course.append(el('h3', null, '赛门与标记'));
     groups.set('course', course);
     const extra = el('div', 'tb-group');
-    extra.append(el('h3', null, 'Extra'));
+    extra.append(el('h3', null, '其他元素'));
     groups.set('extra', extra);
 
     const ground = wordsFor(this.host.doc).ground;
@@ -596,12 +596,12 @@ export class Panels {
     }
     /* The ruler, after the pieces: it measures, and places nothing. */
     const tools = el('div', 'tb-group');
-    tools.append(el('h3', null, 'Tools'));
+    tools.append(el('h3', null, '工具'));
     for (const t of MAP_TOOLS) {
       tools.append(this.toolButton(t.id, t.key, t.label, t.note));
     }
     host.append(tools);
-    host.append(el('p', 'tb-help', 'Press a key or click a tool, then click the plot. A piece stands on what the pointer is over: the ground, a roof, a container. The tool stays armed. Buildings, containers and the skate set keep to the compass; everything else turns freely. Escape or right click puts it away.'));
+    host.append(el('p', 'tb-help', '按快捷键或点击工具，再点击地图进行放置。工具会保持启用。建筑、集装箱和滑板设施会沿罗盘方向摆放；其他元素可自由旋转。按 Escape 或右键可取消工具。'));
   }
 
   /*
@@ -634,30 +634,30 @@ export class Panels {
       }
       box.append(seg);
     };
-    row('Shape', 'tb-run-shapes', RUN_SHAPES.map((s) => ({
+    row('形状', 'tb-run-shapes', RUN_SHAPES.map((s) => ({
       label: s.label, on: spec.shape === s.id, patch: { shape: s.id, count: null }, title: s.hint,
     })));
     if (def.hand) {
-      row('Which way', 'tb-seg', [['Left', 'left'], ['Right', 'right']].map(([label, hand]) => ({
-        label, on: spec.hand === hand, patch: { hand }, title: `${label} as flown: the first bend is to the ${hand}`,
+      row('转弯方向', 'tb-seg', [['左转', 'left'], ['右转', 'right']].map(([label, hand]) => ({
+        label, on: spec.hand === hand, patch: { hand }, title: `按此方向飞行：第一个弯道向${hand === 'left' ? '左' : '右'}`,
       })));
     }
     if (def.rise) {
-      row('Steps go', 'tb-seg', [['Up', 'up'], ['Down', 'down']].map(([label, rise]) => ({
-        label, on: spec.rise === rise, patch: { rise }, title: `Each gate is a step ${rise === 'up' ? 'higher' : 'lower'} than the one before`,
+      row('阶梯方向', 'tb-seg', [['上升', 'up'], ['下降', 'down']].map(([label, rise]) => ({
+        label, on: spec.rise === rise, patch: { rise }, title: `每个赛门都比前一个${rise === 'up' ? '高' : '低'}一级`,
       })));
     }
     const [lo, hi] = def.count;
     const things = def.piece === 'flag' ? 'flags' : 'gates';
     if (hi > lo) {
-      row(def.piece === 'flag' ? 'Flags' : 'Gates', 'tb-seg', Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).map((n) => ({
-        label: String(n), on: spec.count === n, patch: { count: n }, title: `${n} ${things}`,
+      row(def.piece === 'flag' ? '旗帜数量' : '赛门数量', 'tb-seg', Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).map((n) => ({
+        label: String(n), on: spec.count === n, patch: { count: n }, title: `${n} 个${things === 'flags' ? '旗帜' : '赛门'}`,
       })));
     }
     if (def.id !== 'dutch8') {
-      row(def.id === 'hairpin' ? 'Size' : 'Gap', 'tb-seg', RUN_SPACINGS.map((s) => ({
+      row(def.id === 'hairpin' ? '尺寸' : '间距', 'tb-seg', RUN_SPACINGS.map((s) => ({
         label: s.label, on: spec.spacing === s.id, patch: { spacing: s.id },
-        title: def.id === 'hairpin' ? `${s.label}: how wide the half circle is` : `${s.label}: how far apart the ${things} are`,
+        title: def.id === 'hairpin' ? `${s.label}：发夹弯的宽度` : `${s.label}：${things === 'flags' ? '旗帜' : '赛门'}之间的距离`,
       })));
     }
   }
@@ -905,14 +905,14 @@ export class Panels {
     /* With nothing selected the panel is about the ground everything stands
      * on, named the canvas's way: a field, a room or a plot. It said Field on
      * all three (MENUS-PLAN.md 4.1). */
-    host.append(el('h3', null, ids.length === 1 ? 'Element' : (ids.length ? `${ids.length} selected` : wordsFor(doc).area)));
+    host.append(el('h3', null, ids.length === 1 ? '元素' : (ids.length ? `已选择 ${ids.length} 项` : wordsFor(doc).area)));
 
     if (ids.length === 0) {
       this.renderFieldSettings(host, doc);
       return;
     }
     if (ids.length > 1) {
-      host.append(el('p', 'tb-help', 'Drag to move them together. Delete removes them. Select one to edit its dimensions.'));
+      host.append(el('p', 'tb-help', '拖动可同时移动所选元素。按 Delete 删除。选择单个元素可编辑其尺寸。'));
       /*
        * A PRESET APPLIES TO THE WHOLE SELECTION, and this is the half of
        * the request the single element picker does not answer. "So the
@@ -941,14 +941,14 @@ export class Panels {
     }
     const def = ELEMENTS[element.type];
     const freestyle = docModeOf(doc) === 'freestyle';
-    host.append(el('p', 'tb-kind', `${def.label}. ${def.note}`));
+    host.append(el('p', 'tb-kind', `${def.label}。${def.note}`));
 
     if (def.kind === KIND.ZONE) {
       this.renderGapInspector(host, element, def);
       return;
     }
 
-    host.append(this.field(`name-${element.id}`, 'Name', element.name, (val) => {
+    host.append(this.field(`name-${element.id}`, '名称', element.name, (val) => {
       this.host.edit('rename', (d) => { elementById(d, element.id).name = val; });
     }, { text: true }));
 
@@ -1017,7 +1017,7 @@ export class Panels {
       }),
     );
     if (!flat) {
-      grid.append(this.lengthField(`z-${element.id}`, 'Base', element.position.z, (val) => {
+      grid.append(this.lengthField(`z-${element.id}`, '底部高度', element.position.z, (val) => {
         this.host.edit('height', (d) => { elementById(d, element.id).position.z = val; });
       }));
     }
@@ -1035,13 +1035,13 @@ export class Panels {
        * the terms the task uses: zero is a vertical gate, 90 is flown
        * straight down through.
        */
-      host.append(this.field(`pitch-${element.id}`, this.inches() ? 'Tilt (degrees)' : 'Tilt', element.pitch * DEG, (val) => {
+      host.append(this.field(`pitch-${element.id}`, this.inches() ? '倾斜角（度）' : '倾斜角', element.pitch * DEG, (val) => {
         this.host.edit('tilt', (d) => {
           const e2 = elementById(d, element.id);
           e2.pitch = Math.max(-90, Math.min(90, val)) * RAD;
         });
       }, { suffix: 'deg', step: 5, places: 1, min: -90, max: 90 }));
-      host.append(el('p', 'tb-help', 'Tilt 0 is a vertical gate. Tilt 90 lays the aperture flat, so it is flown straight down or straight up through. Anything between is an angled dive gate.'));
+      host.append(el('p', 'tb-help', '倾斜角度为 0° 时，赛门为垂直方向；90° 时，门框平面为水平，可垂直向下或向上穿过。介于两者之间时为倾斜俯冲门。'));
     }
 
     /* Dimensions, all of them, named the way elements.js names them. */
@@ -1131,14 +1131,14 @@ export class Panels {
     }
 
     if (def.kind === KIND.ANNOTATION) {
-      host.append(this.field(`text-${element.id}`, 'Text', element.text ?? '', (val) => {
+      host.append(this.field(`text-${element.id}`, '文字', element.text ?? '', (val) => {
         this.host.edit('label', (d) => { elementById(d, element.id).text = val; });
       }, { text: true }));
     }
 
     if (freestyle) {
       if (isSequenceable(element)) {
-        host.append(el('p', 'tb-help', 'On a map this is furniture: nothing is timed through it and there is no order to fly it in. It is solid, and it is there to thread.'));
+        host.append(el('p', 'tb-help', '在地图中，此元素仅作场景装饰，不参与计时，也没有固定飞行顺序。它是实体障碍，可从中穿越。'));
       }
       return;
     }
@@ -1153,19 +1153,19 @@ export class Panels {
       const fig = matchingFigure(doc, element);
       const named = fig && fig !== 'single';
       host.append(el('h3', null, named
-        ? `Passes, ${entries.length}`
-        : (entries.length > 1 ? 'In the track, twice or more' : 'In the track')));
+        ? `经过 ${entries.length} 次`
+        : (entries.length > 1 ? '已在飞行顺序中多次出现' : '已加入飞行顺序')));
       if (!entries.length) {
-        host.append(el('p', 'tb-help', 'Not in the flying order.'));
-        host.append(button('Add to the track', 'tb-btn', () => this.host.addToSequence(element.id)));
+        host.append(el('p', 'tb-help', '不在飞行顺序中。'));
+        host.append(button('加入赛道', 'tb-btn', () => this.host.addToSequence(element.id)));
       }
       for (const { s, i } of entries) {
         host.append(this.sequenceCard(doc, element, s, i, named));
       }
       if (def.kind === KIND.APERTURE && aperturesOf(element).length > 1 && !named) {
         const letter = isLetterPiece(element);
-        host.append(button(letter ? 'Fly another gap' : 'Fly another level', 'tb-btn', () => this.host.addLevel(element.id),
-          letter ? 'Add a pass through the next gap of this letter that is not flown yet.' : 'Add another gate on this stack, on the next unused opening.'));
+        host.append(button(letter ? '飞过另一个开口' : '飞过另一层', 'tb-btn', () => this.host.addLevel(element.id),
+          letter ? '将此字母的下一个未飞过的开口加入飞行顺序。' : '将此叠层中下一个未使用的开口加入飞行顺序。'));
       }
     }
   }
@@ -1203,13 +1203,13 @@ export class Panels {
      * what a typed heading turns it from: see shownYaw in app.js. */
     const yaw = this.host.shownYaw ? this.host.shownYaw(element) : element.yaw;
     /* Turn, in degrees, said as the card says it on the whoop canvas. */
-    host.append(this.field(`yaw-${element.id}`, this.inches() ? 'Turn (degrees)' : 'Yaw', yaw * DEG, (val) => {
+    host.append(this.field(`yaw-${element.id}`, this.inches() ? '旋转角（度）' : '朝向', yaw * DEG, (val) => {
       this.host.setElementYaw(element.id, val * RAD);
     }, { suffix: 'deg', step: quarter ? 90 : 5, places: 1 }));
     if (quarter) {
       host.append(el('p', 'tb-help', isRoomType(element.type)
-        ? 'Keeps to quarter turns: it is made of boxes, and they stand square to the room.'
-        : 'Keeps to the compass, in quarter turns, until the physics learns turned boxes.'));
+        ? '仅支持每次旋转四分之一圈：此元素由方盒组成，必须与室内方向对齐。'
+        : '当前仅支持按罗盘方向旋转，每次旋转四分之一圈；飞行模型暂不支持旋转后的盒体。'));
     }
   }
 
@@ -1223,7 +1223,7 @@ export class Panels {
       this.field(`y-${element.id}`, 'Y', element.position.y, (val) => {
         this.host.setElementCoord(element.id, 'y', val);
       }, { suffix: 'm' }),
-      this.field(`z-${element.id}`, 'Base', element.position.z, (val) => {
+      this.field(`z-${element.id}`, '底部高度', element.position.z, (val) => {
         /* An asset on a map may be sunk, to hide some of it: lowestBase. */
         this.host.edit('height', (d) => {
           const e2 = elementById(d, element.id);
@@ -1290,10 +1290,10 @@ export class Panels {
   renderStructureInspector(host, element, def) {
     if (def.styles) {
       const current = propStyleOf(element);
-      host.append(el('h3', null, 'Style'));
+      host.append(el('h3', null, '样式'));
       const seg = el('div', 'tb-seg');
       seg.setAttribute('role', 'group');
-      seg.setAttribute('aria-label', 'Style');
+      seg.setAttribute('aria-label', '样式');
       for (const style of def.styles) {
         const b = button(styleLabel(style), current === style ? 'tb-seg-btn on' : 'tb-seg-btn', () => this.setAssetStyle(element, style));
         b.setAttribute('aria-pressed', current === style ? 'true' : 'false');
@@ -1320,7 +1320,7 @@ export class Panels {
         : 'On end it stands as tall as it is long.'));
     }
 
-    host.append(el('h3', null, 'Size'));
+    host.append(el('h3', null, '尺寸'));
     const dims = el('div', 'tb-grid2');
     for (const key of Object.keys(def.dims)) {
       const field = this.propDimField(element, def, key);
@@ -1333,7 +1333,7 @@ export class Panels {
          * one they liked.
          */
         const cell = el('div', 'tb-reroll');
-        cell.append(field, button('Reroll', 'tb-btn tb-reroll-btn', () => {
+        cell.append(field, button('重新生成', 'tb-btn tb-reroll-btn', () => {
           this.host.edit('reroll', (d) => {
             const e2 = elementById(d, element.id);
             if (e2) {
@@ -1341,7 +1341,7 @@ export class Panels {
               e2.dims.variant = clampDim(element.type, 'variant', (v % 99) + 1);
             }
           });
-        }, 'Roll a different one'));
+        }, '生成另一种样式'));
         dims.append(cell);
       } else {
         dims.append(field);
@@ -1425,7 +1425,7 @@ export class Panels {
     this.segRow(host, 'Shape', this.roadShapeItems(element));
     this.segRow(host, 'Lanes', this.roadLaneItems(element));
 
-    host.append(el('h3', null, 'Size'));
+    host.append(el('h3', null, '尺寸'));
     const dims = el('div', 'tb-grid2');
     for (const key of ['width', 'radius']) {
       const lim = def.limits[key];
@@ -1438,10 +1438,10 @@ export class Panels {
     /* Where it starts: its first node, which is its position. */
     const grid = el('div', 'tb-grid2');
     grid.append(
-      this.field(`x-${id}`, 'Start X', element.position.x, (val) => {
+      this.field(`x-${id}`, '起点 X', element.position.x, (val) => {
         this.host.edit('move', (d) => { elementById(d, id).position.x = val; });
       }, { suffix: 'm' }),
-      this.field(`y-${id}`, 'Start Y', element.position.y, (val) => {
+      this.field(`y-${id}`, '起点 Y', element.position.y, (val) => {
         this.host.edit('move', (d) => { elementById(d, id).position.y = val; });
       }, { suffix: 'm' }),
     );
@@ -1451,37 +1451,37 @@ export class Panels {
     const bent = Number.isFinite(tight.radius);
     const squeezed = bent && tight.radius < r.radius * 0.95;
     const drives = !closed
-      ? 'Every car on an open road drives its middle, out to the end and back.'
+      ? '开放道路上的车辆沿中线驶向尽头，然后返回。'
       : (r.lanes === 2
-        ? `A car keeps left, ${show(r.laneOffset, 2)} m off the middle, and one set to Reverse drives the other lane the other way.`
-        : 'Every car drives the middle of its one lane, so two going opposite ways would meet head on.');
+        ? `车辆沿中线左侧 ${show(r.laneOffset, 2)} 米行驶，设置为“反向”的车辆会在另一条车道上反向行驶。`
+        : '所有车辆都沿单车道中线行驶，因此两辆相向行驶的车辆会迎面相撞。');
     host.append(el('p', 'tb-fig-blurb', r.centre.points.length < 2
-      ? 'This road has no line to drive yet: see the warnings.'
-      : `${show(r.centre.length, 1)} m ${closed ? 'round' : 'end to end'}, ${n} node${n === 1 ? '' : 's'}. ${bent
-        ? `Its tightest bend is ${show(tight.radius, 1)} m${squeezed ? `, tighter than the ${show(r.radius, 1)} m asked for where two nodes are close` : ''}.`
-        : 'It runs straight.'} ${drives}`));
+      ? '此道路尚无可行驶路线，请查看警告。'
+      : `长度 ${show(r.centre.length, 1)} 米，${closed ? '环形' : '两端开放'}，${n} 个节点。${bent
+        ? `最急弯道半径为 ${show(tight.radius, 1)} 米${squeezed ? `，小于节点间距较近处要求的 ${show(r.radius, 1)} 米` : ''}。`
+        : '路线为直线。'}${drives}`));
 
-    host.append(el('h3', null, 'Nodes'));
+    host.append(el('h3', null, '节点'));
     const active = this.host.activeNode;
     if (active && active.id === id && active.index < n) {
-      host.append(el('p', 'tb-help', `Node ${active.index + 1} is picked${active.index === 0 ? ', the one the road starts at' : ''}.`));
+      host.append(el('p', 'tb-help', `已选中节点 ${active.index + 1}${active.index === 0 ? '，这是道路起点' : ''}。`));
       const row = el('div', 'tb-row-btns');
-      row.append(button('Delete node', 'tb-btn tb-danger', () => this.host.deleteRoadNode(id, active.index), 'Shortcut: Delete'));
+      row.append(button('删除节点', 'tb-btn tb-danger', () => this.host.deleteRoadNode(id, active.index), '快捷键：Delete'));
       host.append(row);
     }
-    host.append(el('p', 'tb-help', 'Drag a node to reshape the road, and drag the road itself to move it. Drag a + between two nodes to add one there. Click a node and press Delete to take it out.'));
+    host.append(el('p', 'tb-help', '拖动节点可调整道路形状，拖动道路本身可移动它。拖动两个节点之间的“+”可添加节点。单击节点后按 Delete 可将其移除。'));
 
     const cars = doc.elements.filter((e) => e.type === 'vehicle' && e.road === id);
-    host.append(el('h3', null, cars.length ? `On this road, ${cars.length}` : 'On this road'));
+    host.append(el('h3', null, cars.length ? `此道路上的车辆：${cars.length}` : '此道路上的车辆'));
     if (!cars.length) {
-      host.append(el('p', 'tb-help', 'No vehicles yet. Pick Vehicle in the palette and click on the road.'));
+      host.append(el('p', 'tb-help', '尚无车辆。请在工具栏中选择“车辆”，然后点击道路。'));
       return;
     }
     const list = el('div', 'tb-spare');
     cars.forEach((car, i) => {
       const row = el('div', 'tb-spare-row');
       row.append(el('span', null, car.name || `${styleLabel(car.style)} ${i + 1}`));
-      row.append(button('Select', 'tb-mini', () => {
+      row.append(button('选择', 'tb-mini', () => {
         this.host.setSelection([car.id]);
         this.host.focusSelection();
       }));
@@ -1541,10 +1541,10 @@ export class Panels {
     const onRoad = Boolean(road && ELEMENTS[road.type]?.kind === KIND.ROAD);
     const styleSpeed = (style) => styleDims('vehicle', style)?.speed ?? def.dims.speed;
 
-    host.append(el('h3', null, 'Style'));
+    host.append(el('h3', null, '样式'));
     const seg = el('div', 'tb-seg');
     seg.setAttribute('role', 'group');
-    seg.setAttribute('aria-label', 'Style');
+    seg.setAttribute('aria-label', '样式');
     for (const style of def.styles) {
       const on = element.style === style;
       const b = button(styleLabel(style), on ? 'tb-seg-btn on' : 'tb-seg-btn', () => {
@@ -1569,7 +1569,7 @@ export class Panels {
     this.segRow(host, 'Driving', this.vehicleDrivingItems(element, def));
     this.segRow(host, 'Direction', this.vehicleDirectionItems(element));
 
-    host.append(el('h3', null, 'Speed and start'));
+    host.append(el('h3', null, '速度与起点'));
     const grid = el('div', 'tb-grid2');
     const [lo, hi] = def.limits.speed;
     grid.append(
@@ -1584,13 +1584,13 @@ export class Panels {
     const variant = el('div', 'tb-reroll');
     variant.append(this.field(`dim-${id}-variant`, def.labels.variant, element.dims.variant, (val) => {
       this.host.edit('resize', (d) => { elementById(d, id).dims.variant = clampByLimits(def, 'variant', val); });
-    }, { step: 1, places: 0, min: def.limits.variant[0], max: def.limits.variant[1] }), button('Reroll', 'tb-btn tb-reroll-btn', () => {
+    }, { step: 1, places: 0, min: def.limits.variant[0], max: def.limits.variant[1] }), button('重新生成', 'tb-btn tb-reroll-btn', () => {
       this.host.edit('reroll', (d) => {
         const e2 = elementById(d, id);
         const v = Math.round(Number(e2.dims.variant) || 1);
         e2.dims.variant = clampByLimits(def, 'variant', (v % 99) + 1);
       });
-    }, 'Paint it another colour'));
+    }, '重新生成另一种颜色'));
     const colour = el('div', 'tb-grid2');
     colour.append(variant);
     host.append(colour);
@@ -1599,22 +1599,22 @@ export class Panels {
     const twoLanes = closed && road.dims.lanes !== 1;
     const ways = !onRoad ? ''
       : (!closed
-        ? `Forward sets off along ${road.name || 'the road'} from its first node, Reverse back toward it; either way it turns round at each end.`
+        ? `正向：从${road.name || '道路'}的起点驶出，到达尽头后折返；反向：朝起点行驶，同样会在两端折返。`
         : (twoLanes
-          ? 'Forward keeps to the left lane in the order the road was laid, Reverse drives the other lane the other way.'
-          : 'Forward goes round in the order the road was laid, Reverse the other way.'));
+          ? '正向：按道路绘制方向沿左侧车道行驶；反向：沿另一条车道反向行驶。'
+          : '正向：按道路绘制方向绕行；反向：沿相反方向绕行。'));
     host.append(el('p', 'tb-fig-blurb', onRoad
       ? `On ${road.name || 'its road'}, starting ${show(element.dims.offset, 1)} m round from its first node, at ${Math.round(element.dims.speed * KMH)} km/h on the straights. It slows for every bend by itself. ${ways}`
-      : 'This vehicle has no road, so it stays parked in the row along the south edge of the plot. Drag it onto a road.'));
+      : '此车辆尚未放置在道路上，因此停在场地南侧边缘。请在平面图上将它拖到道路上。'));
     if (onRoad) {
       const row = el('div', 'tb-row-btns');
-      row.append(button('Select its road', 'tb-btn', () => {
+      row.append(button('选择道路', 'tb-btn', () => {
         this.host.setSelection([road.id]);
         this.host.focusSelection();
       }));
       host.append(row);
     }
-    host.append(el('p', 'tb-help', 'Drag the car to slide it along its road. A car dropped on the right hand half of a two lane loop drives the other lane.'));
+    host.append(el('p', 'tb-help', '在平面图上拖动车辆可沿道路移动。如果将车辆放在双车道环形道路的右半侧，它会沿另一条车道行驶。'));
   }
 
   /*
@@ -1624,16 +1624,16 @@ export class Panels {
    * window. Width runs across its heading and Height up from its base.
    */
   renderGapInspector(host, element, def) {
-    const name = this.field(`name-${element.id}`, 'Gap name', element.name, (val) => {
+    const name = this.field(`name-${element.id}`, '间隙名称', element.name, (val) => {
       this.host.edit('rename', (d) => { elementById(d, element.id).name = String(val).slice(0, 40); });
     }, { text: true });
     name.classList.add('tb-gap-name');
     host.append(name);
 
-    host.append(el('h3', null, 'Points'));
+    host.append(el('h3', null, '间隙参数'));
     const seg = el('div', 'tb-seg');
     seg.setAttribute('role', 'group');
-    seg.setAttribute('aria-label', 'Points');
+    seg.setAttribute('aria-label', '积分');
     for (const pts of GAP_POINTS) {
       const on = element.points === pts;
       const b = button(String(pts), on ? 'tb-seg-btn on' : 'tb-seg-btn', () => {
@@ -1649,7 +1649,7 @@ export class Panels {
     }
     host.append(seg);
 
-    host.append(el('h3', null, 'Window'));
+    host.append(el('h3', null, '间隙范围'));
     const dims = el('div', 'tb-grid2');
     for (const key of Object.keys(def.dims)) {
       dims.append(this.propDimField(element, def, key));
@@ -1657,14 +1657,14 @@ export class Panels {
     host.append(dims);
     this.appendPositionGrid(host, element);
     this.appendYawField(host, element);
-    host.append(el('p', 'tb-help', `A window ${show(element.dims.width, 1)} m across its heading and ${show(element.dims.height, 1)} m up from its base, ${show(element.position.z, 1)} m off the ground. It is not solid and it is not drawn in the world: a pilot finds it by flying through it.`));
+    host.append(el('p', 'tb-help', `间隙范围沿朝向宽 ${show(element.dims.width, 1)} 米、高 ${show(element.dims.height, 1)} 米，底部离地 ${show(element.position.z, 1)} 米。它不是实体，也不会绘制在场景中，飞手需要通过实际飞行来寻找它。`));
   }
 
   renderFigurePicker(host, doc, element) {
     const current = matchingFigure(doc, element);
     const n = aperturesOf(element).length;
     host.append(el('h3', null, this.say('How it is flown')));
-    host.append(el('p', 'tb-help', 'Each hole is its own gate. Pick the figure, then fly that line. The racing line shows the wrap.'));
+    host.append(el('p', 'tb-help', '每个开口都单独计为一个赛门。选择飞行方式后，按路线依次通过。竞速路线会显示绕行路径。'));
     const grid = el('div', 'tb-fig-grid');
     for (const fig of figuresFor(element)) {
       const b = el('button', current === fig.id ? 'tb-fig-card on' : 'tb-fig-card');
@@ -1686,7 +1686,7 @@ export class Panels {
     }
     const blurb = current
       ? figureBlurb(element, current)
-      : 'This mix is not a named figure. Each hole you listed still counts as its own gate.';
+      : '此组合未命名。你列出的每个开口仍各自计为一个赛门。';
     if (blurb) {
       host.append(el('p', 'tb-fig-blurb', blurb));
     }
@@ -1961,14 +1961,14 @@ export class Panels {
    * and points at the button that fixes it rather than showing an empty row.
    */
   renderDecalLogoPicker(host, doc, element) {
-    host.append(el('h3', null, 'Which logo'));
+    host.append(el('h3', null, '选择标志'));
     const logos = logosOf(doc);
     /* Grass on a field, the floor in a room and whatever the plot is paved
      * with on a map: see wordsFor. */
     const w = wordsFor(doc);
     if (!logos.length) {
       host.append(el('p', 'tb-help', `This ${w.noun} carries no sponsor logos yet. Add one under Sponsor logos, and every footprint on the ${w.ground} can wear it.`));
-      host.append(button('Sponsor logos', 'tb-btn', () => this.host.openLogo(),
+      host.append(button('赞助商标志', 'tb-btn', () => this.host.openLogo(),
         `Add up to five sponsors\u2019 logos to this ${w.noun}`));
       return;
     }
@@ -1977,7 +1977,7 @@ export class Panels {
     logos.forEach((logo, i) => {
       const b = el('button', current === logo ? 'tb-logo-card on' : 'tb-logo-card');
       b.type = 'button';
-      b.title = logo.name || `Logo ${i + 1}`;
+      b.title = logo.name || `标志 ${i + 1}`;
       const img = el('img');
       img.src = logo.image;
       img.alt = '';
@@ -2059,8 +2059,8 @@ export class Panels {
     host.append(el('p', 'tb-help', current
       ? `${current.label}, ${this.presetSize(current, shapeAll)}. ${current.hint}`
       : (elements.length > 1
-        ? 'These gates are not all the same size. Pick one to set them all.'
-        : 'A size of your own. Pick a preset to go back to a standard one, or type the opening below.')));
+        ? '这些赛门的尺寸并不一致。请选择一个尺寸以统一设置。'
+        : '当前为自定义尺寸。选择预设可恢复标准尺寸，也可在下方输入开口尺寸。')));
   }
 
   /*
@@ -2114,24 +2114,24 @@ export class Panels {
     const id = element.id;
     const sizes = openingSizesOf(element.dims, count);
     const holes = apertureLevels(element.dims);
-    host.append(el('h3', null, 'Each opening'));
-    host.append(el('p', 'tb-help', 'Every opening of a stack is a gate of its own: give it its own width and height, and the race scores each pass against that opening\u2019s own size. An opening you do not touch is the stack\u2019s size above.'));
+    host.append(el('h3', null, '各层开口'));
+    host.append(el('p', 'tb-help', '叠层中的每个开口都是独立的赛门：可单独设置宽度和高度，计分时也会按该开口的尺寸判断。未单独设置的开口会沿用上方的叠层尺寸。'));
     holes.forEach((ap, i) => {
       const own = sizes?.[i] ?? {};
       const apart = own.clearW !== undefined || own.clearH !== undefined;
       const row = el('div', 'tb-grid2 tb-opening-row');
       row.dataset.opening = String(i);
       row.append(
-        this.lengthField(`open-${id}-${i}-w`, `Opening ${i + 1} width`, ap.clearW, (val) => {
+        this.lengthField(`open-${id}-${i}-w`, `第 ${i + 1} 层宽度`, ap.clearW, (val) => {
           this.host.edit('resize an opening', (d) => { setOpeningSize(d, id, i, { clearW: val }); });
         }, { step: 0.05, min: 0.05 }),
-        this.lengthField(`open-${id}-${i}-h`, `Opening ${i + 1} height`, ap.clearH, (val) => {
+        this.lengthField(`open-${id}-${i}-h`, `第 ${i + 1} 层高度`, ap.clearH, (val) => {
           this.host.edit('resize an opening', (d) => { setOpeningSize(d, id, i, { clearH: val }); });
         }, { step: 0.05, min: 0.05 }),
       );
       host.append(row);
       if (apart) {
-        host.append(button(`Opening ${i + 1} back to the stack\u2019s size`, 'tb-btn', () => {
+        host.append(button(`第 ${i + 1} 层恢复为叠层默认尺寸`, 'tb-btn', () => {
           this.host.edit('reset an opening', (d) => { setOpeningSize(d, id, i, { clearW: null, clearH: null }); });
         }));
       }
@@ -2146,14 +2146,14 @@ export class Panels {
    */
   renderLetterInspector(host, element) {
     const id = element.id;
-    host.append(el('h3', null, 'Letter'));
-    host.append(this.letterGrid(element.letter, (next) => this.host.setPieceLetter(id, next), 'Which letter this is'));
-    host.append(el('p', 'tb-help', `${letterNote(element.letter)} Each gap is a gate of its own in the flying order: the pass says which one it goes through.`));
+    host.append(el('h3', null, '字母'));
+    host.append(this.letterGrid(element.letter, (next) => this.host.setPieceLetter(id, next), '选择字母'));
+    host.append(el('p', 'tb-help', `${letterNote(element.letter)} 每个开口都是飞行顺序中的独立赛门：飞行项会指定通过哪个开口。`));
     const size = letterExtent(element);
     const grid = el('div', 'tb-grid2');
     grid.append(
-      this.lengthField(`letter-w-${id}`, 'Letter width', size.width, (val) => this.host.setLetterSize(id, { width: val }), { step: 0.25, min: 0.5 }),
-      this.lengthField(`letter-h-${id}`, 'Letter height', size.height, (val) => this.host.setLetterSize(id, { height: val }), { step: 0.25, min: 0.5 }),
+      this.lengthField(`letter-w-${id}`, '字母宽度', size.width, (val) => this.host.setLetterSize(id, { width: val }), { step: 0.25, min: 0.5 }),
+      this.lengthField(`letter-h-${id}`, '字母高度', size.height, (val) => this.host.setLetterSize(id, { height: val }), { step: 0.25, min: 0.5 }),
     );
     host.append(grid);
     const holes = aperturesOf(element);
@@ -2175,9 +2175,9 @@ export class Panels {
     const hidden = isUnbuilt(element);
     host.append(el('h3', null, 'Frame'));
     host.append(el('p', 'tb-help', hidden
-      ? 'The pipe is taken away: the gaps still score and light, and there is nothing to hit. It shows in the room as its gaps alone.'
-      : 'The letter is built of pipe. Make it invisible to keep its gaps as targets with nothing built round them.'));
-    host.append(button(hidden ? 'Put the pipe back' : 'Make it invisible', 'tb-btn',
+      ? '已移除管材：开口仍可计分并发光，但不会发生碰撞。场地中只显示字母的各个开口。'
+      : '字母由管材构成。可将管材设为不可见，仅保留开口作为目标。'));
+    host.append(button(hidden ? '恢复管材' : '隐藏管材', 'tb-btn',
       () => this.host.setPieceInvisible(element.id, !hidden)));
   }
 
@@ -2191,10 +2191,10 @@ export class Panels {
   renderFrameSides(host, element) {
     const sides = frameSidesOf(element);
     const levels = aperturesOf(element).length;
-    host.append(el('h3', null, 'Frame'));
+    host.append(el('h3', null, '门框'));
     host.append(el('p', 'tb-help', levels > 1
-      ? 'Each side is its own pipe: the top bar is over the top opening and the bottom bar under the lowest, and an upright is one stretch per opening. The Left and Right buttons take the whole upright; the buttons under them take one opening\'s stretch. Take one away and the openings still score. In the 3D view, click a pipe of the selected gate and press Delete: that takes just the stretch you clicked. Left and right are as seen facing the gate, like the header flag.'
-      : 'Each side is its own pipe. Take one away and the opening still scores and lights, with no pipe there to hit. In the 3D view, click a pipe of the selected gate and press Delete. Left and right are as seen facing the gate, like the header flag.'));
+      ? '每一侧都是独立的门框管材：立柱贯穿整个叠层，顶部横杆位于最高开口上方，底部横杆位于最低开口下方。移除管材后，开口仍可计分。在 3D 视图中，选中赛门后单击一根管材并按 Delete 即可移除。左右方向以面向赛门时为准，与顶部旗帜的方向一致。'
+      : '每一侧都是独立的门框管材。移除后，开口仍可计分并显示，但该处没有管材可供碰撞。在 3D 视图中，选中赛门后单击一根管材并按 Delete 即可移除。左右方向以面向赛门时为准，与顶部旗帜的方向一致。'));
     const grid = el('div', 'tb-frame-grid');
     for (const side of FRAME_SIDES) {
       const on = sides[side];
@@ -2203,7 +2203,7 @@ export class Panels {
       b.dataset.side = side;
       b.textContent = FRAME_SIDE_LABEL[side];
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
-      b.title = on ? `Take the ${FRAME_SIDE_LABEL[side].toLowerCase()} away` : `Put the ${FRAME_SIDE_LABEL[side].toLowerCase()} back`;
+      b.title = on ? `移除${FRAME_SIDE_LABEL[side]}` : `恢复${FRAME_SIDE_LABEL[side]}`;
       b.addEventListener('click', () => this.host.setFrameSide(element.id, side, !on));
       grid.append(b);
     }
@@ -2221,7 +2221,7 @@ export class Panels {
           b.dataset.level = String(i);
           b.textContent = label;
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
-          b.title = on ? `Take the ${label.toLowerCase()} stretch away` : `Put the ${label.toLowerCase()} stretch back`;
+          b.title = on ? `移除${label}立柱` : `恢复${label}立柱`;
           b.addEventListener('click', () => this.host.setFramePole(element.id, side, i, !on));
           stretches.append(b);
         }
@@ -2230,7 +2230,7 @@ export class Panels {
     }
     const hidden = isUnbuilt(element);
     if (FRAME_SIDES.some((side) => !sides[side]) || unbuiltPolesOf(element).length) {
-      host.append(button(hidden ? 'Put the frame back' : 'Put every side back', 'tb-btn', () => {
+      host.append(button(hidden ? '恢复门框' : '恢复所有边', 'tb-btn', () => {
         this.host.edit('put the frame back', (d) => {
           const e2 = elementById(d, element.id);
           if (e2) {
@@ -2290,7 +2290,7 @@ export class Panels {
     const head = el('div', 'tb-card-head');
     const number = gateNumberOf(doc, seq.id);
     const title = namedFigure
-      ? `${levelName(element, seq.apertureIndex)}, gate ${number ?? index + 1}`
+      ? `${levelName(element, seq.apertureIndex)}，赛门 ${number ?? index + 1}`
       : sequenceLabel(doc, seq);
     head.append(
       el('span', number == null ? 'tb-num tb-num-bend' : 'tb-num', number == null ? '\u00b7' : String(number)),
@@ -2324,7 +2324,7 @@ export class Panels {
     card.append(el('p', 'tb-face', faceLabel(doc, seq)));
 
     if (kindOf(element) === KIND.MARKER) {
-      card.append(el('p', 'tb-help', 'The green square is the space you have to fly through. Drag the round handle on the plan to swing it anywhere round the marker, all the way round. Flip side sends it to the opposite side, and Re-derive hands it back to the automatic rule, which is the outside of the turn.'));
+      card.append(el('p', 'tb-help', '绿色方框是需要穿过的区域。拖动平面图上的圆形手柄，可将通过侧绕标记旋转一整圈。“翻转通过侧”会切换到另一侧；“恢复自动”会按自动规则将其设在弯道外侧。'));
       card.append(this.lengthField(`clr-${seq.id}`, 'Clearance', seq.clearance ?? 0, (val) => {
         this.host.edit('clearance', (d) => {
           const s2 = d.sequence.find((x) => x.id === seq.id);
@@ -2339,15 +2339,15 @@ export class Panels {
     row.append(button(kindOf(element) === KIND.MARKER ? 'Flip side' : this.say('Flip face'), 'tb-btn', () => this.host.flipFace(seq.id), 'Shortcut: X'));
     if (seq.overridden || element.yawOverridden) {
       row.append(button(this.say('Re-derive'), 'tb-btn', () => this.host.clearOverride(seq.id),
-        'Hand this back to the automatic rule, which points it along the line from the previous element to the next.'));
+        '恢复为自动设置，根据前后元素之间的路线方向调整通过方向。'));
     }
-    row.append(button('Remove', 'tb-btn tb-danger', () => this.host.removeSequenceEntry(seq.id)));
+    row.append(button('移除', 'tb-btn tb-danger', () => this.host.removeSequenceEntry(seq.id)));
     card.append(row);
     return card;
   }
 
   renderFieldSettings(host, doc) {
-    host.append(el('p', 'tb-help', 'Nothing selected. Click an element to edit it, or drag a box on empty ground to select several.'));
+    host.append(el('p', 'tb-help', '尚未选择元素。点击元素可编辑；在空白处拖动框选可同时选择多个元素。'));
     if (docModeOf(doc) === 'freestyle') {
       this.renderPlotSettings(host, doc);
       return;
@@ -2368,13 +2368,13 @@ export class Panels {
       const line = el('p', 'tb-help');
       line.append(el('strong', null, CANVAS_WORDS[micro ? 'micro' : 'full'].kind));
       line.append(document.createTextNode(micro
-        ? ': RaceGOW, for a 65 mm whoop in a room. Gates 24 to 28 in, adjacent gates 30 in centre to centre, and the whole track inside 4 by 6 ft at the smallest gate, scaled up with them. Every piece is measured in inches from the middle of the room, and the grid is one inch.'
-        : ': a five inch quad on a field. MultiGP gate sizes, and every piece measured in metres from the corner of the field.'));
+        ? '：在室内使用 65 mm Whoop 飞行器。赛门尺寸为 24 至 28 英寸，相邻赛门中心间距为 30 英寸；采用最小赛门时，整条赛道需在 4×6 英尺范围内，并随赛门等比例放大。网格间距为 1 英寸。'
+        : '：在场地上使用 5 英寸四轴飞行器。采用 MultiGP 赛门尺寸，网格单位为米。'));
       host.append(line);
     }
     /* Size, not Field a second time: the panel's own heading already names
      * the ground, the canvas's way. */
-    host.append(el('h3', null, 'Size'));
+    host.append(el('h3', null, '场地'));
     const grid = el('div', 'tb-grid3');
     const micro = trackClassOf(doc) === 'micro';
     grid.append(
@@ -2405,15 +2405,15 @@ export class Panels {
     );
     host.append(grid);
 
-    host.append(el('h3', null, 'Racing line'));
-    host.append(this.field('set-tangent', 'Tangent scale', doc.settings.tangentScale, (val) => {
+    host.append(el('h3', null, '竞速路线'));
+    host.append(this.field('set-tangent', '切线缩放', doc.settings.tangentScale, (val) => {
       this.host.edit('settings', (d) => { d.settings.tangentScale = Math.max(0.01, val); });
     }, { step: 0.02, places: 3 }));
-    host.append(el('p', 'tb-help', 'How long the spline tangents are, as a fraction of the gap to the next knot. About a third draws a circular arc through a right angle. Higher bulges the line wide, lower squares off the corners.'));
+    host.append(el('p', 'tb-help', '样条曲线切线长度占到下一个节点间距的比例。约三分之一时，直角弯会形成圆弧；增大比例会让路线外扩，减小比例会让转角更锐利。'));
     host.append(this.lengthField('set-radius', 'Warn under radius', doc.settings.minCurveRadius, (val) => {
       this.host.edit('settings', (d) => { d.settings.minCurveRadius = Math.max(0.1, val); });
     }, { step: 0.5, stepIn: 1, min: 0.1 }));
-    host.append(this.field('set-samples', 'Samples per segment', doc.settings.samplesPerSegment, (val) => {
+    host.append(this.field('set-samples', '每段采样数', doc.settings.samplesPerSegment, (val) => {
       this.host.edit('settings', (d) => { d.settings.samplesPerSegment = Math.max(4, Math.round(val)); });
     }, { step: 4, places: 0 }));
   }
@@ -2425,8 +2425,8 @@ export class Panels {
    */
   renderPlotSettings(host, doc) {
     const line = el('p', 'tb-help');
-    line.append(el('strong', null, 'Freestyle map'));
-    line.append(document.createTextNode(': a place to fly, with no track through it. Built from the town’s own assets, flown on a five inch, and every solid you place is solid in the air.'));
+    line.append(el('strong', null, '自由飞行地图'));
+    line.append(document.createTextNode('：可在此自由飞行，不设固定赛道。使用城镇中的场景元素构建，并由 5 英寸飞行器飞行；放置的所有实体物体都会成为空中障碍。'));
     host.append(line);
     /*
      * THE SCENE: when it is, and what the plot is paved with. The two
@@ -2453,26 +2453,26 @@ export class Panels {
       }
       host.append(seg);
     };
-    choose('Time of day', SCENE_TIMES, TIME_LABELS, scene.time, 'time');
+    choose('时段', SCENE_TIMES, TIME_LABELS, scene.time, 'time');
     host.append(el('p', 'tb-help', TIME_HELP[scene.time]));
-    choose('Ground', SCENE_GROUNDS, GROUND_LABELS, scene.ground, 'ground');
+    choose('地面', SCENE_GROUNDS, GROUND_LABELS, scene.ground, 'ground');
     host.append(el('p', 'tb-help', GROUND_HELP[scene.ground]));
     /* Size, as on the other canvases: the panel's heading is Plot already. */
-    host.append(el('h3', null, 'Size'));
+    host.append(el('h3', null, '地图范围'));
     const grid = el('div', 'tb-grid3');
     grid.append(
-      this.field('field-w', 'Width', doc.field.width, (val) => {
+      this.field('field-w', '场地宽度', doc.field.width, (val) => {
         this.host.edit('plot', (d) => { d.field.width = Math.max(5, val); });
       }, { suffix: 'm', step: 10 }),
-      this.field('field-d', 'Depth', doc.field.depth, (val) => {
+      this.field('field-d', '场地深度', doc.field.depth, (val) => {
         this.host.edit('plot', (d) => { d.field.depth = Math.max(5, val); });
       }, { suffix: 'm', step: 10 }),
-      this.field('field-g', 'Grid', doc.field.gridSize, (val) => {
+      this.field('field-g', '网格间距', doc.field.gridSize, (val) => {
         this.host.edit('plot', (d) => { d.field.gridSize = Math.max(0.005, val); });
       }, { suffix: 'm', step: 0.5 }),
     );
     host.append(grid);
-    host.append(el('p', 'tb-help', 'Everything placed snaps to the grid; hold Alt to place off it.'));
+    host.append(el('p', 'tb-help', '放置的元素会自动吸附到网格；按住 Alt 可关闭吸附。'));
   }
 
   /* ---------------- sequence ---------------- */
@@ -2491,11 +2491,11 @@ export class Panels {
     const passes = [...numbers.values()].filter((n) => n != null).length;
     const bends = doc.sequence.length - passes;
     host.append(el('h3', null, bends
-      ? `Flying order, ${passes}, and ${bends} waypoint${bends === 1 ? '' : 's'}`
-      : `Flying order, ${passes}`));
+      ? `飞行顺序：${passes} 个赛门，${bends} 个航点`
+      : `飞行顺序：${passes} 个赛门`));
 
     if (!doc.sequence.length) {
-      host.append(el('p', 'tb-help', 'Empty. Placing a gate or a stack adds it to the order. A stack is one structure and several gates: pick how it is flown in the inspector.'));
+      host.append(el('p', 'tb-help', '目前为空。放置赛门或叠层结构即可添加飞行顺序。叠层结构包含多个赛门，可在属性面板中选择通过方式。'));
     }
 
     const list = el('ol', 'tb-seq');
@@ -2529,8 +2529,8 @@ export class Panels {
       /* Two buttons that said X and a dash on every row, X being the key that
        * flips a face and reading as "remove" to anybody who did not know it.
        * Words on every canvas now, as the whoop canvas already had them. */
-      li.append(button('Reverse', 'tb-mini', (e) => { e.stopPropagation(); this.host.flipFace(seq.id); }, 'Flip the face or the pass side. X'));
-      li.append(button('Remove', 'tb-mini tb-danger', (e) => { e.stopPropagation(); this.host.removeSequenceEntry(seq.id); }, 'Take it out of the order'));
+      li.append(button('Reverse', 'tb-mini', (e) => { e.stopPropagation(); this.host.flipFace(seq.id); }, '翻转通过方向或通过侧'));
+      li.append(button('Remove', 'tb-mini tb-danger', (e) => { e.stopPropagation(); this.host.removeSequenceEntry(seq.id); }, '从飞行顺序中移除此项'));
 
       li.addEventListener('click', () => {
         if (element) {
@@ -2564,12 +2564,12 @@ export class Panels {
 
     const spare = unsequencedElements(doc);
     if (spare.length) {
-      host.append(el('h3', null, 'Not in the track'));
+      host.append(el('h3', null, '未加入赛道'));
       const ul = el('div', 'tb-spare');
       for (const element of spare) {
         const row = el('div', 'tb-spare-row');
         row.append(el('span', null, element.name || ELEMENTS[element.type].label));
-        row.append(button('Add', 'tb-mini', () => this.host.addToSequence(element.id)));
+        row.append(button('添加', 'tb-mini', () => this.host.addToSequence(element.id)));
         ul.append(row);
       }
       host.append(ul);
@@ -4045,16 +4045,16 @@ export class Panels {
     const doc = this.host.doc;
     const path = this.host.path;
 
-    host.append(el('h3', null, 'Results'));
+    host.append(el('h3', null, '结果'));
     if (docModeOf(doc) === 'freestyle') {
       this.renderMapResults(host, doc);
       return;
     }
     if (!path) {
-      host.append(el('p', 'tb-help', 'Nothing in the flying order yet. Place a gate and it appears here, with the lap figures and any warnings.'));
+      host.append(el('p', 'tb-help', '飞行顺序中尚无元素。放置赛门后，这里会显示圈速数据和相关警告。'));
       appendTypeStats(host, doc);
       const empty = el('div', 'tb-profile-foot');
-      empty.append(el('h3', null, 'Elevation'), this.nodes.profile);
+      empty.append(el('h3', null, '高度剖面'), this.nodes.profile);
       host.append(empty);
       drawProfile(this.nodes.profile, null);
       return;
@@ -4069,7 +4069,7 @@ export class Panels {
       inches
         ? stat('Length', `${Math.round(path.length / FT)} ft`, `${path.length.toFixed(1)} m`)
         : stat('Length', `${path.length.toFixed(1)} m`),
-      stat('In the order', String(doc.sequence.length)),
+      stat('顺序项数', String(doc.sequence.length)),
       /* Bend, not radius: "Tightest radius" was cut to "Tightest ra..." beside
        * its own value in a 320 px column. */
       bend == null
@@ -4077,16 +4077,16 @@ export class Panels {
         : inches
           ? stat('Tightest bend', `${(bend / IN).toFixed(1)} in`, `${Math.round(bend * 1000)} mm`)
           : stat('Tightest bend', `${bend.toFixed(2)} m`),
-      stat('Lap', path.closed ? 'closes' : 'open'),
+      stat('赛道形状', path.closed ? '闭合' : '开放'),
     );
     host.append(stats);
     appendTypeStats(host, doc);
 
     const warnings = this.host.warnings ?? [];
     const bad = warnings.filter((w) => w.level === 'warn');
-    host.append(el('h3', null, bad.length ? `Warnings, ${bad.length}` : 'Warnings'));
+    host.append(el('h3', null, bad.length ? `警告（${bad.length}）` : '警告'));
     if (!warnings.length) {
-      host.append(el('p', 'tb-help', 'Nothing to report. The line goes through every element in the right direction, inside the field, clear of the barriers.'));
+      host.append(el('p', 'tb-help', '无异常。路线按正确方向通过所有元素，位于场地范围内且未碰到障碍物。'));
     }
     const ul = el('ul', 'tb-warn');
     for (const w of warnings) {
@@ -4099,13 +4099,13 @@ export class Panels {
       ul.append(li);
     }
     host.append(ul);
-    host.append(el('p', 'tb-help', 'Warnings are advisory. Nothing here stops a save or an export.'));
+    host.append(el('p', 'tb-help', '警告仅供参考，不会阻止保存或导出。'));
 
     /* The chart is a long lived canvas rather than a fresh one per render:
      * the panel is rebuilt wholesale on every change and allocating a canvas
      * that often is the one thing here that would show up in a profile. */
     const foot = el('div', 'tb-profile-foot');
-    foot.append(el('h3', null, 'Elevation'), this.nodes.profile);
+    foot.append(el('h3', null, '高度剖面'), this.nodes.profile);
     host.append(foot);
     drawProfile(this.nodes.profile, elevationProfile(path), { imperial: inches });
   }
@@ -4119,9 +4119,9 @@ export class Panels {
     const report = this.host.report ?? null;
     const stats = el('div', 'tb-stats');
     stats.append(
-      stat('Elements', String(doc.elements.length)),
-      stat('Solids', report ? String(report.solids) : '0'),
-      stat('Named gaps', report ? String(report.zones) : '0'),
+      stat('元素', String(doc.elements.length)),
+      stat('实体障碍', report ? String(report.solids) : '0'),
+      stat('命名间隙', report ? String(report.zones) : '0'),
     );
     /* Roads and vehicles, once there are any: they are not assets, so the
      * inventory below leaves them out, and a map's traffic is worth a
@@ -4129,17 +4129,17 @@ export class Panels {
     const roads = doc.elements.filter((e) => e.type === 'road').length;
     const cars = doc.elements.filter((e) => e.type === 'vehicle').length;
     if (roads || cars) {
-      stats.append(stat('Roads', String(roads)), stat('Vehicles', String(cars)));
+      stats.append(stat('道路', String(roads)), stat('车辆', String(cars)));
     }
     host.append(stats);
-    appendTypeStats(host, doc, 'On the plot');
-    this.appendWarnings(host, 'Nothing to report. Every space between two things is closed or wide enough to fly, the start is clear, and every named gap is open.');
+    appendTypeStats(host, doc, '场地元素');
+    this.appendWarnings(host, '没有需要提示的问题。物体之间的空间足够飞行，起点畅通，所有命名间隙均可通过。');
   }
 
   appendWarnings(host, allClear) {
     const warnings = this.host.warnings ?? [];
     const bad = warnings.filter((w) => w.level === 'warn');
-    host.append(el('h3', null, bad.length ? `Warnings, ${bad.length}` : 'Warnings'));
+    host.append(el('h3', null, bad.length ? `警告（${bad.length}）` : '警告'));
     if (!warnings.length) {
       host.append(el('p', 'tb-help', allClear));
     }
@@ -4154,7 +4154,7 @@ export class Panels {
       ul.append(li);
     }
     host.append(ul);
-    host.append(el('p', 'tb-help', 'Warnings are advisory. Nothing here stops a save or an export.'));
+    host.append(el('p', 'tb-help', '警告仅供参考，不会阻止保存或导出。'));
   }
 }
 

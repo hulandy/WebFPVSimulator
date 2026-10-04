@@ -499,20 +499,22 @@ export async function fetchTrackDocument(id, origin = boardOrigin()) {
  * there does not need this file at all; adding or retiring an id does.
  */
 export const TRACK_TAGS = [
-  { id: 'race', label: 'Race track', note: 'Built to be raced against a clock.' },
-  { id: 'skills', label: 'Skills practice', note: 'Built to practise one thing until it is easy.' },
-  { id: 'experiment', label: 'Experiment', note: 'Built to find out whether something works.' },
-  { id: 'freestyle', label: 'Freestyle', note: 'Gates as furniture rather than as a track to be raced.' },
-  { id: 'beginner', label: 'Beginner', note: 'Wide gates, gentle lines, nothing that punishes a miss.' },
-  { id: 'technical', label: 'Technical', note: 'Tight, quick and unforgiving.' },
+  { id: 'race', label: '赛道', note: '为计时竞速而设计。' },
+  { id: 'skills', label: '技巧训练', note: '专门练习某一个动作，直到变得熟练。' },
+  { id: 'experiment', label: '实验', note: '用于验证某个想法是否可行。' },
+  { id: 'freestyle', label: '自由式', note: '把门作为摆设，而不是计时赛道。' },
+  { id: 'beginner', label: '新手', note: '门较宽，线条平缓，没有惩罚失误的难度。' },
+  { id: 'technical', label: '技术', note: '紧凑、快速且不容失误。' },
   /* "Small field", not "Micro", and the id stays `micro` because published
    * tracks carry it. It means a FIVE INCH track with a small footprint and
    * has meant that since before there was a micro track class; beside a 65
    * mm whoop, a tag labelled "Micro" is two different things one word apart.
    * The board's src/validate.js carries the same rename. */
-  { id: 'micro', label: 'Small field', note: 'A five inch track that fits a small field or a garden.', classes: ['full'] },
-  { id: 'big', label: 'Big field', note: 'Wants the whole field and a lot of speed.', classes: ['full'] },
-  { id: 'showcase', label: 'Showcase', note: 'Built to be looked at.' },
+
+  { id: 'micro', label: '小场地', note: '适合小场地或花园的五寸赛道。', classes: ['full'] },
+  { id: 'big', label: '大场地', note: '需要整个场地和更高速度。', classes: ['full'] },
+  { id: 'showcase', label: '展示', note: '用于展示和观赏。' },
+
 ];
 
 /*

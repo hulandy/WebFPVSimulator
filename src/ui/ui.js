@@ -51,16 +51,16 @@ import { LINK_PRESETS } from '../input/link.js';
 
 /* Wording for input.js's calibration steps. The order lives there. */
 const CAL_LABELS = {
-  center: 'Centre',
-  sweep: 'Full range',
-  throttle: 'Throttle',
-  roll: 'Roll',
-  pitch: 'Pitch',
-  yaw: 'Yaw',
+  center: '回中',
+  sweep: '全行程',
+  throttle: '油门',
+  roll: '横滚',
+  pitch: '俯仰',
+  yaw: '偏航',
   /* Only asked of a radio that reports no buttons. See SELECT_STEP in
    * input.js. */
-  select: 'Menu switch',
-  confirm: 'Check',
+  select: '菜单开关',
+  confirm: '确认',
 };
 import { MENU_TRACKS, trackById, musicIds } from '../render/tracks.js';
 import { CUSTOM_TUNE, TUNES, tuneById, tunesFor } from '../../configs/registry.js';
@@ -337,24 +337,24 @@ const FIT_SCREENS = new Set(['pilot', 'advanced', 'quad', 'rates', 'pids', 'laun
  */
 const SCREEN_TITLES = {
   title: 'WebFPV',
-  courses: 'Tracks',
-  freestyle: 'Maps',
-  pilot: 'Settings',
-  quad: 'Quad',
-  launch: 'Before you fly',
-  standings: 'Standings',
-  rates: 'Rates',
-  pids: 'Tune',
-  fc: 'Firmware bench',
-  paused: 'Paused',
-  results: 'Run complete',
-  howto: 'How to fly',
-  tricks: 'Trick list',
-  credits: 'About',
-  stickhelp: 'Stick help',
-  advanced: 'Advanced',
-  calibrate: 'Calibrate sticks',
-  padpick: 'Choose joystick',
+  courses: '竞速',
+  freestyle: '自由式',
+  pilot: '设置',
+  quad: '四轴',
+  launch: '飞行前',
+  standings: '排名',
+  rates: '速率',
+  pids: 'PID 调校',
+  fc: '固件台架',
+  paused: '已暂停',
+  results: '飞行结束',
+  howto: '飞行教程',
+  tricks: '技巧列表',
+  credits: '致谢',
+  stickhelp: '摇杆帮助',
+  advanced: '高级设置',
+  calibrate: '校准摇杆',
+  padpick: '选择摇杆',
 };
 /*
  * The crumb's trail, as the room is reached from its home. crumbTrail()
@@ -363,24 +363,24 @@ const SCREEN_TITLES = {
  * Rates opened from Quad reads Quad / Rates, and Escape goes to Quad.
  */
 const CRUMBS = {
-  courses: ['Tracks'],
-  freestyle: ['Maps'],
-  pilot: ['Settings'],
-  quad: ['Quad'],
-  launch: ['Before you fly'],
-  standings: ['Tracks', 'Standings'],
-  rates: ['Settings', 'Rates'],
-  pids: ['Quad', 'Tune'],
-  fc: ['Quad', 'Firmware bench'],
-  paused: ['Paused'],
-  results: ['Run complete'],
-  howto: ['How to fly'],
-  tricks: ['Maps', 'Trick list'],
-  credits: ['About'],
-  stickhelp: ['Settings', 'Stick help'],
-  advanced: ['Settings', 'Advanced'],
-  calibrate: ['Settings', 'Calibrate sticks'],
-  padpick: ['Settings', 'Choose joystick'],
+  courses: ['竞速'],
+  freestyle: ['自由式'],
+  pilot: ['设置'],
+  quad: ['四轴'],
+  launch: ['飞行前'],
+  standings: ['竞速', '排名'],
+  rates: ['设置', '速率'],
+  pids: ['四轴', 'PID 调校'],
+  fc: ['四轴', '固件台架'],
+  paused: ['已暂停'],
+  results: ['飞行结束'],
+  howto: ['飞行教程'],
+  tricks: ['自由式', '技巧列表'],
+  credits: ['致谢'],
+  stickhelp: ['设置', '摇杆帮助'],
+  advanced: ['设置', '高级设置'],
+  calibrate: ['设置', '校准摇杆'],
+  padpick: ['设置', '选择摇杆'],
   title: ['WebFPV'],
 };
 
@@ -417,9 +417,9 @@ function freestyleWorldToSeat(s) {
 function townNote(s, failure) {
   const world = freestyleWorldToSeat(s);
   if (world && failure && failure.map === world.id) {
-    return `${world.name} did not load. Fly reloads the page and tries again.`;
+    return `${world.name}未能加载。点击“飞行”将重新加载页面并重试。`;
   }
-  return 'The town, a map of your own, or one from the board. No gates. Open it and fly.';
+  return '城镇、自建地图或排行榜上的地图，没有赛门。打开后即可飞行。';
 }
 
 /*
@@ -553,7 +553,7 @@ export function pacingTimerOn(s) {
  * Each is one class on .osd-cross in index.html; see syncCrosshair.
  */
 export const CROSSHAIRS = ['off', 'wings', 'cross', 'dot'];
-const CROSSHAIR_LABEL = { off: 'Off', wings: 'Wings', cross: 'Cross', dot: 'Dot' };
+const CROSSHAIR_LABEL = { off: '关', wings: '翼状', cross: '十字', dot: '点' };
 
 /*
  * WEIGHT: the pilot's answer to "floaty", as a percentage of the weight the
@@ -682,7 +682,7 @@ export function gravityScaleFor(weight, airframeId) {
  * See DEFAULTS.freestyleScoring for why off is the default.
  */
 export const FREESTYLE_SCORING = ['off', 'free', 'scored'];
-const FREESTYLE_SCORING_LABEL = { off: 'Lines only', free: 'Free flight', scored: 'Scored run' };
+const FREESTYLE_SCORING_LABEL = { off: '仅显示轨迹', free: '自由飞行', scored: '计分飞行' };
 
 /*
  * THE WARNING, and it comes FIRST when trick names are on, because a row
@@ -691,26 +691,20 @@ const FREESTYLE_SCORING_LABEL = { off: 'Lines only', free: 'Free flight', scored
  * geometry and are counted in every position. The argument for it is at
  * DEFAULTS.freestyleScoring.
  */
-const SCORING_WARNING = 'Trick names are an unfinished feature and still being built.'
-  + ' The recogniser misses tricks it should name and puts the wrong name on some of'
-  + ' the ones it catches, so read them as a work in progress rather than as a verdict'
-  + ' on your flying.';
+const SCORING_WARNING = '技巧名称识别功能仍在开发中。'
+  + '识别器可能漏掉本应识别的动作，也可能误判已识别的动作，因此请将其视为开发中的功能，而非对飞行水平的判断。';
 
 /* `where` is the world seated: the town, Your map, or this map when it came
  * from the board. */
-const scoringOff = (where) => `Lines only: ${where} counts gaps, skims, unders, threads, low passes and the`
-  + ' chase into combos. No trick names and no clock.';
-const SCORING_FREE_ON = 'Free flight: tricks too, named and scored as you land them in the same combos,'
-  + ' with no clock and no board, and the run never ends.';
+const scoringOff = (where) => `仅显示轨迹：${where}中的间隙穿越、贴地滑行、穿越障碍下方、贴近障碍穿越、低空飞行和追逐都会计入连击。不会显示技巧名称，也没有计时。`;
+const SCORING_FREE_ON = '自由飞行：技巧动作也会在完成时识别并计分，并加入相同的连击。没有计时或排行榜，本次飞行不会结束。';
 /* What the other two add, said once from Lines only, where a pilot reads
  * them before choosing. */
-const SCORING_MORE = 'Free flight adds trick names, the one to learn a Powerloop in, and a scored run'
-  + ' adds two minutes and the high score board.';
-const scoringMoreBuilt = (where) => 'Free flight adds trick names, the one to learn a Powerloop in, and a scored'
-  + ` run adds two minutes and a best kept for ${where}.`;
+const SCORING_MORE = '自由飞行会显示技巧名称，适合练习 Powerloop；计分飞行则增加两分钟计时，并可提交排行榜。';
+const scoringMoreBuilt = (where) => '自由飞行会显示技巧名称，适合练习 Powerloop；计分飞行增加两分钟计时，并为'
+  + `${where}保存个人最佳成绩。`;
 
-const SCORING_BOARD = 'Scored run: two minutes from the first thing you score. The tricks\' own total'
-  + ' goes to the high score board, and the whole count is kept as your best here.';
+const SCORING_BOARD = '计分飞行：从首次得分开始计时两分钟。技巧动作的分数会提交到排行榜，全部得分会保存在此处作为个人最佳。';
 
 /*
  * WITH MANGA AND SCORING OFF IN SETTINGS nothing this row decides is drawn
@@ -721,7 +715,7 @@ const SCORING_BOARD = 'Scored run: two minutes from the first thing you score. T
  * happens underneath (DEFAULTS.mangaAndScoring), which is the second half
  * of the sentence.
  */
-const SCORING_UNDRAWN = 'Counted and not drawn, because Manga and scoring is off in Settings.';
+const SCORING_UNDRAWN = '由于设置中关闭了“漫画风格与计分”，相关内容会继续计数，但不会绘制在画面上。';
 
 /*
  * Your map is a different place for every pilot who has built one, so the
@@ -733,8 +727,7 @@ const SCORING_UNDRAWN = 'Counted and not drawn, because Manga and scoring is off
  * calling somebody else's map yours. Not its name: the note is measured
  * against the bottom bar, below, and a name is as long as its author made it.
  */
-const scoringBoardBuilt = (where) => 'Scored run: two minutes from the first thing you score, kept as your'
-  + ` best on ${where}, and off the high score board.`;
+const scoringBoardBuilt = (where) => `计分飞行：从首次得分开始计时两分钟，成绩会作为你在${where}的个人最佳保存，但不会提交到排行榜。`;
 
 /*
  * Lines only says what it counts and, in one sentence, what the other two
@@ -748,7 +741,7 @@ const scoringBoardBuilt = (where) => 'Scored run: two minutes from the first thi
  */
 function scoringNote(mode, mapId, fromBoard = false, drawn = true) {
   const built = mapId === 'built';
-  const where = built ? (fromBoard ? 'this map' : 'Your map') : 'the town';
+  const where = built ? (fromBoard ? '此地图' : '你的地图') : '城镇地图';
   if (mode === 'off') {
     return `${drawn ? '' : `${SCORING_UNDRAWN} `}${scoringOff(where)} ${built ? scoringMoreBuilt(where) : SCORING_MORE}`;
   }
@@ -762,14 +755,12 @@ function scoringNote(mode, mapId, fromBoard = false, drawn = true) {
  * a table beside runs flown somewhere else entirely. main.js refuses the
  * post as well, as a backstop for a press that reaches it some other way.
  */
-const BUILT_OFF_BOARD = 'A map you built is a different place for every pilot who has one, so its runs'
-  + ' stay off the public board. Fly the town for a run that can go up.';
+const BUILT_OFF_BOARD = '每位飞手创建的地图都不同，因此在自建地图上的飞行不会提交到公开排行榜。请在城镇地图上飞行并提交成绩。';
 
 /* A map from the board is the same place for everybody, so the reason
  * above would be untrue of it. The board simply keeps no table of runs for
  * a published map yet, and main.js refuses the post for every built world. */
-const BOARD_MAP_OFF_BOARD = 'The board keeps no runs for a published map yet, so a run flown on one'
-  + ' stays here. Fly the town for a run that can go up.';
+const BOARD_MAP_OFF_BOARD = '排行榜暂不保存已发布地图上的飞行成绩，因此本次成绩不会提交。请在城镇地图上飞行并提交成绩。';
 
 /*
  * What the results say about this browser's best counter on the map. The
@@ -785,10 +776,10 @@ function counterBestSentence(s) {
   }
   if (s.counterImproved) {
     return s.counterBestBefore > 0
-      ? `A new best for this map in this browser, up from ${formatScore(s.counterBestBefore)}.`
-      : 'The first counted run on this map in this browser, so its best.';
+      ? `在此浏览器中创下本地图的新纪录，超过之前的 ${formatScore(s.counterBestBefore)} 分。`
+      : '这是此浏览器中本地图的第一条计分记录，也因此成为当前最佳。';
   }
-  return `Your best on this map in this browser: ${formatScore(best)}.`;
+  return `此浏览器中本地图的个人最佳：${formatScore(best)} 分。`;
 }
 
 /* Where a built track lives, said in the Race room beside the row that
@@ -796,10 +787,10 @@ function counterBestSentence(s) {
  * and wrong with a freestyle map seated. The builder's strip says the same. */
 /* The orders the Tracks room offers for the board's half: the same three
  * the board's own Order menu leads with, in its words. */
-const COURSE_ORDERS = [['flown', 'Most flown'], ['newest', 'Newest'], ['name', 'A to Z']];
+const COURSE_ORDERS = [['flown', '飞行次数最多'], ['newest', '最新'], ['name', '名称 A-Z']];
 const COURSE_ORDER_IDS = COURSE_ORDERS.map(([id]) => id);
 
-const KEEP_NOTE = 'Tracks you build stay in this browser. Clearing it, or another device, starts you from nothing. Publish a track to put it on the public board.';
+const KEEP_NOTE = '你创建的赛道保存在此浏览器中。清除浏览器数据或更换设备后将无法恢复。发布赛道即可将其添加到公开排行榜。';
 
 /* How many kinds of trick a freestyle result lists before "N more". */
 const RESULT_TRICK_ROWS = 3;
@@ -872,18 +863,18 @@ function localBestOf(s) {
  */
 function byLine(t) {
   if (t && t.designer) {
-    return `by ${t.designer}`;
+    return `设计者：${t.designer}`;
   }
-  return t && t.author ? `by ${t.author}` : '';
+  return t && t.author ? `发布者：${t.author}` : '';
 }
 
 /* What a board map's card says about it, as the board's own card does: its
  * size in pieces, and its named gaps when it has any, which are the lines
  * its builder wants flown. */
 function mapFacts(m) {
-  const facts = [`${m.pieces} piece${m.pieces === 1 ? '' : 's'}`];
+  const facts = [`${m.pieces} 个组件`];
   if (m.gaps > 0) {
-    facts.push(`${m.gaps} named gap${m.gaps === 1 ? '' : 's'}`);
+    facts.push(`${m.gaps} 个命名间隙`);
   }
   return facts;
 }
@@ -2086,16 +2077,14 @@ function makeWeightSlider({ min, max, step, value, label }) {
 
   const hint = el('div', 'osd-air-hint');
   hint.hidden = true;
-  hint.append(el('p', 'osd-air-hint-title', 'Weight'));
+  hint.append(el('p', 'osd-air-hint-title', '配重'));
   hint.append(el(
     'p',
     'osd-air-hint-body',
-    'Drag this if the quad feels floaty or too heavy. Right makes it heavier,'
-    + ' so it drops when you chop the throttle and stops hanging at the top'
-    + ' of a jump. Left makes it lighter and it floats. Hover moves up and'
-    + ' down the stick with it, which is most of what you will feel.',
+    '如果四轴感觉太轻或太重，可以拖动此滑块调整。向右加重，收油时下降更快，也不会在跳跃顶端滞空；'
+    + '向左减重，四轴会更轻盈。悬停时所需的油门位置也会随之变化。',
   ));
-  const dismiss = btn('osd-air-hint-btn', 'Got it');
+  const dismiss = btn('osd-air-hint-btn', '知道了');
   hint.append(dismiss);
 
   const row = el('div', 'osd-air-row');
@@ -2107,7 +2096,7 @@ function makeWeightSlider({ min, max, step, value, label }) {
   range.step = String(step);
   range.value = String(value);
   range.setAttribute('aria-label', label);
-  row.append(el('span', 'osd-air-end', 'Floaty'), range, el('span', 'osd-air-end', 'Sinky'));
+  row.append(el('span', 'osd-air-end', '轻盈'), range, el('span', 'osd-air-end', '沉重'));
 
   const cap = el('div', 'osd-air-cap', '');
   box.append(hint, row, cap);
@@ -2216,8 +2205,8 @@ function placeNub(nub, x, y) {
 function thrNote(mode, side) {
   const map = stickChannels(mode)[side];
   return map.vert === 'throttle'
-    ? ' Throttle STAYS where you leave it, like a real radio: trim a hover, lift the thumb, it holds.'
-    : ' Forward is nose down, fly forward. Springs back to centre when you let go.';
+    ? ' 油门会停在松开时的位置，就像真实遥控器一样：调整好悬停油门后松开拇指，四轴会保持高度。'
+    : ' 向前推摇杆时机头下压，四轴向前飞；松手后摇杆会回中。';
 }
 
 /*
@@ -2233,17 +2222,17 @@ function keyHowtoRows(mode, keyThrottle = 'hover') {
   const c = stickChannels(mode);
   const say = {
     throttle: normaliseKeyThrottle(keyThrottle) === 'hold'
-      ? 'Throttle. It stays where you leave it, like a radio. A tap moves it about a percent, a longer hold moves it faster.'
-      : 'Throttle. Tap for a nudge, hold to climb, long hold to punch. Let go and it holds height.',
-    pitch: 'Pitch. Forward is stick forward, nose down, fly forward.',
-    yaw: 'Yaw, left and right on the spot.',
-    roll: 'Roll.',
+      ? '油门。松开后会停在当前位置，就像遥控器一样。轻按约调整百分之一，按得越久变化越快。'
+      : '油门。轻按微调，按住爬升，长按快速加油门。松开后会保持高度。',
+    pitch: '俯仰。向前推摇杆会压低机头并向前飞。',
+    yaw: '偏航，原地向左或向右转。',
+    roll: '横滚。',
   };
   return [
-    ['W and S', say[c.left.vert]],
-    ['A and D', say[c.left.horiz]],
-    ['Up and down', say[c.right.vert]],
-    ['Left and right', say[c.right.horiz]],
+    ['W 和 S', say[c.left.vert]],
+    ['A 和 D', say[c.left.horiz]],
+    ['上键和下键', say[c.right.vert]],
+    ['左键和右键', say[c.right.horiz]],
   ];
 }
 
@@ -2523,18 +2512,29 @@ function scoreableTricks() {
  * "scores when it is flown cleanly" are different promises, and a pilot who
  * has just missed one twice deserves to know which they were sold.
  */
+function trickDifficultyLabel(difficulty) {
+  return ({
+    Beginner: '初级',
+    Novice: '入门',
+    Intermediate: '中级',
+    Advanced: '高级',
+    Master: '大师',
+  })[difficulty] || difficulty || '';
+}
+
 function trickStatus(t) {
   if (t.proven.landed >= t.proven.runs) {
     return {
-      tag: 'Reliable',
-      line: `Scored on all ${t.proven.runs} test flights, across three bank`
-        + ' angles and three degrees of overshoot.',
+      tag: '稳定',
+      line: `在 ${t.proven.runs} 次测试飞行中均成功计分，覆盖三种倾斜角度`
+        + '和三种过冲幅度。',
     };
   }
+
   return {
-    tag: 'Fussy',
-    line: `Scored on ${t.proven.landed} of ${t.proven.runs} test flights, so`
-      + ' it wants flying cleanly to register.',
+    tag: '要求较高',
+    line: `${t.proven.runs} 次测试飞行中有 ${t.proven.landed} 次成功计分，`
+      + '需要更干净利落的飞行动作才能识别。',
   };
 }
 
@@ -2656,16 +2656,16 @@ function seatIsRace(s) {
  * run and the only place it can still change anything.
  */
 function recordSentence(s, trackName) {
-  const style = s.flightStyle === 'arcade' ? 'Arcade' : 'Expert';
-  const link = s.link === 'perfect' ? 'a perfect link' : LINK_PRESETS[s.link].label;
+  const style = s.flightStyle === 'arcade' ? '街机' : '专家';
+  const link = s.link === 'perfect' ? '理想链路' : LINK_PRESETS[s.link].label;
   /* Practice is not in the list, because it is not a different best: a
    * practice lap is held against the same record a counted lap is. What it
    * changes is the board, and the last sentence says so. */
   const bits = [
-    `${style} physics`,
-    `${s.packVoltage.toFixed(2)} V per cell`,
-    ...(s.laps === PRACTICE_LAPS ? [] : [`${s.laps} lap${s.laps === 1 ? '' : 's'}`]),
-    `the ${tuneById(s.tune).name} tune`,
+    `${style}飞行模型`,
+    `每节电池 ${s.packVoltage.toFixed(2)} V`,
+    ...(s.laps === PRACTICE_LAPS ? [] : [`${s.laps} 圈`]),
+    `${tuneById(s.tune).name} 调校`,
   ];
   /* clampWeight rather than s.weight raw, the same guard bugSnapshot uses:
    * every settings object that reaches here has been through loadSettings,
@@ -2677,20 +2677,20 @@ function recordSentence(s, trackName) {
      * physics model: the slider on the flight screen scales the weight the
      * craft carries. A pilot who nudged it mid flight and forgot has exactly
      * the problem this sentence exists to prevent. */
-    bits.splice(1, 0, `weight at ${weight} percent`);
+    bits.splice(1, 0, `配重 ${weight}%`);
   }
-  return `Your best on ${trackName} is filed under exactly this: ${bits.join(', ')}.`
-    + ' Change any part of it and you are on a different board.'
+  return `${trackName} 的个人最佳成绩按以下条件记录：${bits.join('、')}。`
+    + '更改任何条件后，成绩都会进入不同的排行榜。'
     + (s.laps === PRACTICE_LAPS
-      ? ' Practice laps stay off the public board, so this run will not count there.'
+      ? '练习模式成绩不会提交到公开排行榜，因此本次飞行不会计入其中。'
       : s.flightStyle === 'arcade'
-        ? ' Arcade times stay off the public board, so this run will not count there.'
+        ? '街机模式成绩不会提交到公开排行榜，因此本次飞行不会计入其中。'
         : weight !== WEIGHT_STOCK
           /* It used to say a time off 100 stays off the public board. The
            * board takes it now and prints the weight beside the name, the
            * owner's ask of 2026-09-27, so the sentence says that instead. */
-          ? ` This run is on ${link}, and a time from it goes on the public board marked Weight ${weight}%.`
-          : ` This run is on ${link}.`);
+          ? `本次飞行使用${link}，成绩会标注配重 ${weight}% 并提交到公开排行榜。`
+          : `本次飞行使用${link}。`);
 }
 
 /*
@@ -2723,13 +2723,12 @@ function padTroubleItem(info, platform = 'other') {
   }
   if (!info.buttons && !info.hasSelect) {
     return {
-      label: 'Your radio has no buttons this browser can see',
+      label: '浏览器未检测到遥控器按键',
       action: 'calibrate',
       rowClass: 'row-warn',
-      note: 'Every switch on it is arriving as an axis, so nothing on it can press Enter yet.'
-        + ' Hold any stick away from centre for about a second and that counts as one press,'
-        + ' which is enough to get in here and fix it properly. Calibrating ends by asking you'
-        + ' to throw the switch you want as Enter, and after that it works like a button.',
+      note: '遥控器上的开关都被识别为摇杆通道，因此目前无法用它们确认菜单。'
+        + '将任意摇杆推离中心并保持约一秒，即可模拟一次按键并进入此页面进行设置。'
+        + '校准结束时，你可以指定一个开关作为 Enter 键；之后它就会像按键一样工作。',
     };
   }
   /*
@@ -2743,12 +2742,11 @@ function padTroubleItem(info, platform = 'other') {
   const missing = info.missingChannels || [];
   if (missing.length) {
     return {
-      label: `Your calibration reads ${channelList(missing)} from an axis this radio does not have`,
+      label: `当前校准将${channelList(missing)}映射到了遥控器不存在的通道`,
       action: 'stickhelp',
       rowClass: 'row-warn',
-      note: `It was saved from a radio or a browser that sent more axes than the ${info.axisCount || 'few'}`
-        + ` arriving now, so ${channelList(missing)} reads nothing. Stick help shows what this radio`
-        + ' sends and whether calibrating again will find it.',
+      note: `此校准来自通道数多于当前设备的遥控器或浏览器；现在只有 ${info.axisCount || '少数'} 个通道，`
+        + `${channelList(missing)}没有输入。“摇杆帮助”可以查看当前遥控器发送的信号，以及重新校准是否能解决问题。`,
     };
   }
   /*
@@ -2785,16 +2783,14 @@ function padTroubleItem(info, platform = 'other') {
   if (!info.calibrated && !info.mapUsable) {
     const phone = platform === 'android' && info.fourAxes;
     return {
-      label: 'This browser is guessing your stick order',
+      label: '浏览器正在猜测摇杆顺序',
       action: phone ? 'stickhelp' : 'calibrate',
       rowClass: 'row-warn',
-      note: 'The axis it thinks is your throttle is sitting at the middle, and a real'
-        + ' throttle rests at one end because it has no centring spring. So the guess is'
-        + ' probably wrong, and a wrong guess means taking off at half power on a stick'
+      note: '被识别为油门的通道停在中间位置，而真实遥控器的油门没有回中弹簧，松手后会停在一端。'
+        + '因此当前映射可能有误，错误映射可能导致四轴以半油门起飞。'
         + (phone
-          ? ' that springs back. On a phone, first check that all four sticks arrive at all:'
-            + ' Chrome on Android passes on only four of a radio\'s axes. Stick help shows which.'
-          : ' that springs back. Calibrating takes about a minute and fixes it for good.'),
+          ? '在手机上，请先确认四个摇杆通道是否都已传入：Chrome 安卓版只传递遥控器的四个通道。可在“摇杆帮助”中查看。'
+          : '校准约需一分钟，完成后即可修正。'),
     };
   }
   /*
@@ -2812,14 +2808,12 @@ function padTroubleItem(info, platform = 'other') {
    */
   if (!info.calibrated && info.guessNoYaw) {
     return {
-      label: 'This browser cannot see your yaw stick',
+      label: '浏览器未检测到偏航摇杆',
       action: 'calibrate',
       rowClass: 'row-warn',
-      note: 'The axis it guessed was yaw has not moved once, while a stick it does not'
-        + ' know about has been swept end to end. That is a radio reporting its channels'
-        + ' in some order other than the one being guessed, and the part of it you have'
-        + ' lost is yaw. Calibrating takes about a minute and tells this page which axis'
-        + ' is which.',
+      note: '被识别为偏航的通道一次都没有移动，而另一个未识别的摇杆已从一端推到另一端。'
+        + '这通常说明遥控器的通道顺序与浏览器猜测的顺序不同，当前缺失的是偏航输入。'
+        + '校准约需一分钟，完成后页面即可识别各个通道。',
     };
   }
   /*
@@ -2835,14 +2829,12 @@ function padTroubleItem(info, platform = 'other') {
    */
   if (!info.calibrated && info.guessYawParked) {
     return {
-      label: 'This browser has your throttle as yaw',
+      label: '油门通道被识别成偏航',
       action: 'calibrate',
       rowClass: 'row-warn',
-      note: 'The axis it guessed was yaw sits off centre and stays there, which a yaw stick'
-        + ' on its spring never does and a throttle always does. So this radio reports its'
-        + ' channels in another order, and your throttle is probably turning the quad'
-        + ' instead of lifting it. Calibrating takes about a minute and tells this page'
-        + ' which axis is which.',
+      note: '被识别为偏航的通道停在偏离中心的位置，而带回中弹簧的偏航摇杆不会这样，油门摇杆则会。'
+        + '这通常说明遥控器的通道顺序不同，油门可能正在控制四轴转向而非升空。'
+        + '校准约需一分钟，完成后页面即可识别各个通道。',
     };
   }
   /*
@@ -2854,13 +2846,11 @@ function padTroubleItem(info, platform = 'other') {
    */
   if (!info.calibrated && info.radioAsGamepad) {
     return {
-      label: 'This browser calls your radio a gamepad',
+      label: '浏览器将遥控器识别为游戏手柄',
       action: 'calibrate',
       rowClass: 'row-warn',
-      note: 'One of its stick axes rests off centre and stays there, which a gamepad stick never'
-        + ' does and a radio\'s throttle always does. Read as a gamepad, its sticks land on the'
-        + ' wrong channels. Calibrating takes about a minute and tells this page which axis is'
-        + ' which.',
+      note: '其中一个摇杆轴停在偏离中心的位置，而游戏手柄摇杆不会这样，遥控器的油门摇杆则会。'
+        + '被识别为游戏手柄后，摇杆会映射到错误的通道。校准约需一分钟，完成后页面即可识别各个通道。',
     };
   }
   /*
@@ -2875,15 +2865,14 @@ function padTroubleItem(info, platform = 'other') {
   const dead = info.deadChannels || [];
   if (dead.length) {
     const phone = platform === 'android' && info.fourAxes
-      ? ' On a phone the likeliest cause is Chrome passing on only four of the radio\'s axes.'
+      ? ' 在手机上，最常见的原因是 Chrome 只传递遥控器的四个轴。'
       : '';
     return {
-      label: `${capital(channelList(dead))} ${dead.length > 1 ? 'are' : 'is'} not reaching the sim`,
+      label: `${channelList(dead)}没有输入到模拟器`,
       action: 'stickhelp',
       rowClass: 'row-warn',
-      note: `${capital(channelList(dead))} did not move once in flight while your other sticks did.`
-        + ' If you were moving it, the sim was not getting it. Stick help finds out whether that'
-        + ` is the sim, the browser or the radio, and says what fixes it.${phone}`,
+      note: `飞行时，${channelList(dead)}一次都没有移动，但其他摇杆有输入。`
+        + `如果你确实移动了这些摇杆，说明模拟器没有收到输入。请查看“摇杆帮助”，排查问题来自模拟器、浏览器还是遥控器，并了解解决方法。${phone}`,
     };
   }
   return null;
@@ -3032,14 +3021,14 @@ function choice(label, note, choices, current, format, set) {
 function pacingNote(s) {
   const on = pacingTimerOn(s);
   if (s.pacing === 'timer') {
-    return 'The timer draws the frames on every preset while you fly: the picture answers the sticks sooner, for more GPU work, heat and battery, and Auto graphics holds still while it runs. Replays and films keep the display\'s beat.';
+    return '飞行时，无论使用哪种画质，都由计时器绘制画面：画面对摇杆的响应更快，但 GPU 负载、发热和耗电会增加，自动画质也会暂停调整。回放和动画仍会跟随显示器刷新节奏。';
   }
   if (s.pacing === 'display') {
-    return 'The display paces the frames on every preset, the browser\'s ordinary beat: easiest on the battery, and the picture waits for the next refresh.';
+    return '所有画质都跟随显示器刷新节奏绘制画面，这是浏览器的常规方式，最省电，但画面需要等待下一次刷新。';
   }
   return on
-    ? 'On Low the timer draws the frames while you fly, so the picture answers the sticks sooner, for more GPU work, heat and battery; Auto graphics holds still while it runs, and replays and films keep the display\'s beat. On Medium and High the display paces everything.'
-    : 'The display paces the frames on this preset. On Low the timer would draw while you fly instead, so the picture answers the sticks sooner, for more GPU work, heat and battery.';
+    ? '低画质下飞行时由计时器绘制画面，摇杆响应更快，但 GPU 负载、发热和耗电会增加；自动画质会暂停调整，回放和动画仍跟随显示器刷新节奏。中、高画质下所有内容都跟随显示器刷新。'
+    : '当前画质下，画面跟随显示器刷新。低画质下飞行时可改由计时器绘制，让摇杆响应更快，但 GPU 负载、发热和耗电会增加。';
 }
 
 function toggle(label, note, on, set) {
@@ -3049,7 +3038,7 @@ function toggle(label, note, on, set) {
     note,
     sw: true,
     on: current,
-    value: current ? 'On' : 'Off',
+    value: current ? '开' : '关',
     current,
     /* Left and Right SET a switch rather than cycling it: Right is On,
      * Left is Off. Cycling means a held Right on a radio makes the row
@@ -3176,16 +3165,16 @@ function builderReturnItem(s, sharedMap) {
       return null;
     }
     return {
-      label: 'Back to the builder',
+      label: '返回赛道编辑器',
       action: kind === 'owned' ? 'editown' : 'trackbuilder',
       note: `Opens ${listing.name || 'this track'} in the builder. Fly this track in there brings you straight back to the starting blocks.`,
     };
   }
   if (s.map === 'built' && !sharedMap && ownMapId()) {
     return {
-      label: 'Back to the builder',
+      label: '返回赛道编辑器',
       action: 'mapbuilder',
-      note: 'Opens your map in the builder. Fly this map in there brings you straight back to it.',
+      note: '在赛道编辑器中打开你的地图。点击“飞行此地图”即可直接返回此处。',
     };
   }
   return null;
@@ -3214,41 +3203,41 @@ function uploadAction(listing, { row = null, timePosted, practice = false }) {
   const ms = held ? held.lapMs : null;
   const weight = held && held.weight != null ? clampWeight(held.weight, null) : WEIGHT_STOCK;
   if (timePosted && shareId) {
-    const rank = timePosted.rank != null ? ` Rank ${timePosted.rank}.` : '';
+    const rank = timePosted.rank != null ? ` 排名第 ${timePosted.rank}。` : '';
     return {
-      label: 'Time posted',
+      label: '成绩已上传',
       action: 'posttime',
       disabled: true,
-      note: `That lap is on the public board.${rank}`,
+      note: `该圈成绩已发布到公共排行榜。${rank}`,
     };
   }
   if (!listing || !shareId) {
     return {
-      label: 'Post a time',
+      label: '上传成绩',
       action: 'posttime',
       disabled: true,
-      note: 'Only a track on the board can hold a time. Publish this one first.',
+      note: '只有排行榜中的赛道才能提交成绩。请先发布此赛道。',
     };
   }
   if (!listing.canPostTime) {
     return {
-      label: 'Post a time',
+      label: '上传成绩',
       action: 'posttime',
       disabled: true,
-      note: 'The layout has changed since it was published. Update the track on the board first.',
+      note: '赛道布局自发布后已更改。请先更新排行榜上的赛道。',
     };
   }
   if (ms == null) {
     return {
-      label: 'Post a time',
+      label: '上传成绩',
       action: 'posttime',
       disabled: true,
       /* A pilot who has just flown twenty clean laps in practice and comes
        * here to post one is owed the real reason, not an invitation to fly
        * the lap they already flew. */
       note: practice
-        ? 'Practice laps stay off the public board. A run of 1, 3 or 5 laps puts its best lap here when it finishes.'
-        : 'Fly a clean lap on this track and the lap appears here.',
+        ? '练习圈不会发布到公共排行榜。完成 1、3 或 5 圈的正式飞行后，最佳圈速会显示在这里。'
+        : '在此赛道完成一次有效圈速后，成绩会显示在这里。',
     };
   }
   const best = readPostedBest(shareId);
@@ -3256,66 +3245,66 @@ function uploadAction(listing, { row = null, timePosted, practice = false }) {
   /* A lap off 100 goes up like any other, and the board prints its weight
    * beside the name, so the row says so before it is pressed. */
   const marked = weight !== WEIGHT_STOCK
-    ? ` It goes up marked Weight ${weight}%, the weight it was flown at.`
+    ? ` 上传时会标记配重 ${weight}%，即飞行时所用的配重。`
     : '';
   return {
-    label: isNew ? `Post new best, ${formatTime(ms)}` : `Post ${formatTime(ms)}`,
+    label: isNew ? `上传新纪录：${formatTime(ms)}` : `上传 ${formatTime(ms)}`,
     action: 'posttime',
     note: (isNew
-      ? 'Faster than the last time you posted from this browser. Sends this lap to the public board.'
-      : 'Send this lap to the public board under your name.') + marked,
+      ? '比你上次从此浏览器上传的成绩更快。将此圈速提交到公共排行榜。'
+      : '以你的名字将此圈速提交到公共排行榜。') + marked,
   };
 }
 
 function publishAction(listing, published) {
   if (published) {
     return {
-      label: 'Published',
+      label: '已发布',
       action: 'seat-board',
-      note: 'This track is on the public board. Opens its page.',
+      note: '此赛道已发布到公共排行榜。点击打开赛道页面。',
     };
   }
   if (listing && listing.canPublishNew) {
     const of = listing.sourceName ? ` of ${listing.sourceName}` : '';
     const by = listing.sourceAuthor ? ` by ${listing.sourceAuthor}` : '';
     return {
-      label: 'Publish this track',
+      label: '发布此赛道',
       action: 'publishcourse',
       note: listing.remix
-        ? `Your copy${of}${by}. Goes on the board under a new name. Then you can post a time.`
-        : 'Put this track on the public board. Then you can post a time.',
+        ? `这是${of}${by}的副本，将以新名称发布到排行榜。之后即可上传成绩。`
+        : '将此赛道发布到公共排行榜，然后即可上传成绩。',
     };
   }
   if (listing && listing.canUpdateListing && listing.layoutDrift) {
     return {
-      label: 'Update this track',
+      label: '更新此赛道',
       action: 'publishcourse',
-      note: 'The layout changed. Updating the board will clear posted times, then you can post a time.',
+      note: '赛道布局已更改。更新排行榜上的赛道会清除已发布的成绩，之后可重新上传。',
     };
   }
   if (listing && listing.kind === 'owned') {
     return {
-      label: 'Publish this track',
+      label: '发布此赛道',
       action: 'publishcourse',
       disabled: true,
-      note: 'Already on the board, and nothing has changed since.',
+      note: '此赛道已在排行榜中，且自发布后没有更改。',
     };
   }
   if (listing && listing.kind === 'community') {
     return {
-      label: 'Publish this track',
+      label: '发布此赛道',
       action: 'publishcourse',
       disabled: true,
-      note: 'Somebody else published this one. Edit a copy to put your own version on the board.',
+      note: '此赛道由其他人发布。请编辑副本，再将你的版本发布到排行榜。',
     };
   }
   return {
-    label: 'Publish this track',
+    label: '发布此赛道',
     action: 'publishcourse',
     disabled: true,
     note: listing && listing.kind === 'local'
-      ? 'A track needs a flying order before it can be published. Set one in the builder.'
-      : 'Nothing to publish. Build a track, or pick one from the board.',
+      ? '赛道需要设置飞行顺序后才能发布。请在赛道编辑器中设置。'
+      : '没有可发布的内容。请创建赛道或从排行榜中选择。',
   };
 }
 
@@ -3323,36 +3312,36 @@ function remixAction(listing) {
   if (listing && listing.canRemix) {
     const by = byLine(listing) ? ` ${byLine(listing)}` : '';
     return {
-      label: 'Edit a copy',
+      label: '编辑副本',
       action: 'remix',
-      note: `Open ${listing.name}${by} in the builder as your own track, under a new name.`,
+      note: `在赛道编辑器中打开${listing.name}${by}并创建你自己的赛道，使用新的名称。`,
     };
   }
   return {
-    label: 'Edit a copy',
+    label: '编辑副本',
     action: 'remix',
     disabled: true,
     note: listing && listing.kind === 'owned'
-      ? 'This one is already yours. Edit this track instead.'
-      : 'Only a published track by somebody else can be copied.',
+      ? '这已经是你的赛道。请改为编辑此赛道。'
+      : '只能复制其他人已发布的赛道。',
   };
 }
 
 function editOwnAction(listing) {
   if (listing && listing.kind === 'owned') {
     return {
-      label: 'Edit this track',
+      label: '编辑此赛道',
       action: 'editown',
-      note: 'Open this track in the builder. A rename updates the name on the board. A layout change asks before clearing times.',
+      note: '在赛道编辑器中打开此赛道。重命名会同步更新排行榜上的名称；布局更改后会在清除成绩前征求确认。',
     };
   }
   return {
-    label: 'Edit this track',
+    label: '编辑此赛道',
     action: 'editown',
     disabled: true,
     note: listing && listing.kind === 'community'
-      ? 'Somebody else published this one. Edit a copy to make it yours.'
-      : 'Nothing of yours on the board to edit.',
+      ? '此赛道由其他人发布。请编辑副本，将其变为自己的赛道。'
+      : '排行榜上没有可供你编辑的赛道。',
   };
 }
 
@@ -3464,12 +3453,12 @@ function courseCardRows(subject, seatRows = []) {
      * that the two want joining in words. Not a cursor stop. */
     { label: name, section: true },
     {
-      label: 'Fly it',
+      label: '飞行',
       action: 'card-fly',
       primary: true,
       note: board
-        ? `Load ${name} from the board and go straight to the starting blocks. A double click on its card does the same.`
-        : `Fly ${name}, straight from the starting blocks. A double click on its card does the same.`,
+        ? `从排行榜加载${name}并直接前往起点线。双击赛道卡片也可执行此操作。`
+        : `直接从起点线飞行${name}。双击赛道卡片也可执行此操作。`,
     },
   ];
   /* The seated track's own rows, when the card is the seat: Before you fly,
@@ -3488,17 +3477,17 @@ function courseCardRows(subject, seatRows = []) {
   });
   if (board) {
     rows.push({
-      label: 'Standings',
+      label: '排名',
       action: 'card-standings',
-      note: `Every time posted on ${name}, fastest first, and who flew them. Opens here, not on another site.`,
+      note: `${name}的所有已提交成绩，按圈速从快到慢排列，并显示飞手。直接在此处打开，不会跳转到其他网站。`,
     });
     rows.push({
-      label: 'This track on Tracks and times',
+      label: '在网页中打开',
       action: 'card-board',
-      note: `${name} on the public board: every time posted on it, who flew them and their ghosts. A link to send somebody. Opens in a new tab.`,
+      note: `${name}的公共页面，可将链接分享给他人。将在新标签页中打开。`,
     });
   }
-  rows.push({ label: 'Back to the list', action: 'card-back' });
+  rows.push({ label: '返回列表', action: 'card-back' });
   return rows;
 }
 
@@ -3548,7 +3537,7 @@ function orderedCourses(list, order) {
  * they cannot drift apart again. Each used to end "Choosing it loads the
  * track and flies it here", which stopped being true on 2026-08-19, when
  * choosing a card started listing what it can do. */
-const CARD_PRESS_NOTE = 'Choose it to see what you can do with it, or double click it to fly it.';
+const CARD_PRESS_NOTE = '选择赛道可查看可用操作，双击赛道卡片即可开始飞行。';
 
 /*
  * The tune, as named choices.
@@ -3575,13 +3564,13 @@ const CARD_PRESS_NOTE = 'Choose it to see what you can do with it, or double cli
  * left behind: an arrow key on the pause menu cost a lap with no warning.
  * The row says so now, and so does the hint on the screen itself.
  */
-const MID_RUN_WARNING = ' Changing it during a run puts the quad back on the start line.';
+const MID_RUN_WARNING = ' 飞行中更改此项会让四轴返回起点线。';
 
 function tuneItem(s, midRun) {
   const name = tuneById(s.tune).name;
   const adjusted = pidsAdjusted(s.pids, s.tune);
   return {
-    label: 'Tune',
+    label: '调校配置',
     /*
      * THE ADJUSTMENT STAYS ON THE ROW. That was the PIDs row's whole
      * contribution, and dropping it would have been the one thing lost in
@@ -3592,7 +3581,7 @@ function tuneItem(s, midRun) {
      */
     value: adjusted ? `${name}, ${pidsSummary(s.pids, s.tune).toLowerCase()}` : name,
     action: 'pids',
-    note: `${tuneById(s.tune).note} Opens ${SCREEN_TITLES.pids}, where the tune is chosen and Betaflight's own sliders adjust it. Your rates are kept.${midRun ? MID_RUN_WARNING : ''}`,
+    note: `${tuneById(s.tune).note} 打开${SCREEN_TITLES.pids}以选择调校配置并使用 Betaflight 自带滑块调整。速率设置会保留。${midRun ? MID_RUN_WARNING : ''}`,
   };
 }
 
@@ -3619,11 +3608,11 @@ function tunePickItem(s, midRun) {
   const ownTune = ids.includes(CUSTOM_TUNE.id);
   const door = ownTune
     ? ''
-    : ` Stock is the only tune shipped. Edit one on ${SCREEN_TITLES.fc} and save it, and it joins this row as ${CUSTOM_TUNE.name}.`;
+    : ` 当前仅提供默认调校配置。可在${SCREEN_TITLES.fc}中编辑并保存，保存后会出现在此列表中，名称为${CUSTOM_TUNE.name}。`;
   return {
     ...choice(
-      'Tune',
-      `Everything below belongs to this one, and each tune keeps its own adjustment.${door}${midRun ? MID_RUN_WARNING : ''}`,
+      '调校配置',
+      `以下设置均属于当前配置，每个配置都会单独保存调整结果。${door}${midRun ? MID_RUN_WARNING : ''}`,
       ids,
       s.tune,
       (id) => tuneById(id).name,
@@ -3664,7 +3653,7 @@ function craftItem(s, midRun) {
   const af = airframeById(s.airframe);
   const other = AIRFRAMES.find((a) => a.id !== s.airframe) || af;
   return choice(
-    'Aircraft',
+    '飞行器',
     `${af.blurb} Each aircraft keeps its own tune, PIDs, pack, weight and camera: changing it brings back that machine's as you left them, or its stock ones the first time, and switches the builder between a ${other.trackClass === 'micro' ? 'sixty metre field and a living room' : 'living room and a sixty metre field'}. Your own rates go with you unless they are still the stock ones.${midRun ? MID_RUN_WARNING : ''}`,
     AIRFRAME_IDS,
     s.airframe,
@@ -3701,7 +3690,7 @@ function ratesChanged(s) {
  * so a pilot can see what they are flying without opening it. */
 function ratesItem(s, midRun) {
   return {
-    label: 'Rates',
+    label: '速率',
     value: ratesShort(s.rates),
     action: 'rates',
     /*
@@ -3714,7 +3703,7 @@ function ratesItem(s, midRun) {
      * sentence would be a warning about something that does not happen.
      * The tune and the PIDs still carry it, because they still do it.
      */
-    note: `How far the sticks go, and how sharply. Yours, not the tune's. A radio in Acro flies this curve; key races start in Angle. Changing them mid run leaves the quad where it is and the clock running.`,
+    note: `摇杆控制幅度和灵敏度。速率属于飞手，而非调校配置。遥控器在自稳特技模式下使用此曲线；键盘竞速默认使用角度模式。飞行中更改速率不会让四轴返回起点线，计时也会继续。`,
   };
 }
 
@@ -3744,8 +3733,8 @@ function weightItem(s) {
   };
   const set = (v) => { s.weight = clampWeight(v, s.airframe); };
   const it = number(
-    'Weight',
-    `How heavy the quad feels. Right is heavier: it drops when you chop the throttle and stops hanging at the top of a jump. Left is lighter, and it floats. ${WEIGHT_STOCK} is the quad as it ships; changing it mid lap voids the lap, and a lap flown off ${WEIGHT_STOCK} goes on the public board with its weight beside your name.`,
+    '配重',
+    `调整四轴的轻重感。向右加重，收油时下降更快，也不会在跳跃顶端滞空；向左减重，四轴会更轻盈。出厂配重为 ${WEIGHT_STOCK}；飞行中更改会使本圈成绩无效，使用其他配重飞行的圈速会在公共排行榜上标记配重数值。`,
     spec,
     cur,
     set,
@@ -3759,9 +3748,9 @@ function weightItem(s) {
 
 function feelItem() {
   return {
-    label: 'Flight feel',
+    label: '飞行手感',
     action: 'feel',
-    note: 'Tell the tune work how the quad flies. One word is enough; your tune, PID adjustment and rates go with it.',
+    note: '告诉调校团队四轴的飞行感受。描述一两个词即可，调校配置、PID 调整和速率也会一并提交。',
   };
 }
 
@@ -3781,13 +3770,13 @@ function graphicsItem(s, scaleNow) {
    * so a pilot wondering why Auto never goes higher has the answer. */
   const top = GRAPHICS_IDS.indexOf(s.graphicsAutoCeiling);
   const tried = top >= 0 && top < GRAPHICS_IDS.length - 1
-    ? ` ${graphicsLabel(GRAPHICS_IDS[top + 1])} was tried on this machine and did not keep the picture on time, so Auto stays at ${graphicsLabel(GRAPHICS_IDS[top])} or below.`
+    ? `此设备无法在${graphicsLabel(GRAPHICS_IDS[top + 1])}画质下及时绘制画面，因此自动模式会保持在${graphicsLabel(GRAPHICS_IDS[top])}或更低。`
     : '';
   const note = s.graphicsAuto
-    ? `Auto: drawing at ${graphicsLabel(id)}${pct < 100 ? `, at ${pct} percent resolution right now` : ''}. It watches how the frames actually arrive, lowers the resolution when the picture runs late, and changes the preset between runs.${tried} Pick a preset to fix it by hand.`
+    ? `自动：当前以${graphicsLabel(id)}画质${pct < 100 ? `、${pct}% 分辨率` : ''}绘制。系统会监测实际帧率，在画面延迟时降低分辨率，并在两次飞行之间调整画质。${tried}选择具体画质即可关闭自动调整。`
     : graphicsNote(id);
   return choice(
-    'Graphics',
+    '画质',
     note,
     ['auto', ...GRAPHICS_IDS],
     s.graphicsAuto ? 'auto' : id,
@@ -3796,7 +3785,7 @@ function graphicsItem(s, scaleNow) {
      * segmented on Low and High, changing shape with its own value
      * (MENUS-PLAN.md 1.40). What Auto is drawing at is the note's first
      * sentence. */
-    (v) => (v === 'auto' ? 'Auto' : graphicsLabel(v)),
+    (v) => (v === 'auto' ? '自动' : graphicsLabel(v)),
     (v) => {
       if (v === 'auto') {
         s.graphicsAuto = true;
@@ -3821,15 +3810,15 @@ function graphicsItem(s, scaleNow) {
  */
 function lowLatencyNote(on, info) {
   const granted = Boolean(info && info.lowLatency);
-  const what = 'Draws each frame straight to the screen instead of queueing it behind the page, which can take a frame or two off the time between your sticks and the picture. It can tear.';
+  const what = '逐帧直接绘制到屏幕，而不是排在网页后等待显示，可将摇杆输入到画面响应的延迟缩短一到两帧，但可能出现画面撕裂。';
   if (!on) {
     return granted
-      ? `Off from the next load. ${what} This browser is using it until you reload.`
-      : `Off. ${what} Reload after switching it on.`;
+      ? `下次加载时关闭。${what}重新加载前，此浏览器仍会使用该模式。`
+      : `已关闭。${what}开启此模式后请重新加载页面。`;
   }
   return granted
-    ? `On, and this browser is using it. ${what}`
-    : `On, but this browser did not grant it, so frames still queue behind the page. ${what} Not every browser can; if you just switched it on, reload.`;
+    ? `已开启，且此浏览器正在使用。${what}`
+    : `已开启，但此浏览器未授予该功能，因此画面仍会排在网页后等待显示。${what}并非所有浏览器都支持；如果刚刚开启，请重新加载页面。`;
 }
 
 /*
@@ -3843,13 +3832,13 @@ function latencyItem(p) {
   const key = p && p.key;
   const bits = [];
   if (p && p.hz) {
-    bits.push(`the screen refreshes at ${p.hz} Hz`);
+    bits.push(`屏幕刷新率为 ${p.hz} Hz`);
   }
   if (p && p.gpuMs != null) {
-    bits.push(`the GPU takes about ${Math.round(p.gpuMs)} ms over a frame`);
+    bits.push(`GPU 绘制每帧约需 ${Math.round(p.gpuMs)} 毫秒`);
   }
   if (p) {
-    bits.push(p.lowLatency ? 'Low latency view is in use' : 'frames queue behind the page (Low latency view is not in use)');
+    bits.push(p.lowLatency ? '正在使用低延迟画面' : '画面在网页后排队（未使用低延迟画面）');
   }
   /* A 60 Hz reading on a big screen is very often a Windows display mode
    * left at 60 on a faster panel (bug-0054c4c6: a 144 Hz monitor flown at
@@ -3859,29 +3848,29 @@ function latencyItem(p) {
   const wide = typeof window !== 'undefined' && window.screen
     ? window.screen.width * (window.devicePixelRatio || 1) : 0;
   const sixty = p && p.hz === 60 && wide >= 2560
-    ? ' If this monitor can run faster than 60 Hz, check that the system is set to its top refresh rate (Windows: Settings, Display, Advanced display), because the page can only draw as often as the display it is given.'
+    ? ' 如果显示器支持高于 60 Hz 的刷新率，请检查系统是否已设置为最高刷新率（Windows：设置 > 系统 > 屏幕 > 高级显示）。网页刷新率无法超过显示器当前的刷新率。'
     : '';
-  const facts = bits.length ? ` Here ${bits.join(', ')}.${sixty}` : '';
+  const facts = bits.length ? ` 当前设备：${bits.join('、')}。${sixty}` : '';
   if (!p || !p.supported) {
     return {
-      label: 'Input to screen',
-      value: 'Not measurable here',
-      note: `This browser does not report input timing, so the time from a press to the screen cannot be read.${facts}`,
+      label: '输入到画面的延迟',
+      value: '当前无法测量',
+      note: `此浏览器不提供输入计时，因此无法读取从按下按键到画面更新所需的时间。${facts}`,
       info: true,
     };
   }
   if (!key) {
     return {
-      label: 'Input to screen',
-      value: 'Press a few keys',
-      note: `Measured from your own key presses and clicks to the frame that first showed them, so it fills in as you use the menus.${facts}`,
+      label: '输入到画面的延迟',
+      value: '请按几次按键',
+      note: `测量你按下按键或点击鼠标，到画面首次显示响应所需的时间。使用菜单时会逐步收集数据。${facts}`,
       info: true,
     };
   }
   return {
-    label: 'Input to screen',
-    value: `About ${key.ms} ms`,
-    note: `From a key press to the frame that first showed it, the median of your last ${key.n}, as this browser reports it; the display's own delay after that is not included. One frame at 60 Hz is 17 ms.${facts}`,
+    label: '输入到画面的延迟',
+    value: `约 ${key.ms} 毫秒`,
+    note: `这是此浏览器报告的最近 ${key.n} 次输入中位数，表示从按键到画面首次响应的时间；不包括显示器自身的延迟。60 Hz 下每帧约为 17 毫秒。${facts}`,
     info: true,
   };
 }
@@ -3889,9 +3878,9 @@ function latencyItem(p) {
 function gpuItem(info) {
   if (!info) {
     return {
-      label: 'GPU',
-      value: 'Detecting',
-      note: 'Read from the WebGL context that is drawing the world.',
+      label: '图形处理器',
+      value: '正在检测',
+      note: '从负责绘制场景的 WebGL 上下文读取。',
       info: true,
     };
   }
@@ -3901,7 +3890,7 @@ function gpuItem(info) {
    * The note says the whole thing, and so does the row's tooltip. */
   const short = String(info.display || '').split(' (')[0].trim() || info.display;
   return {
-    label: 'GPU',
+    label: '图形处理器',
     value: short,
     title: info.display,
     note: info.note,
@@ -3918,12 +3907,12 @@ function padChooseNote(info, blind = null) {
     if (blind) {
       return blind.note;
     }
-    return 'Plug in a radio in joystick mode. If more than one is plugged in, this is how you pick which one flies.';
+    return '请连接处于摇杆模式的遥控器。如果连接了多个设备，可在此选择用于飞行的设备。';
   }
   if (n === 1) {
-    return `One device is plugged in, ${info.using}. Open this to confirm it, or to switch to the keyboard.`;
+    return `已连接 1 个设备：${info.using}。打开此项以确认，或切换到键盘。`;
   }
-  return `${n} devices are plugged in. Move the one you want. Windows lists them in Game Controllers order; this screen is how you pick.`;
+  return `已连接 ${n} 个设备。移动想要使用的摇杆即可识别。Windows 按“游戏控制器”中的顺序列出设备，可在此选择。`;
 }
 
 /*
@@ -4174,41 +4163,41 @@ const WAYS = [
     id: 'race-5inch',
     airframe: '5inch',
     mode: 'race',
-    label: 'Five inch racing',
+    label: '五寸竞速',
     art: 'assets/gate/race.jpg',
-    blurb: 'A gated track on a sixty metre field, against the clock. A 710 gram 6S quad at forty metres a second, and every lap you finish can go on the public board.',
-    facts: ['6S', '220 mm', 'The board'],
+    blurb: '在六十米赛场上穿越竞速门，与时间赛跑。驾驶 710 克的 6S 四轴，以每秒 40 米的速度飞行；完成的圈速都会提交到公共排行榜。',
+    facts: ['6S', '220 毫米', '排行榜'],
   },
   {
     id: 'race-whoop65',
     airframe: 'whoop65',
     mode: 'race',
-    label: 'Whoop racing',
+    label: '室内微型机竞速',
     art: 'assets/gate/whoop.jpg',
     /* Says what configs/airframes.js says, in the same words: the machine
      * flies the five inch's model and the room is built to match, so the
      * picture is a whoop's and the hands get the five inch. The old line
      * promised three times the angular acceleration, which was true of a
      * plant nothing selects now. */
-    blurb: 'The same clock, indoors. A 65 mm ducted whoop through a track that fits in a living room, on 28 inch gates.',
-    facts: ['1S', '65 mm', 'Indoors'],
+    blurb: '同样的计时竞速，转到室内进行。驾驶 65 毫米涵道微型机，穿越适合客厅大小的赛道和 28 英寸竞速门。',
+    facts: ['1S', '65 毫米', '室内'],
   },
   {
     id: 'freestyle-5inch',
     airframe: '5inch',
     mode: 'freestyle',
-    label: 'Freestyle',
+    label: '自由式',
     art: 'assets/gate/freestyle.jpg',
     /* No clock and no score in the line, because neither is on until a
      * pilot asks for them. See DEFAULTS.freestyleScoring. The aircraft is
      * named because this card seats one: the town is five hundred metres
      * across and it is the five inch's. */
-    blurb: 'The whole town on the five inch, or a map you build yourself. Roofs, alleys and a level crossing, or cranes and bandos wherever you put them. No clock, no gates, and trick names are a switch inside.',
+    blurb: '驾驶五寸四轴探索整座城镇，也可以飞自己创建的地图。穿过屋顶、巷道和平交道口，或在你指定的位置摆放吊车和废弃建筑。没有计时和竞速门，技巧名称显示也可单独开关。',
     /* The mode's three, not the machine's, and the machine is on the card
      * anyway: the plan mark over the picture is the five inch's. Three
      * words that fit one line on a landscape phone, where the blurb is
      * hidden and these are the whole of the card. */
-    facts: ['No gates', 'No clock', 'Build a map'],
+    facts: ['无竞速门', '无计时', '创建地图'],
   },
 ].map((w) => ({ ...w, action: `way-${w.id}` }));
 
@@ -4230,10 +4219,10 @@ const WAYS = [
  */
 const BUILDER_CARD = {
   id: 'builder',
-  label: 'Builder',
+  label: '地图编辑器',
   art: 'assets/gate/builder.jpg',
-  blurb: 'Make your own. A race track for the five inch, a room for the whoop, or a freestyle map of bandos, cranes and named gaps, drawn from above and flown from the same page.',
-  facts: ['Tracks', 'Rooms', 'Maps'],
+  blurb: '创建你自己的内容：为五寸四轴设计竞速赛道，为微型机搭建室内场地，或创建包含废弃建筑、吊车和命名间隙的自由飞行地图。俯视绘制，完成后即可在同一页面起飞。',
+  facts: ['竞速赛道', '室内场地', '自由地图'],
   action: 'builder',
 };
 
@@ -4673,7 +4662,7 @@ export class Ui {
     /* The clock is a lap on the race field and an airtime in freestyle, and
      * an unlabelled number that means two different things is how a pilot
      * learns to distrust an instrument. */
-    this.osdClockLabel = el('div', 'osd-label', 'Lap');
+    this.osdClockLabel = el('div', 'osd-label', '圈速');
     this.osdTimer = el('div', 'osd-timer', '--.--');
     this.osdGate = el('div', 'osd-gate', '');
     this.osdBest = el('div', 'osd-best', '');
@@ -4706,7 +4695,7 @@ export class Ui {
      * left corner is the pack and the mode, and the top right is speed and
      * height up to Pause. Off on a desk, where the mode is under the speed. */
     this.osdFlightTouch = el('div', 'osd-sub osd-mode osd-mode-touch', '');
-    packBlock.append(el('div', 'osd-label', 'Pack'), this.osdPack, packBar, this.osdFlightTouch);
+    packBlock.append(el('div', 'osd-label', '电池'), this.osdPack, packBar, this.osdFlightTouch);
     this.osdHits = el('div', 'osd-sub osd-hits', '');
     packBlock.append(this.osdHits);
     this.osdSpeed = el('div', 'osd-value', '');
@@ -4717,15 +4706,15 @@ export class Ui {
      * held sideways. The sheet shows one; only the number is written. */
     this.osdAlt = el('div', 'osd-sub', '');
     this.osdAltNum = el('span', '', '');
-    this.osdAlt.append(this.osdAltNum, el('span', 'osd-alt-long', ' above the ground'), el('span', 'osd-alt-short', ' up'));
+    this.osdAlt.append(this.osdAltNum, el('span', 'osd-alt-long', ' 离地高度'), el('span', 'osd-alt-short', ' 高度'));
     this.osdThrBar = el('div', 'bar-fill warm');
     const thrBar = el('div', 'bar');
     thrBar.append(this.osdThrBar);
     const flightBlock = el('div', 'osd-corner osd-right');
-    flightBlock.append(this.osdSpeed, this.osdFlight, this.osdAlt, el('div', 'osd-label', 'Throttle'), thrBar);
+    flightBlock.append(this.osdSpeed, this.osdFlight, this.osdAlt, el('div', 'osd-label', '油门'), thrBar);
     const sticks = el('div', 'osd-sticks is-off');
-    this.osdStickLeft = makeGimbal('Yaw, throttle');
-    this.osdStickRight = makeGimbal('Roll, pitch');
+    this.osdStickLeft = makeGimbal('偏航、油门');
+    this.osdStickRight = makeGimbal('横滚、俯仰');
     /*
      * BETWEEN THE GIMBALS, which is where the report that asked for it said
      * to put it. The container used to be hidden as a unit whenever a radio
@@ -4739,7 +4728,7 @@ export class Ui {
       max: weightMaxFor(this.settings.airframe),
       step: WEIGHT_STEP,
       value: this.settings.weight,
-      label: 'Weight, how heavy the quad feels',
+      label: '配重，影响四轴的轻重感',
     });
     sticks.append(this.osdStickLeft.box, this.osdAir.box, this.osdStickRight.box);
     this.osdSticks = sticks;
@@ -4895,9 +4884,9 @@ export class Ui {
      * title and a screen reader's text instead. It shares a row with
      * Patreon, so both keep their place under the wordmark and the menu
      * gets the lines back. */
-    const betaLine = 'Expect bugs and rough edges. It is still being built, and it will improve.';
+    const betaLine = '目前仍在开发中，可能存在错误或不完善之处，后续会持续改进。';
     const beta = el('p', 'beta-note');
-    const betaTag = el('span', 'beta-tag', 'Beta');
+    const betaTag = el('span', 'beta-tag', '测试版');
     betaTag.title = betaLine;
     beta.append(betaTag, el('span', 'sr-only', ` ${betaLine}`));
     const chips = el('div', 'brand-chips');
@@ -4924,10 +4913,10 @@ export class Ui {
      * the builder's own strip, which already said it.
      */
     /* First run only. */
-    this.firstNote = el('p', 'keep-note first-note', 'A quad has no brakes and no wings. Point it where you want to go and push. Two minutes and you will be through a gate.');
+    this.firstNote = el('p', 'keep-note first-note', '四轴没有刹车，也没有机翼。想往哪里飞，就把机头转向那里并加油门。两分钟后，你就能穿过一道门。');
     brand.append(this.firstNote);
-    this.wikiTeaser = btn('wiki-teaser', 'Simulating FPV, for nerds');
-    this.wikiTeaser.setAttribute('aria-label', 'Open the FPV wiki');
+    this.wikiTeaser = btn('wiki-teaser', 'FPV 模拟原理：深入了解');
+    this.wikiTeaser.setAttribute('aria-label', '打开 FPV 百科');
     this.wikiTeaser.addEventListener('click', () => this.act('wiki'));
     brand.append(this.wikiTeaser);
     const titleBlock = wrapMenu();
@@ -4982,10 +4971,10 @@ export class Ui {
      * one it opens on.
      */
     const howto = el('div', 'screen screen-page screen-howto');
-    howto.append(el('h2', null, 'How to fly'));
+    howto.append(el('h2', null, '飞行教程'));
     /* ONE LINE (MENUS-PLAN.md 2.5). The gate colours went to the line under
      * the keys, with the rest of what a first run needs (see renderHowto). */
-    howto.append(el('p', 'howto-lede', 'No brakes and no wings: to slow down or turn, point the quad somewhere else and push.'));
+    howto.append(el('p', 'howto-lede', '四轴没有刹车，也没有机翼。油门只控制螺旋桨的推力；想减速或转弯，就将机头转向其他方向并加油门。穿过闪烁的门：绿色表示正确方向，红色表示反面。'));
 
     const howtoTabs = el('div', 'howto-tabs');
     this.howtoTabs = {};
@@ -4993,8 +4982,8 @@ export class Ui {
      * the row because on that device it is the way this page's reader is
      * most likely holding the machine. */
     const tabList = [
-      ...(touchWanted() ? [['touch', 'Touch']] : []),
-      ['keyboard', 'Keyboard'], ['radio', 'Radio or gamepad'], ['launch', 'Launch control'],
+      ...(touchWanted() ? [['touch', '触屏']] : []),
+      ['keyboard', '键盘'], ['radio', '遥控器或手柄'], ['launch', '起步控制'],
     ];
     for (const [id, label] of tabList) {
       const b = btn('howto-tab', label);
@@ -5006,8 +4995,8 @@ export class Ui {
 
     const howtoBody = el('div', 'howto-body');
     const rig = el('div', 'howto-rig');
-    this.howtoStickLeft = makeGimbal('Yaw, throttle');
-    this.howtoStickRight = makeGimbal('Roll, pitch');
+    this.howtoStickLeft = makeGimbal('偏航、油门');
+    this.howtoStickRight = makeGimbal('横滚、俯仰');
     const sticksRow = el('div', 'howto-sticks');
     sticksRow.append(this.howtoStickLeft.box, this.howtoStickRight.box);
     this.howtoLive = el('div', 'howto-live', '');
@@ -5018,7 +5007,7 @@ export class Ui {
 
     this.howtoMode = el('p', 'howto-mode', '');
     howto.append(this.howtoMode);
-    const howtoWiki = btn('howto-wiki', 'Why this works: the FPV wiki');
+    const howtoWiki = btn('howto-wiki', '了解原理：FPV 百科');
     howtoWiki.addEventListener('click', () => this.act('wiki'));
     howto.append(howtoWiki);
 
@@ -5041,8 +5030,8 @@ export class Ui {
      * shape the scorer does not want. See src/ui/trickfilm.js.
      */
     const tricks = el('div', 'screen screen-page screen-tricks');
-    tricks.append(el('h2', null, 'Trick list'));
-    tricks.append(el('p', 'rates-lede', 'Every trick the scorer is known to name, what it pays, and what it looks like. Pick one and watch it: the picture is drawn from the same definition the scorer matches against, so what you see is exactly what it is waiting for. Each one has been flown and scored in testing, which is what earns it a place here. Points are before the combo, which multiplies them.'));
+    tricks.append(el('h2', null, '技巧列表'));
+    tricks.append(el('p', 'rates-lede', '这里列出计分器能识别的所有技巧、对应分数和动作示意。选择一项即可观看动画：动画与计分器使用相同的动作定义，因此展示的正是它要识别的动作。每项技巧都经过实际飞行和计分测试。分数为连击加成前的基础分。'));
     const trickStage = el('div', 'trick-stage');
     this.trickCanvas = el('canvas', 'trick-film');
     const trickSide = el('div', 'trick-side');
@@ -5073,8 +5062,8 @@ export class Ui {
      * content, the rows are the furniture, and furniture goes by the door.
      */
     const credits = el('div', 'screen screen-page screen-credits');
-    credits.append(el('h2', null, 'About'));
-    credits.append(el('p', 'rates-lede', 'Who made this, whose work it stands on, and how to reach them.'));
+    credits.append(el('h2', null, '致谢'));
+    credits.append(el('p', 'rates-lede', '了解项目作者、所使用的开源作品，以及联系方式。'));
     this.creditsRoll = el('div', 'credits-roll');
     fillCredits(this.creditsRoll, { assetBase: 'assets/credits' });
     const creditsBlock = wrapMenu();
@@ -5216,7 +5205,7 @@ export class Ui {
     /* Freestyle. Same card machinery as Race, different contents, and no
      * publish cluster because nothing here is timed or posted. */
     const freestyle = el('div', 'screen screen-page screen-courses screen-freestyle');
-    freestyle.append(el('h2', null, 'Maps'));
+    freestyle.append(el('h2', null, '自由式'));
     /*
      * The lede used to end "Pick one and fly it", which was the instruction
      * for a screen that offered four worlds, and it said "no board", which
@@ -5232,7 +5221,7 @@ export class Ui {
     /* One line (MENUS-PLAN.md 2.5). What is counted, and that trick names
      * start off, is the Scoring row's note, which says it where the switch
      * is; the machine is the Quad row's. */
-    freestyle.append(el('p', 'rates-lede', 'Open ground, no gates: the town, your map, or one from the board.'));
+    freestyle.append(el('p', 'rates-lede', '可以在整座城镇、自己用赛道编辑器制作的地图，或排行榜上的最新地图中自由飞行，这些地图都没有赛门。飞行器设置在这里调整。间隙穿越、贴地滑行和追尾从第一次飞行起就会计分；下方开关可启用特技名称识别功能，该功能仍在开发中，默认关闭。'));
     this.freestyleCards = el('div', 'map-cards');
     /*
      * THE BOARD'S MAPS, the Race room's board strip for freestyle: the ten
@@ -5276,7 +5265,7 @@ export class Ui {
      * quad above a list of the pilot's sound levels.
      */
     const quad = el('div', 'screen screen-page screen-quad');
-    quad.append(el('h2', null, 'Quad'));
+    quad.append(el('h2', null, '四轴'));
     quad.append(el('p', 'rates-lede', 'The aircraft, its tune, the camera and how it flies.'));
     const quadBlock = wrapMenu();
     this.quadMenu = quadBlock.menu;
@@ -5292,7 +5281,7 @@ export class Ui {
     this.screens.quad = quad;
 
     const pilot = el('div', 'screen screen-page screen-pilot');
-    pilot.append(el('h2', null, 'Settings'));
+    pilot.append(el('h2', null, '设置'));
     pilot.append(el('p', 'rates-lede', 'You, your radio and your rates, the picture and the sound.'));
     const pilotBlock = wrapMenu();
     this.pilotMenu = pilotBlock.menu;
@@ -5336,7 +5325,7 @@ export class Ui {
      * link for sending somebody rather than as the only way to see a time.
      */
     const standings = el('div', 'screen screen-page screen-standings');
-    standings.append(el('h2', null, 'Standings'));
+    standings.append(el('h2', null, '排名'));
     this.standingsLede = el('p', 'rates-lede', '');
     standings.append(this.standingsLede);
     this.standingsTable = el('div', 'standings-table');
@@ -5399,14 +5388,14 @@ export class Ui {
      * src/fc/ratescurve.js. The dots on it are the live sticks.
      */
     const rates = el('div', 'screen screen-page screen-rates');
-    rates.append(el('h2', null, 'Rates'));
+    rates.append(el('h2', null, '速率'));
     rates.append(el(
       'p',
       'rates-lede',
       /* One line (MENUS-PLAN.md 2.5). The five systems are the Rates type
        * row's note, and what a key race does with the curve is the keyboard
        * Stick path row's. */
-      'How far the sticks turn the quad. They stay when you switch tunes.',
+      '设置摇杆输入与旋转速率的关系。选择熟悉的速率系统并输入数值；Betaflight 的五种系统均可使用。速率属于飞手，不属于调校，切换调校时会保留。遥控器在特技模式下使用此曲线；键盘竞速默认使用角度模式，不受此曲线影响。',
     ));
     this.ratesPanel = mountRatesPanel();
     const ratesBlock = wrapMenu();
@@ -5441,7 +5430,7 @@ export class Ui {
       'rates-lede',
       /* One line (MENUS-PLAN.md 2.5). What each slider does is its row's
        * note, the master multiplier's included. */
-      'How hard the flight controller works. Kept for each tune.',
+      '调整飞控的控制力度。滑块由 Betaflight 固件本身实现，会从当前调校的默认数值开始调整；总倍率可同时缩放所有数值。每种调校分别保存自己的调整。速率位于独立页面，不受此处设置影响。',
     ));
     this.pidsPanel = mountPidsPanel();
     const pidsBlock = wrapMenu();
@@ -5478,36 +5467,36 @@ export class Ui {
     bfLink.target = '_blank';
     bfLink.rel = 'noopener noreferrer';
     homage.append(
-      document.createTextNode('Homage of '),
+      document.createTextNode('致敬 '),
       cfgLink,
-      document.createTextNode(' 10.10 colours and tabs, not that app. No Vue, no MSP, no iframe, no CLI paste. Firmware is compiled '),
+      document.createTextNode(' 10.10 的配色与标签页，但这并不是那个应用。无 Vue、无 MSP、无 iframe，也不支持粘贴 CLI 命令。固件已编译 '),
       bfLink,
-      document.createTextNode(' 4.5.1. With thanks to the Betaflight developers. GPLv3.'),
+      document.createTextNode(' 4.5.1。感谢 Betaflight 开发者。GPLv3。'),
     );
     fcHead.append(homage);
     const fcExit = el('div', 'fc-exit');
-    this.fcSaveExit = btn('fc-exit-btn fc-exit-save', 'Save and exit');
+    this.fcSaveExit = btn('fc-exit-btn fc-exit-save', '保存并退出');
     this.fcSaveExit.addEventListener('click', (e) => {
       e.stopPropagation();
       this.act('fc-save-exit');
     });
-    this.fcLeave = btn('fc-exit-btn fc-exit-leave', 'Exit without saving');
+    this.fcLeave = btn('fc-exit-btn fc-exit-leave', '不保存并退出');
     this.fcLeave.addEventListener('click', (e) => {
       e.stopPropagation();
       this.act('fc-back');
     });
     const fcExitHint = el('div', 'fc-exit-hint');
     fcExitHint.append(el('kbd', null, 'Esc'));
-    this.fcExitCopy = el('span', 'fc-exit-copy', 'exits without saving');
+    this.fcExitCopy = el('span', 'fc-exit-copy', '不保存并退出');
     fcExitHint.append(this.fcExitCopy);
     fcExit.append(this.fcSaveExit, this.fcLeave, fcExitHint);
     this.fcExit = fcExit;
     const fcBody = el('div', 'fc-body');
     this.fcTabs = el('nav', 'fc-tabs');
-    this.fcTabs.setAttribute('aria-label', 'Configurator tabs');
+    this.fcTabs.setAttribute('aria-label', '配置器标签页');
     const fcWork = el('div', 'fc-work');
     this.fcPages = el('div', 'fc-pages');
-    this.fcPages.setAttribute('aria-label', 'PID Tuning pages');
+    this.fcPages.setAttribute('aria-label', 'PID 调校页面');
     this.fcPages.hidden = true;
     const fcBlock = wrapMenu();
     this.fcMenu = fcBlock.menu;
@@ -5516,22 +5505,22 @@ export class Ui {
     this.fcAttitude = el('canvas', 'fc-attitude');
     this.fcAttitude.width = 220;
     this.fcAttitude.height = 220;
-    this.fcAttitude.setAttribute('aria-label', 'Attitude');
+    this.fcAttitude.setAttribute('aria-label', '姿态');
     this.fcAttitude.hidden = true;
     fcWork.append(this.fcPages, fcBlock.stage, this.fcAttitude);
     fcBody.append(this.fcTabs, fcWork);
-    const fcStatus = el('div', 'fc-status', 'Connected: WASM  ·  Betaflight 4.5.1  ·  PID 1 kHz  ·  Profile 0  ·  Homage of Configurator 10.10, not that app');
+    const fcStatus = el('div', 'fc-status', '已连接：WASM · Betaflight 4.5.1 · PID 1 kHz · 配置文件 0 · 致敬 Configurator 10.10，并非原应用');
     fc.append(fcHead, fcExit, fcBody, fcStatus);
     this.screens.fc = fc;
 
     const calibrate = el('div', 'screen screen-page screen-calibrate');
-    calibrate.append(el('h2', null, 'Calibrate sticks'));
+    calibrate.append(el('h2', null, '校准摇杆'));
     this.calKicker = el('div', 'cal-kicker', '');
     this.calPrompt = el('p', 'cal-prompt', '');
     this.calHint = el('p', 'cal-hint', '');
     const calSticks = el('div', 'cal-sticks');
-    this.calStickLeft = makeGimbal('Yaw, throttle');
-    this.calStickRight = makeGimbal('Roll, pitch');
+    this.calStickLeft = makeGimbal('偏航、油门');
+    this.calStickRight = makeGimbal('横滚、俯仰');
     calSticks.append(this.calStickLeft.box, this.calStickRight.box);
     /*
      * THE RAW AXES, BECAUSE THE GIMBALS ABOVE CANNOT SHOW AN AXIS THEY HAVE
@@ -5548,15 +5537,15 @@ export class Ui {
     this.calAxisCells = [];
     this.calList = el('ol', 'cal-steps');
     const calBtns = el('div', 'cal-actions');
-    this.calCancelBtn = btn('name-dialog-btn', 'Cancel');
+    this.calCancelBtn = btn('name-dialog-btn', '取消');
     /* Only ever shown on the menu switch step, and only a radio reporting
      * no buttons is asked that. See skipCalibrationSelect in input.js. */
-    this.calSkipBtn = btn('name-dialog-btn', 'No switch, skip');
+    this.calSkipBtn = btn('name-dialog-btn', '没有开关，跳过');
     this.calSkipBtn.hidden = true;
     /* Only on the check step, and only when the throttle is reading high
      * enough to fly the quad with nobody touching it. See zeroThrottleHere
      * in input.js for the radio this exists for. */
-    this.calZeroBtn = btn('name-dialog-btn', 'Throttle zero is here');
+    this.calZeroBtn = btn('name-dialog-btn', '将当前位置设为油门零位');
     this.calZeroBtn.hidden = true;
     /*
      * REVERSE THE CHANNEL UNDER THEIR THUMB, and the label names it rather
@@ -5564,13 +5553,13 @@ export class Ui {
      * the pilot never has to choose from a list: whatever they are moving
      * is what the button is about. See movingChannel in input.js.
      */
-    this.calRevBtn = btn('name-dialog-btn', 'Reverse');
+    this.calRevBtn = btn('name-dialog-btn', '反转通道');
     this.calRevBtn.hidden = true;
     /* Only on the check step, where the two drawn gimbals are captioned
      * and a pilot can see that they are on the wrong hands. */
-    this.calModeBtn = btn('name-dialog-btn', 'Swap stick mode');
+    this.calModeBtn = btn('name-dialog-btn', '切换摇杆模式');
     this.calModeBtn.hidden = true;
-    this.calSaveBtn = btn('name-dialog-btn on', 'Save mapping');
+    this.calSaveBtn = btn('name-dialog-btn on', '保存映射');
     this.calSaveBtn.disabled = true;
     this.calCancelBtn.addEventListener('click', () => this.act('calibrate-cancel'));
     this.calSkipBtn.addEventListener('click', () => this.act('calibrate-skip'));
@@ -5609,13 +5598,13 @@ export class Ui {
      * can leave it and the shell check walks it.
      */
     const stickhelp = el('div', 'screen screen-page screen-stickhelp');
-    stickhelp.append(el('h2', null, 'Stick help'));
+    stickhelp.append(el('h2', null, '摇杆帮助'));
     stickhelp.append(el(
       'p',
       'stickhelp-lede',
       /* One line (MENUS-PLAN.md 2.5). What a moving bar means is the line
        * under the bars, which says it about the bar that moved. */
-      'Move the stick that is not working to each end, and watch its bar.',
+      '将未正常工作的摇杆推到两端，并观察对应的指示条。',
     ));
     this.stickAxes = el('div', 'cal-axes stickhelp-axes');
     this.stickAxisCells = [];
@@ -5636,15 +5625,15 @@ export class Ui {
     this.screens.stickhelp = stickhelp;
 
     const padpick = el('div', 'screen screen-page screen-padpick');
-    padpick.append(el('h2', null, 'Choose joystick'));
-    this.padKicker = el('div', 'cal-kicker', 'Which device');
-    this.padPrompt = el('p', 'cal-prompt', 'Move the joystick you want to fly with.');
+    padpick.append(el('h2', null, '选择摇杆设备'));
+    this.padKicker = el('div', 'cal-kicker', '选择设备');
+    this.padPrompt = el('p', 'cal-prompt', '移动你想用于飞行的摇杆。');
     this.padHint = el('p', 'cal-hint', '');
     this.padCards = el('div', 'pad-cards');
     const padBtns = el('div', 'cal-actions pad-actions');
     this.padYesBtn = btn('name-dialog-btn on', 'Yes, use this');
-    this.padNoBtn = btn('name-dialog-btn', 'No, not this one');
-    this.padSkipBtn = btn('name-dialog-btn', 'Use keyboard instead');
+    this.padNoBtn = btn('name-dialog-btn', '不是这个设备');
+    this.padSkipBtn = btn('name-dialog-btn', '改用键盘');
     this.padYesBtn.addEventListener('click', () => this.act('padpick-yes'));
     this.padNoBtn.addEventListener('click', () => this.act('padpick-no'));
     this.padSkipBtn.addEventListener('click', () => {
@@ -5678,9 +5667,9 @@ export class Ui {
     const resultsCopy = el('div', 'results-copy');
     const resultsTop = el('div', 'results-top');
     this.resultsKicker = el('div', 'results-kicker', '');
-    this.resultsHead = el('h2', 'results-head', 'Run complete');
+    this.resultsHead = el('h2', 'results-head', '飞行完成');
     this.resultsHero = el('div', 'results-hero');
-    this.resultsHeroCap = el('div', 'results-hero-cap', 'Best lap');
+    this.resultsHeroCap = el('div', 'results-hero-cap', '最佳单圈');
     this.resultsHeroTime = el('div', 'results-hero-time', '');
     this.resultsHeroMeta = el('div', 'results-hero-meta', '');
     this.resultsHero.append(this.resultsHeroCap, this.resultsHeroTime, this.resultsHeroMeta);
@@ -5753,8 +5742,8 @@ export class Ui {
      * report was about, and it is one press from any screen that has the
      * chip on it.
      */
-    this.bugChip = btn('bug-chip', 'Report bug, give feedback');
-    this.bugChip.title = 'F8 also opens this.';
+    this.bugChip = btn('bug-chip', '报告问题 / 提交反馈');
+    this.bugChip.title = '按 F8 也可打开此面板。';
     this.bugChip.addEventListener('click', () => this.openBugReport());
 
     /*
@@ -5773,8 +5762,8 @@ export class Ui {
      * itself when the thumb sticks are up, because that overlay brings its
      * own and two Pause buttons in one corner is worse than none.
      */
-    this.pauseChip = btn('bug-chip pause-chip', 'Pause');
-    this.pauseChip.title = 'Escape also pauses.';
+    this.pauseChip = btn('bug-chip pause-chip', '暂停');
+    this.pauseChip.title = '按 Escape 也可暂停。';
     this.pauseChip.addEventListener('click', () => {
       if (this.screen !== 'flight') {
         return;
@@ -5785,12 +5774,12 @@ export class Ui {
 
     this.musicDock = el('div', 'music-dock');
     this.musicDock.setAttribute('role', 'group');
-    this.musicDock.setAttribute('aria-label', 'Music');
+    this.musicDock.setAttribute('aria-label', '音乐');
     this.musicPrev = btn('music-skip', '‹');
-    this.musicPrev.setAttribute('aria-label', 'Previous track');
+    this.musicPrev.setAttribute('aria-label', '上一首');
     this.musicPrev.tabIndex = -1;
     this.musicNext = btn('music-skip', '›');
-    this.musicNext.setAttribute('aria-label', 'Next track');
+    this.musicNext.setAttribute('aria-label', '下一首');
     this.musicNext.tabIndex = -1;
     /*
      * THE NAME IS THE MUTE, because the dock is already the shape of the
@@ -5873,7 +5862,7 @@ export class Ui {
       return [];
     }
     return [{
-      label: 'Ghost',
+      label: '幽灵机',
       value: this.ghostRow.value,
       note: this.ghostRow.note,
       adjust: (d) => {
@@ -5920,7 +5909,7 @@ export class Ui {
     return new Promise((resolve) => {
       this.nameWait = resolve;
       const box = el('div', 'name-dialog-box');
-      box.append(el('h2', null, title || 'Your name'));
+      box.append(el('h2', null, title || '你的名字'));
       if (detail) {
         box.append(el('p', 'lede', detail));
       }
@@ -5984,8 +5973,8 @@ export class Ui {
         inputs.push({ spec, field });
       }
       const row = el('div', 'name-dialog-row');
-      const save = btn('name-dialog-btn on', confirmLabel || 'Save');
-      const cancel = btn('name-dialog-btn', 'Cancel');
+      const save = btn('name-dialog-btn on', confirmLabel || '保存');
+      const cancel = btn('name-dialog-btn', '取消');
       row.append(save, cancel);
       box.append(err, row);
       this.nameDialog.textContent = '';
@@ -5998,12 +5987,12 @@ export class Ui {
           if (spec.save) {
             value = spec.save(field.value);
             if (!value) {
-              err.textContent = spec.rules || 'That value is not usable.';
+              err.textContent = spec.rules || '该值无效。';
               field.focus();
               return null;
             }
           } else if (spec.required !== false && !value) {
-            err.textContent = spec.empty || 'That needs a name.';
+            err.textContent = spec.empty || '请填写名称。';
             field.focus();
             return null;
           }
@@ -6077,7 +6066,7 @@ export class Ui {
   askRatePresetName(suggested = '') {
     const taken = presetNamed(suggested);
     return this.askForm({
-      title: 'Name this preset',
+      title: '为此预设命名',
       detail: RATES_STORAGE_WARNING,
       confirmLabel: taken ? 'Replace' : 'Save',
       fields: [{
@@ -6110,8 +6099,8 @@ export class Ui {
         box.append(el('p', 'lede', detail));
       }
       const row = el('div', 'name-dialog-row');
-      const yesBtn = btn('name-dialog-btn on', yes || 'Yes');
-      const noBtn = btn('name-dialog-btn', no || 'No');
+      const yesBtn = btn('name-dialog-btn on', yes || '是');
+      const noBtn = btn('name-dialog-btn', no || '否');
       row.append(noBtn, yesBtn);
       box.append(row);
       this.nameDialog.textContent = '';
@@ -6221,7 +6210,7 @@ export class Ui {
     const now = Math.round(yawNow * Math.sin(cameraTiltRad(s.cameraAngle)));
     const then = Math.round(YAW_TIP_RATE * Math.sin(cameraTiltRad(s.cameraAngle)));
     this.askConfirm({
-      title: 'Yaw will roll the horizon',
+      title: '偏航会让地平线倾斜',
       detail: `At ${s.cameraAngle} degrees of tilt, ${pct} percent of a yaw shows up as roll in the picture: ${now} deg/s of it at your ${yawNow} deg/s yaw rate. That is what a real tilted camera does, and the usual answer is a slower yaw. Dropping the yaw max rate to ${YAW_TIP_RATE} brings it back to ${then} deg/s. You can change it any time on the Rates screen.`,
       yes: `Set yaw to ${YAW_TIP_RATE}`,
       no: `Leave it at ${yawNow}`,
@@ -6247,7 +6236,7 @@ export class Ui {
    */
   askName({ title, detail, known = null } = {}) {
     return this.askForm({
-      title: title || 'Your name',
+      title: title || '你的名字',
       detail: detail || 'Posted times and published tracks carry this name. Changing it updates the board for tracks you published from this browser.',
       confirmLabel: 'Save',
       fields: [{
@@ -6296,16 +6285,16 @@ export class Ui {
       return false;
     }
     const panel = el('div', 'name-dialog-box bug');
-    panel.append(el('h2', null, 'Keep this report?'));
+    panel.append(el('h2', null, '保留此反馈吗？'));
     panel.append(el(
       'p',
       'lede',
-      'You have written something that has not been sent. Nothing here keeps a draft, so closing now loses it.',
+      '你填写的内容尚未发送。此处不会保存草稿，现在关闭将会丢失这些内容。',
     ));
     const row = el('div', 'name-dialog-row');
-    const send = btn('name-dialog-btn on', 'Send it');
-    const keep = btn('name-dialog-btn', 'Keep editing');
-    const drop = btn('name-dialog-btn danger', 'Discard');
+    const send = btn('name-dialog-btn on', '发送');
+    const keep = btn('name-dialog-btn', '继续编辑');
+    const drop = btn('name-dialog-btn danger', '放弃');
     row.append(send, keep, drop);
     panel.append(row);
     /* Back to the form, untouched. Also what Escape means while this is
@@ -6713,20 +6702,20 @@ export class Ui {
       this.closeNameDialog(null);
     }
     const box = el('div', 'name-dialog-box bug');
-    box.append(el('h2', null, 'Report a bug'));
+    box.append(el('h2', null, '反馈问题'));
     box.append(el(
       'p',
       'lede',
-      'Title and what happened are enough. The map, graphics, GPU and browser go with the ticket so you do not have to type those.',
+      '请填写标题和问题经过即可。赛道、画质、GPU 和浏览器信息会自动附加，无需手动填写。',
     ));
     /* The other door. The chip says give feedback as well as report a bug,
      * and a pilot who came to say how the quad flies should not have to
      * dress an opinion up as a defect: this hands them to the flight feel
      * form, which asks the one question they came to answer. */
-    const feelDoor = btn('name-dialog-door', 'Just here to say how it flies? Give flight feel feedback instead.');
+    const feelDoor = btn('name-dialog-door', '只是想反馈飞行手感？请改用飞行手感反馈。');
     box.append(feelDoor);
 
-    const kindLabel = el('p', 'name-dialog-label', 'Kind');
+    const kindLabel = el('p', 'name-dialog-label', '类型');
     const kind = document.createElement('select');
     kind.className = 'name-dialog-input';
     for (const opt of BUG_KINDS) {
@@ -6739,46 +6728,46 @@ export class Ui {
       kind.append(o);
     }
 
-    const titleLabel = el('p', 'name-dialog-label', 'Title');
+    const titleLabel = el('p', 'name-dialog-label', '标题');
     const title = document.createElement('input');
     title.type = 'text';
     title.className = 'name-dialog-input';
     title.maxLength = 120;
-    title.placeholder = 'Short, specific';
+    title.placeholder = '简短、具体地描述问题';
     title.autocomplete = 'off';
 
-    const whatLabel = el('p', 'name-dialog-label', 'What happened');
+    const whatLabel = el('p', 'name-dialog-label', '发生了什么');
     const what = document.createElement('textarea');
     what.className = 'name-dialog-input name-dialog-area';
     what.maxLength = 4000;
     what.rows = 4;
-    what.placeholder = 'What you saw, heard, or could not do.';
+    what.placeholder = '描述你看到、听到或无法完成的事情。';
 
-    const expectedLabel = el('p', 'name-dialog-label', 'What you expected (optional)');
+    const expectedLabel = el('p', 'name-dialog-label', '预期结果（选填）');
     const expected = document.createElement('textarea');
     expected.className = 'name-dialog-input name-dialog-area';
     expected.maxLength = 2000;
     expected.rows = 2;
 
-    const stepsLabel = el('p', 'name-dialog-label', 'How to reproduce (optional)');
+    const stepsLabel = el('p', 'name-dialog-label', '复现步骤（选填）');
     const steps = document.createElement('textarea');
     steps.className = 'name-dialog-input name-dialog-area';
     steps.maxLength = 2000;
     steps.rows = 2;
 
-    const nameLabel = el('p', 'name-dialog-label', 'Your name (optional)');
+    const nameLabel = el('p', 'name-dialog-label', '你的姓名（选填）');
     const reporter = document.createElement('input');
     reporter.type = 'text';
     reporter.className = 'name-dialog-input';
     reporter.maxLength = 24;
     reporter.autocomplete = 'nickname';
     reporter.value = readPilotName() || '';
-    reporter.placeholder = 'Leave blank to stay Anonymous';
+    reporter.placeholder = '留空则匿名提交';
 
     const err = el('p', 'name-dialog-err', '');
     const row = el('div', 'name-dialog-row');
-    const send = btn('name-dialog-btn on', 'Send');
-    const cancel = btn('name-dialog-btn', 'Cancel');
+    const send = btn('name-dialog-btn on', '发送');
+    const cancel = btn('name-dialog-btn', '取消');
     row.append(send, cancel);
     box.append(
       kindLabel, kind,
@@ -6863,12 +6852,12 @@ export class Ui {
     const submit = async () => {
       err.textContent = '';
       if (title.value.trim().length < 8) {
-        err.textContent = 'A title needs at least eight characters.';
+        err.textContent = '标题至少需要 8 个字符。';
         title.focus();
         return;
       }
       if (what.value.trim().length < 20) {
-        err.textContent = 'Say what happened, at least a sentence.';
+        err.textContent = '请至少用一句话描述发生的情况。';
         what.focus();
         return;
       }
@@ -6884,20 +6873,20 @@ export class Ui {
       sending = true;
       send.disabled = true;
       cancel.disabled = true;
-      send.textContent = 'Sending';
+      send.textContent = '正在发送';
       try {
         const posted = await submitBug(payload);
         sending = false;
         sent = true;
         box.textContent = '';
-        box.append(el('h2', null, 'Sent'));
+        box.append(el('h2', null, '已发送'));
         box.append(el(
           'p',
           'lede',
-          `Ticket ${posted.id} is on the board. Thanks.`,
+          `反馈编号 ${posted.id} 已提交。谢谢！`,
         ));
         const doneRow = el('div', 'name-dialog-row');
-        const close = btn('name-dialog-btn on', 'Close');
+        const close = btn('name-dialog-btn on', '关闭');
         close.addEventListener('click', () => finish(posted));
         doneRow.append(close);
         box.append(doneRow);
@@ -6906,8 +6895,8 @@ export class Ui {
         sending = false;
         send.disabled = false;
         cancel.disabled = false;
-        send.textContent = 'Send';
-        err.textContent = e.message || 'The board could not take that report.';
+        send.textContent = '发送';
+        err.textContent = e.message || '无法提交此反馈。';
       }
     };
     send.addEventListener('click', submit);
@@ -6992,35 +6981,35 @@ export class Ui {
       this.closeNameDialog(null);
     }
     const FEELS = [
-      { id: 'floppy', label: 'Floppy' },
-      { id: 'soft', label: 'Soft' },
-      { id: 'right', label: 'About right' },
-      { id: 'stiff', label: 'Stiff' },
-      { id: 'twitchy', label: 'Twitchy' },
+      { id: 'floppy', label: '松软' },
+      { id: 'soft', label: '偏软' },
+      { id: 'right', label: '刚刚好' },
+      { id: 'stiff', label: '偏硬' },
+      { id: 'twitchy', label: '过于灵敏' },
     ];
     const ISSUES = [
-      { id: 'sluggish', label: 'Slow to answer the stick' },
-      { id: 'bounce', label: 'Bounces back after a stop' },
-      { id: 'propwash', label: 'Wobbles in propwash' },
-      { id: 'drift', label: 'Drifts off attitude' },
-      { id: 'yaw', label: 'Yaw is lazy' },
-      { id: 'throttle', label: 'Throttle is touchy' },
+      { id: 'sluggish', label: '摇杆响应迟缓' },
+      { id: 'bounce', label: '停止后会反弹' },
+      { id: 'propwash', label: '螺旋桨气流中会晃动' },
+      { id: 'drift', label: '姿态会逐渐偏移' },
+      { id: 'yaw', label: '偏航响应迟缓' },
+      { id: 'throttle', label: '油门过于灵敏' },
       /*
        * FLOATY GETS ITS OWN CHIP, because it kept arriving in the free text
        * box instead. "About right" plus "its much too floaty" typed
        * underneath is a report the chip rows could not carry, and the row
        * below can now answer it on the spot the way the throttle row does.
        */
-      { id: 'floaty', label: 'Floaty, carries too far' },
-      { id: 'locked', label: 'Locked in, no complaints' },
+      { id: 'floaty', label: '太飘，滑行过远' },
+      { id: 'locked', label: '操控稳定，没有问题' },
     ];
 
     const box = el('div', 'name-dialog-box bug feel');
-    box.append(el('h2', null, 'How does it fly?'));
+    box.append(el('h2', null, '飞行手感如何？'));
     box.append(el(
       'p',
       'lede',
-      `One honest word steers the tune work more than any telemetry. Only the first row is needed; your tune, PID adjustment and rates travel with the answer so the numbers behind the feel arrive too. You were flying ${context.tuneName}.`,
+      `一句真实的感受比任何遥测数据都更能帮助我们调整手感。只需选择第一行；提交时会一并附上你的调校、PID 和速率设置，让我们了解这些手感背后的数据。你当时使用的调校是：${context.tuneName}。`,
     ));
 
     let feel = null;
@@ -7080,7 +7069,7 @@ export class Ui {
       airHint.hidden = !show;
       if (show) {
         const f = WEIGHT_FEEL[af] ?? WEIGHT_FEEL['5inch'];
-        airHint.textContent = `The Weight slider between the sticks on the flight screen is this exact complaint: it scales the weight the quad carries, so it drops when you chop the throttle instead of hanging. Yours is at ${weight} percent. From a hover with the throttle cut, the stock quad falls 10 metres in ${f.fall[0]} s and balloons ${f.balloon[0]} m after a short punch; at ${top} percent that is ${f.fall[1]} s and ${f.balloon[1]} m. Hover moves up the stick with it, ${f.hover[0]} percent at stock to ${f.hover[1]} at ${top}. Worth dragging before you wait on us, and a lap flown on it goes on the public board with its weight beside your name.`;
+        airHint.textContent = `飞行画面中摇杆之间的“配重”滑块正是针对这种手感：它会调整四轴所承载的重量，因此收油后会下落，而不是继续悬停。当前配重为 ${weight}%。从悬停状态切断油门，默认配重下四轴会在 ${f.fall[0]} 秒内下降 10 米，短暂加速后会上升 ${f.balloon[0]} 米；配重为 ${top}% 时分别为 ${f.fall[1]} 秒和 ${f.balloon[1]} 米。悬停油门也会随配重增加而升高，从默认值下的 ${f.hover[0]}% 升至 ${top}% 配重下的 ${f.hover[1]}%。你可以先拖动滑块试试；使用不同配重飞行的圈速会在公开排行榜上标注重量。`;
       }
     };
     const refreshCapHint = () => {
@@ -7091,7 +7080,7 @@ export class Ui {
       if (show) {
         const eased = hoverStickPercent(75, this.settings.airframe);
         const now = hoverStickPercent(100, this.settings.airframe);
-        capHint.textContent = `This quad hovers at ${now.toFixed(1)} percent of stick with no throttle limit, so nearly all the travel is above hover. Rates, Throttle limit, 75 percent moves hover to ${eased.toFixed(1)} percent and gives the fine control back without losing any climb you can use indoors. Worth trying before you wait on us.`;
+        capHint.textContent = `未限制油门时，此四轴约在摇杆 ${now.toFixed(1)}% 处悬停，因此几乎全部行程都高于悬停油门。在“速率”页面将油门上限设为 75%，悬停位置会移至 ${eased.toFixed(1)}%，恢复精细控制，同时不影响室内可用的爬升能力。等待反馈前可以先试试。`;
       }
     };
     const issueRow = chipRow(ISSUES, (id, chips) => {
@@ -7105,31 +7094,31 @@ export class Ui {
       refreshAirHint();
     });
 
-    const wordsLabel = el('p', 'name-dialog-label', 'In your own words (optional)');
+    const wordsLabel = el('p', 'name-dialog-label', '补充说明（选填）');
     const words = document.createElement('textarea');
     words.className = 'name-dialog-input name-dialog-area';
     words.maxLength = 2000;
     words.rows = 3;
-    words.placeholder = 'What you would tell the person holding the screwdriver.';
+    words.placeholder = '如果有其他想补充的内容，请在此填写。';
 
-    const nameLabel = el('p', 'name-dialog-label', 'Your name (optional)');
+    const nameLabel = el('p', 'name-dialog-label', '你的姓名（选填）');
     const reporter = document.createElement('input');
     reporter.type = 'text';
     reporter.className = 'name-dialog-input';
     reporter.maxLength = 24;
     reporter.autocomplete = 'nickname';
     reporter.value = readPilotName() || '';
-    reporter.placeholder = 'Leave blank to stay Anonymous';
+    reporter.placeholder = '留空则匿名提交';
 
     const err = el('p', 'name-dialog-err', '');
     const row = el('div', 'name-dialog-row');
-    const send = btn('name-dialog-btn on', 'Send');
-    const dismiss = btn('name-dialog-btn', 'Not now');
+    const send = btn('name-dialog-btn on', '发送');
+    const dismiss = btn('name-dialog-btn', '暂不反馈');
     row.append(send, dismiss);
     box.append(
-      el('p', 'name-dialog-label', 'The quad felt'),
+      el('p', 'name-dialog-label', '这架四轴的手感'),
       feelRow.wrap,
-      el('p', 'name-dialog-label', 'Anything specific (pick any)'),
+      el('p', 'name-dialog-label', '具体遇到哪些问题（可多选）'),
       issueRow.wrap,
       capHint,
       airHint,
@@ -7197,12 +7186,12 @@ export class Ui {
     const submit = async () => {
       err.textContent = '';
       if (!feel) {
-        err.textContent = 'Pick a word on the first row. One is enough.';
+        err.textContent = '请在第一行选择一种手感，只需选择一项。';
         return;
       }
       const feelLabel = FEELS.find((f) => f.id === feel).label.toLowerCase();
       const picked = ISSUES.filter((i) => issues.has(i.id)).map((i) => i.label.toLowerCase());
-      const lines = [`The quad felt ${feelLabel} this run.`];
+      const lines = [`本次飞行的手感：${feelLabel}。`];
       /*
        * WHERE THE SLIDER WAS, in the sentence and not only in the context
        * blob, because the owner asked for it there and because it is the one
@@ -7211,16 +7200,16 @@ export class Ui {
        * on the whole band. The absolute multiple rides along so a ticket
        * from before the base moved reads correctly beside one from after.
        */
-      lines.push(`Weight slider at ${context.weight} percent, which is ${context.gravityScale.toFixed(2)} times g on this airframe.`);
+      lines.push(`配重滑块为 ${context.weight}%，在此机架上相当于重力加速度的 ${context.gravityScale.toFixed(2)} 倍。`);
       if (picked.length) {
-        lines.push(`Noticed: ${picked.join('; ')}.`);
+        lines.push(`遇到的问题：${picked.join('；')}。`);
       }
       if (words.value.trim()) {
         lines.push(words.value.trim());
       }
       const payload = {
         kind: 'feel',
-        title: `Flight feel: ${feelLabel}${picked.length ? `, ${picked[0]}` : ''}`,
+        title: `飞行手感：${feelLabel}${picked.length ? `，${picked[0]}` : ''}`,
         what: lines.join('\n'),
         reporter: reporter.value,
         context,
@@ -7228,20 +7217,20 @@ export class Ui {
       sending = true;
       send.disabled = true;
       dismiss.disabled = true;
-      send.textContent = 'Sending';
+      send.textContent = '正在发送';
       try {
         const posted = await submitBug(payload);
         sending = false;
         sent = true;
         box.textContent = '';
-        box.append(el('h2', null, 'Thanks'));
+        box.append(el('h2', null, '感谢反馈'));
         box.append(el(
           'p',
           'lede',
-          'Landed, with your tune and rates attached. This is exactly what moves the flight model.',
+          '反馈已提交，并附上了你的调校和速率设置。这些信息有助于改进飞行模型。',
         ));
         const doneRow = el('div', 'name-dialog-row');
-        const close = btn('name-dialog-btn on', 'Close');
+        const close = btn('name-dialog-btn on', '关闭');
         close.addEventListener('click', () => finish(posted));
         doneRow.append(close);
         box.append(doneRow);
@@ -7250,8 +7239,8 @@ export class Ui {
         sending = false;
         send.disabled = false;
         dismiss.disabled = false;
-        send.textContent = 'Send';
-        err.textContent = e.message || 'The board could not take that report.';
+        send.textContent = '发送';
+        err.textContent = e.message || '排行榜无法接收此反馈。';
       }
     };
     send.addEventListener('click', submit);
@@ -7320,7 +7309,7 @@ export class Ui {
       /*
        * THE GATE. THREE PICTURES, AND NOTHING ELSE ON THE PAGE TO ANSWER.
        *
-       * A pilot arriving does not open a menu wanting "Quad" or "Settings".
+       * A pilot arriving does not open a menu wanting "四轴" or "设置".
        * They want to race or they want to mess about, on one machine or the
        * other, and until that is answered every other row on this screen is
        * furniture. It used to be answered halfway down a list of eleven,
@@ -7338,8 +7327,8 @@ export class Ui {
        * first thing anybody sees.
        *
        * None of the three is `primary`. The bottom bar's button paints the
-       * primary item, and a bar reading "Freestyle" under a card reading
-       * "Freestyle" is the same choice drawn twice.
+       * primary item, and a bar reading "自由式" under a card reading
+       * "自由式" is the same choice drawn twice.
        *
        * No `note` either: the help column would print it floating over the
        * cards, and every word of it is already on the card in a place that
@@ -7404,8 +7393,8 @@ export class Ui {
       const shared = world && world.id === 'built' ? this.sharedMap : null;
       const modeRow = this.mode === 'freestyle'
         ? {
-          label: 'Map',
-          value: shared ? shared.name : (world ? world.name : 'Not loaded'),
+          label: '地图',
+          value: shared ? shared.name : (world ? world.name : '尚未加载'),
           action: 'freestyle',
           /*
            * "Map" again, beside the world that is seated. From 30 August it
@@ -7417,18 +7406,18 @@ export class Ui {
            * going to be flown.
            */
           note: shared
-            ? `${shared.name}${shared.author ? `, built by ${shared.author}` : ''}, from the board. Your quad and the physics model are in here.`
+            ? `${shared.name}${shared.author ? `，由 ${shared.author} 创建` : ''}，来自排行榜。此地图使用当前四轴和物理模型。`
             : (world
               ? `${world.note} Your quad and the physics model are in here.`
               : townNote(s, this.loadFailure)),
         }
         : {
-          label: 'Track',
-          value: seat ? seat.name : 'Choose one',
+          label: '赛道',
+          value: seat ? seat.name : '请选择',
           action: 'courses',
           note: seat
-            ? `${seat.name}, and every other track. Gated, against the clock, and a lap flown here can go on the board.`
-            : 'No track is seated yet. Your own tracks, every track the board is offering, and the builder, are in here.',
+            ? `${seat.name}以及其他赛道。穿越竞速门，与时间赛跑；在此飞行的成绩都会提交到排行榜。`
+            : '尚未选择赛道。这里可以选择自己的赛道、排行榜中的赛道，或打开赛道编辑器。',
         };
       /*
        * THREE ROOMS AND A VERB, in place of twelve typographic equals.
@@ -7472,23 +7461,23 @@ export class Ui {
       const guide = this.firstRun && this.mode === 'race' && this.seatMatchesMode();
       const flyRow = guide
         ? {
-          label: 'First flight',
+          label: '首次飞行',
           action: 'firstflight',
           primary: true,
           note: seat && seat.name
-            ? `${seat.name}, levelled off, with the sticks drawn on screen and a prompt at each step.`
-            : 'Levelled off, with the sticks drawn on screen and a prompt at each step.',
+            ? `${seat.name}，从水平状态开始，屏幕会显示摇杆位置并逐步给出提示。`
+            : '从水平状态开始，屏幕会显示摇杆位置并逐步给出提示。',
         }
         : {
-          label: 'Fly',
+          label: '飞行',
           action: 'fly',
           primary: true,
           /* Which of the two Fly does, said before it is pressed: see
            * launchCardSeen. */
           note: seatIsRace(s) && this.seatMatchesMode()
             ? (launchCardSeen(s)
-              ? `Straight to the starting blocks${seat && seat.name ? ` of ${seat.name}` : ''}, set up as last time. Before you fly is under the track in Tracks.`
-              : 'Before you fly first: the laps, the pack and what this run counts as, then the grid. Once per track each visit.')
+              ? `直接返回起点线${seat && seat.name ? `：${seat.name}` : ''}，并沿用上次的设置。“飞行前”选项位于“竞速”中的赛道下方。`
+              : '起飞前先设置圈数、机群和本次飞行的计分方式，然后前往起点线。每次进入赛道时可设置一次。')
             : undefined,
         };
       return [
@@ -7521,10 +7510,10 @@ export class Ui {
          * (MENUS-PLAN.md 1.3). The tune is one row inside, under its name.
          */
         {
-          label: 'Quad',
+          label: '四轴',
           value: airframeById(s.airframe).name,
           action: 'quad',
-          note: 'The machine. The aircraft, its tune and PIDs, camera angle, field of view, flight mode and the firmware bench, which is every Betaflight key the module compiles.',
+          note: '飞行设备设置：调校配置、PID、相机角度、视场角、飞行模式，以及包含所有已编译 Betaflight 参数的飞控配置器。',
         },
         {
           /*
@@ -7554,15 +7543,15 @@ export class Ui {
            * (MENUS-PLAN.md 1.2). A set name is already the Pilot chip in the
            * top right; Your name inside still says Not set.
            */
-          label: 'Settings',
+          label: '设置',
           action: 'pilot',
-          note: 'You and your radio. Your name, choosing a joystick, Calibrate sticks, rates, graphics and sound.',
+          note: '个人与遥控器设置：昵称、摇杆选择、摇杆校准、速率、画面、声音和飞行日志。',
         },
-        { label: 'How to fly', action: 'howto', note: 'The sticks, live, and what the keys do.' },
+        { label: '飞行教程', action: 'howto', note: '查看摇杆实时动作和键盘操作说明。' },
         {
-          label: 'Tracks and times',
+          label: 'FPV 百科',
           action: 'leaderboard',
-          note: 'Every published track and map, the times flown on them and who flew them. Opens in a new tab.',
+          note: '了解闭环控制、飞行动力学模型和所有 Betaflight 4.5.1 参数。在 webfpv.org 上打开百科。',
         },
         /*
          * ABOUT, where Credits, Support and the FPV wiki were three rows of
@@ -7572,9 +7561,9 @@ export class Ui {
          * the #credits address and the checks that name it do not move.
          */
         {
-          label: 'About',
+          label: '赛道与统计',
           action: 'credits',
-          note: 'Who made this and whose work it stands on, the partners who back it, Patreon, the FPV wiki, and reporting a bug.',
+          note: '公共页面：查看所有已发布赛道及其成绩，以及网站运行统计。将在新标签页中打开。',
         },
         /*
          * THE WAY BACK TO THE GATE, AND IT IS A ROW NOW.
@@ -7598,11 +7587,11 @@ export class Ui {
          * game, and a pilot looking for the other mode or the other machine
          * is looking for the screen that offers both.
          */
-        { label: this.gateLabel(), action: 'mode-gate', note: 'The cards: five inch racing, whoop racing, freestyle and the builder. Changing your mind about any of it starts here.' },
+        { label: this.gateLabel(), action: 'mode-gate', note: '选择五寸竞速、室内微型机竞速或自由飞行。想更换飞行模式或设备时，可从这里重新选择。' },
       ];
     }
     if (this.screen === 'howto') {
-      return [{ label: 'Back', action: 'back' }];
+      return [{ label: '返回', action: 'back' }];
     }
     /*
      * STICK HELP'S WAYS ON, in the order the screen argues for them. The
@@ -7622,26 +7611,24 @@ export class Ui {
     if (this.screen === 'stickhelp') {
       return [
         {
-          label: 'Calibrate sticks',
+          label: '校准摇杆',
           action: 'stickhelp-calibrate',
           primary: true,
-          note: 'Centre, full range, then one named move per stick. It maps whatever axis actually'
-            + ' moves, so a stick the sim has on the wrong channel is fixed by this. A stick no bar'
-            + ' moves for is not: the block above says where that one is lost.',
+          note: '先将摇杆回中，再移动到全行程，最后逐个按提示操作。系统会根据实际移动的通道进行映射，'
+            + '因此可以修正模拟器中通道错误的摇杆。如果指示条完全不动，请查看上方说明，找出信号丢失的位置。',
         },
         {
-          label: 'Check sticks',
+          label: '检查摇杆',
           action: 'stickhelp-check',
-          note: 'The mapping flying now, live. Reverse a channel that goes the wrong way, or put the'
-            + ' sticks on the other hands.',
+          note: '实时查看当前飞行映射。可反转方向错误的通道，或交换左右手的摇杆布局。',
         },
         {
-          label: 'Choose joystick',
-          value: (this.padInfo && this.padInfo.using) || 'Keyboard',
+          label: '选择摇杆',
+          value: (this.padInfo && this.padInfo.using) || '键盘',
           action: 'choosepad',
           note: padChooseNote(this.padInfo, this.radioBlind),
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
     /*
@@ -7654,15 +7641,15 @@ export class Ui {
     if (this.screen === 'credits') {
       return [
         {
-          label: 'Partners',
+          label: '合作伙伴',
           action: 'partners',
-          note: `${PARTNERS.map((p) => p.name).join(', ').replace(/, ([^,]*)$/, ' and $1')}. Opens their page on the board in a new tab.`,
+          note: `${PARTNERS.map((p) => p.name).join('、')}。将在新标签页中打开他们在排行榜上的页面。`,
         },
-        { label: 'Support', action: 'support', note: PATREON_NOTE },
+        { label: '支持项目', action: 'support', note: PATREON_NOTE },
         {
-          label: 'FPV wiki',
+          label: 'FPV 百科',
           action: 'wiki',
-          note: 'The closed loop, the plant, and every Betaflight 4.5.1 key. Opens the wiki on webfpv.org.',
+          note: '了解闭环控制、飞行模型和 Betaflight 4.5.1 的各项配置。将在 webfpv.org 上打开百科。',
         },
         /*
          * A REPORT FROM THE FRONT DOOR, for the one pilot who had none. The
@@ -7671,11 +7658,11 @@ export class Ui {
          * (MENUS-PLAN.md 1.41). This is that door, one row from the title.
          */
         {
-          label: 'Report a bug',
+          label: '报告问题',
           action: 'reportbug',
-          note: 'Something wrong, or something to say: the form takes a title and a sentence, and sends the map, graphics and browser with it. F8 opens it from anywhere.',
+          note: '报告问题或提交建议：填写标题和说明后，页面会附上当前地图、画质设置和浏览器信息。也可随时按 F8 打开。',
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
     /*
@@ -7712,7 +7699,7 @@ export class Ui {
         const chip = courseChip(listing);
         cards.push({
           label: seat.name,
-          note: `${chip.note} ${seat.gates} gate${seat.gates === 1 ? '' : 's'}. ${CARD_PRESS_NOTE}`,
+          note: `${chip.note} ${seat.gates} 个门。${CARD_PRESS_NOTE}`,
           course: { kind: 'current', seat },
           action: 'map:custom',
         });
@@ -7758,7 +7745,7 @@ export class Ui {
         }
         cards.push({
           label: t.name,
-          note: `Yours, saved in this browser. ${t.gates} gate${t.gates === 1 ? '' : 's'}. ${CARD_PRESS_NOTE}`,
+          note: `已保存在此浏览器中。${t.gates} 个门。${CARD_PRESS_NOTE}`,
           course: { kind: 'local', track: t },
           action: `local:${t.id}`,
         });
@@ -7780,10 +7767,10 @@ export class Ui {
         cards.push({
           label: t.name,
           note: t.designer
-            ? `Designed by ${t.designer}${t.series ? ` for ${t.series}` : ''}${t.author ? `, published by ${t.author}` : ''}. ${CARD_PRESS_NOTE}`
+            ? `设计者：${t.designer}${t.series ? `，系列：${t.series}` : ''}${t.author ? `，发布者：${t.author}` : ''}。${CARD_PRESS_NOTE}`
             : (t.author
-              ? `Published by ${t.author}. ${CARD_PRESS_NOTE}`
-              : `A published track. ${CARD_PRESS_NOTE}`),
+              ? `发布者：${t.author}。${CARD_PRESS_NOTE}`
+              : `已发布赛道。${CARD_PRESS_NOTE}`),
           course: { kind: 'board', track: t },
           action: `board:${t.id}`,
         });
@@ -7831,7 +7818,7 @@ export class Ui {
           : [];
         return [...cards, ...courseCardRows(chosen, seatRows)];
       }
-      return [...cards, { label: 'Back', action: 'back' }];
+      return [...cards, { label: '返回', action: 'back' }];
     }
     /*
      * FREESTYLE. One town and no ceremony.
@@ -7848,8 +7835,8 @@ export class Ui {
       return this.trickRows().map((t) => ({
         label: t.name,
         value: `${formatScore(t.points)}`,
-        note: `${t.status.tag}. ${t.difficulty}. ${t.how}`
-          + ` Seen ${VIEW_LABEL[t.view].replace('seen ', '')}.`,
+        note: `${t.status.tag}。${trickDifficultyLabel(t.difficulty)}。${t.how}`
+          + `视角：${VIEW_LABEL[t.view]}。`,
         action: 'noop',
       }));
     }
@@ -7880,7 +7867,7 @@ export class Ui {
        * rows are whatever follows the last card. See loadBoardMaps. */
       const boardCards = (this.boardMaps || []).map((m) => ({
         label: m.name,
-        note: `${[m.author ? `Built by ${m.author}` : 'A published map', ...mapFacts(m)].join(', ')}. Choosing it loads the map from the board and flies it here.`,
+        note: `${[m.author ? `制作者：${m.author}` : '已发布地图', ...mapFacts(m)].join('，')}。选择后会从排行榜加载地图并在此处开始飞行。`,
         boardMap: m,
         action: `boardmap:${m.id}`,
       }));
@@ -7904,7 +7891,7 @@ export class Ui {
          */
         {
           ...choice(
-            'Scoring',
+            '计分',
             scoringNote(s.freestyleScoring, s.map, Boolean(this.sharedMap), s.mangaAndScoring),
             FREESTYLE_SCORING,
             s.freestyleScoring,
@@ -7943,10 +7930,10 @@ export class Ui {
          * aircraft since 2026-10-01, as on the title (MENUS-PLAN.md 1.3).
          */
         {
-          label: 'Quad',
+          label: '四轴',
           value: airframeById(s.airframe).name,
           action: 'quad',
-          note: `The machine. Its Tune row opens ${SCREEN_TITLES.pids}, where the tune is chosen and Betaflight's own sliders adjust it, and the camera, the flight mode and the firmware bench are there too.`,
+          note: `飞行器设置。此处的“调校”会打开${SCREEN_TITLES.pids}，可选择调校并使用 Betaflight 自带滑块进行调整，也可设置相机、飞行模式和固件参数。`,
         },
         /*
          * SETTABLE HERE, because there is nowhere else a freestyle pilot
@@ -7965,13 +7952,13 @@ export class Ui {
          * a home elsewhere: freestyle IS the other home.
          */
         choice(
-          'Flight model',
+          '飞行模型',
           s.flightStyle === 'arcade'
-            ? 'Arcade: the ideal quad. No propwash shake, no gyro noise, no build asymmetry. It is a plant flag, so it changes a freestyle flight exactly as much as it changes a race.'
-            : 'Expert: the full physics, propwash, gyro noise and build tolerance included. Arcade turns the imperfections off for a friendlier machine. Takes effect on the next flight.',
+            ? '街机：使用理想四轴模型，不包含螺旋桨气流抖动、陀螺仪噪声或机体不对称。此设置会同样影响自由飞行和竞速。'
+            : '专家：启用完整物理模型，包括螺旋桨气流、陀螺仪噪声和机体公差。街机模式会关闭这些细节，让飞行器更容易操控。下次飞行时生效。',
           FLIGHT_STYLES,
           s.flightStyle === 'arcade' ? 'arcade' : 'expert',
-          (id) => (id === 'arcade' ? 'Arcade' : 'Expert'),
+          (id) => (id === 'arcade' ? '街机' : '专家'),
           (id) => { s.flightStyle = id; },
         ),
         /*
@@ -7981,11 +7968,11 @@ export class Ui {
          * touched by it and never flown as a map.
          */
         {
-          label: 'Build a map',
+          label: '创建自由飞行地图',
           action: 'mapbuilder',
-          note: 'Opens the builder on the freestyle canvas. Place buildings, a crane, containers, a skate set and named gaps, then fly it here as Your map.',
+          note: '在自由飞行画布中打开赛道编辑器。放置建筑、吊车、集装箱、滑板道具和命名间隙，然后以“你的地图”在此起飞。',
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
 
@@ -8021,31 +8008,31 @@ export class Ui {
          * 55 px to 135. The row is what the pilot needs; the heading was
          * decoration, and decoration is what gives way.
          */
-        { label: 'The machine', section: true },
+        { label: '飞行器', section: true },
         craftItem(s, midRun),
         tuneItem(s, midRun),
         {
-          label: 'Firmware bench',
+          label: '飞控配置器',
           action: 'fc',
-          note: `Every Betaflight 4.5.1 key the module compiles, tab by tab, in Configurator’s own colours. Opens as a tool, in its own frame. Save becomes Your edits and the Tune row above starts naming it; the picker that puts you back on stock is in ${SCREEN_TITLES.pids}. There is no CLI paste.`,
+          note: `逐页配置模块中已编译的所有 Betaflight 4.5.1 参数，界面采用配置器原有配色。配置器会在独立窗口中打开。保存后将显示为“你的修改”，并出现在上方的调校配置中；可在${SCREEN_TITLES.pids}中切回默认配置。不支持粘贴 CLI 命令。`,
         },
-        { label: 'Camera', section: true },
+        { label: '相机', section: true },
         this.cameraAngleRow(s),
         choice(
-          'Field of view',
-          'Wider sees more, narrower magnifies. 75 matches what an FPV lens does to the middle of the frame; 85 gives some of that back for width; 115 is the widest this projection can honestly offer, about 145 degrees corner to corner, and the gates will look smaller for it.',
+          '视场角',
+          '视场角越大，看到的范围越广；视场角越小，画面放大效果越明显。75° 接近 FPV 镜头画面中心的观感；85° 可兼顾视野宽度；此投影最大支持 115°，约为对角线 145°，此时赛道门会显得更小。',
           CAMERA_FOVS,
           s.cameraFov,
-          (n) => `${n} degrees vertical`,
+          (n) => `垂直 ${n}°`,
           (n) => { s.cameraFov = n; },
         ),
-        { label: 'Flight', section: true },
+        { label: '飞行', section: true },
         choice(
-          'Flight mode',
-          'Acro: sticks are rates, hands off holds attitude. Angle: sticks are tilt, hands off levels. A radio, a gamepad, thumb sticks and every freestyle flight fly this one, because Angle holds the craft to about thirty degrees of bank and no trick in the book can be flown in it. M in flight switches whichever one you are flying, and keeps it.',
+          '飞行模式',
+          '自稳特技模式：摇杆控制旋转速率，松手后保持姿态。角度模式：摇杆控制倾斜角度，松手后自动回平。键盘竞速默认使用角度模式，因为按键只有开或关。自由飞行始终使用此设置；角度模式会将倾斜限制在约 30 度，无法完成技巧动作。飞行时按 M 可切换模式，并保存选择。',
           FLIGHT_MODES,
           s.flightMode === 'angle' ? 'angle' : 'acro',
-          (id) => (id === 'angle' ? 'Angle' : 'Acro'),
+          (id) => (id === 'angle' ? '角度' : '特技'),
           (id) => { s.flightMode = id; },
         ),
         /*
@@ -8065,8 +8052,8 @@ export class Ui {
           (id) => { s.keyRaceMode = id; },
         )] : []),
         toggle(
-          'Launch control',
-          'Betaflight race start, off by default. When on, press L on the start line, pitch forward, centre the stick, then punch throttle. The quad holds the angle until you go.',
+          '起步控制',
+          'Betaflight 竞速起步功能，默认关闭。开启后，在起点线按 L，向前推动俯仰摇杆并回中，然后快速推高油门。四轴会保持角度直至起飞。',
           Boolean(s.launchControl),
           (v) => { s.launchControl = Boolean(v); },
         ),
@@ -8089,12 +8076,12 @@ export class Ui {
          * load bearing navigation as well as a signpost.
          */
         {
-          label: 'Rates',
+          label: '速率',
           value: ratesShort(s.rates),
           action: 'rates',
-          note: `Not the machine's. Rates are yours, so they live under ${SCREEN_TITLES.pilot} and stay put when you switch tunes. Changing the aircraft reseeds them only if you are still on stock rates. This row goes there, and changing them mid run leaves the quad where it is.`,
+          note: `速率属于飞手，而非飞行器，因此位于“${SCREEN_TITLES.pilot}”中，切换调校时会保持不变。更换飞行器时，只有当前仍使用默认速率才会重新载入默认值。此项可打开速率设置；飞行中修改不会改变当前四轴状态。`,
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
 
@@ -8107,23 +8094,23 @@ export class Ui {
       /* Same contract as Quad above. */
       const midRun = this.returnTo === 'paused';
       return [
-        { label: 'You', section: true },
+        { label: '飞手', section: true },
         {
-          label: 'Your name',
-          value: name || 'Not set',
+          label: '你的名字',
+          value: name || '未设置',
           action: 'setname',
           note: name
             ? 'Posted times and published tracks carry this name. Changing it updates the board for tracks you published from this browser.'
             : `Needed to publish a track or post a time. ${nameRules()}`,
         },
-        { label: 'Sticks', section: true },
+        { label: '摇杆', section: true },
         {
-          label: 'Choose joystick',
-          value: (this.padInfo && this.padInfo.using) || 'Keyboard',
+          label: '选择摇杆',
+          value: (this.padInfo && this.padInfo.using) || '键盘',
           action: 'choosepad',
           note: padChooseNote(this.padInfo, this.radioBlind),
         },
-        { label: 'Calibrate sticks', action: 'calibrate', note: 'Centre, full range, then one named move per stick. Saved after you check it.' },
+        { label: '校准摇杆', action: 'calibrate', note: '依次执行回中、全行程和每个摇杆的指定动作。检查无误后保存。' },
         /*
          * THE WAY BACK TO THE ONLY SCREEN THAT SHOWS A MAPPING.
          *
@@ -8136,11 +8123,10 @@ export class Ui {
          * saved, so a one channel repair costs one row instead of a minute.
          */
         {
-          label: 'Check sticks',
+          label: '检查摇杆',
           action: 'calibrate-check',
-          note: 'Your saved mapping, live, without calibrating again. Move a stick and watch it:'
-            + ' if it goes the wrong way, one key reverses that channel, and if the wrong stick'
-            + ' moves on screen, one key puts them on the other hands. Nothing is kept until you save.',
+          note: '实时查看已保存的映射，无需重新校准。拨动摇杆并观察显示：'
+            + '如果方向相反，可按一个按键反转该通道；如果屏幕上移动的是另一侧摇杆，可按一个按键交换左右手布局。保存前不会应用任何修改。',
         },
         /*
          * THE ONE FOR A STICK THAT DOES NOTHING AT ALL, which the two above
@@ -8150,10 +8136,10 @@ export class Ui {
          * in. See STICK HELP in src/input/input.js.
          */
         {
-          label: 'Stick help',
+          label: '摇杆帮助',
           action: 'stickhelp',
-          note: 'A stick that does nothing? Move it here and watch every axis your radio sends.'
-            + ' That tells the sim, the browser and the radio apart, and says what fixes each.',
+          note: '摇杆没有反应？在这里拨动摇杆，查看遥控器发送的所有通道。'
+            + '据此可判断问题来自模拟器、浏览器还是遥控器，并了解对应的解决方法。',
         },
         /*
          * RESTART FROM THE RADIO, bug-a25bc2dd: "As people start to grind
@@ -8164,19 +8150,19 @@ export class Ui {
          * noteRestartSwitch in input.js.
          */
         ...(this.padInfo && this.padInfo.count > 0 && this.padInfo.using !== 'Keyboard' ? [{
-          label: 'Restart switch',
-          value: this.padInfo.restartCapturing ? 'Flip it now' : (this.padInfo.restart || 'Not set'),
+          label: '重新开始开关',
+          value: this.padInfo.restartCapturing ? '现在拨动开关' : (this.padInfo.restart || '未设置'),
           action: 'restart-switch',
           note: this.padInfo.restartCapturing
-            ? 'Flip the switch or press the button you want to restart with. Choose this row again to stop.'
+            ? '拨动要用于重新开始的开关，或按下对应按键。再次选择此项可停止设置。'
             : (this.padInfo.restart
-              ? 'In flight, flipping it takes you back to the start line, like R on the keyboard. Choose this row to pick another.'
-              : 'A switch or button on your radio that takes you back to the start line in flight, like R on the keyboard. Choose this row, then flip it.'),
+              ? '飞行中拨动此开关会返回起点，与键盘上的 R 键相同。选择此项可更换开关。'
+              : '指定遥控器上的开关或按键，以便飞行中返回起点，与键盘上的 R 键相同。选择此项，然后拨动开关或按下按键。'),
         }] : []),
         ...(this.padInfo && this.padInfo.restart && !this.padInfo.restartCapturing ? [{
-          label: 'Forget restart switch',
+          label: '清除重新开始开关',
           action: 'restart-switch-clear',
-          note: 'R on the keyboard still restarts.',
+          note: '仍可按键盘上的 R 键重新开始。',
         }] : []),
         /*
          * WHICH STICK CARRIES WHICH CHANNEL, and it sits here because the
@@ -8192,17 +8178,15 @@ export class Ui {
          * setting that only redraws the screen for them.
          */
         choice(
-          'Stick mode',
-          'Which stick is throttle and which is yaw, the way your radio is set up.'
-          + ' Mode 2 is throttle on the left, which is what this page has always been.'
-          + ' Mode 1 puts throttle on the right and pitch on the left.'
-          + ' This flies the THUMB STICKS, the KEYBOARD and a GAMEPAD that has not been'
-          + ' through Calibrate sticks, none of which has a mode of its own. A radio'
-          + ' already applies its own mode before this page sees a stick, so for a radio'
-          + ' this only names the sticks drawn on screen.',
+          '摇杆模式',
+          '根据遥控器设置选择油门和偏航所在的摇杆。'
+          + '模式 2 将油门设在左侧，本页面默认使用此模式。'
+          + '模式 1 将油门设在右侧，并将俯仰设在左侧。'
+          + '此设置适用于触屏摇杆、键盘，以及尚未校准的游戏手柄，它们本身没有摇杆模式。'
+          + '遥控器会在输入到达页面前应用自身的摇杆模式，因此此选项只会更改屏幕上摇杆的标注。',
           STICK_MODES,
           s.stickMode,
-          (n) => `Mode ${n}`,
+          (n) => `模式 ${n}`,
           (n) => { s.stickMode = normaliseStickMode(n); },
         ),
         /*
@@ -8214,27 +8198,27 @@ export class Ui {
          * what a radio ignores.
          */
         choice(
-          'Keyboard throttle',
+          '键盘油门',
           s.keyThrottle === 'hold'
-            ? 'Stays put: the throttle keys move the throttle and it stays wherever you leave it, the way a radio\'s does. A tap moves it about a percent, a longer hold moves it faster. The keyboard only.'
-            : 'Springs back: a tap nudges, a hold climbs, and letting go settles the throttle at hover for this quad, its weight, its throttle cap and its pack, so it holds height. Back on the ground it goes to idle. The keyboard only.',
+            ? '保持位置：松开按键后，油门会停在当前位置，就像遥控器一样。轻按约调整百分之一，按得越久变化越快。仅适用于键盘。'
+            : '自动回位：轻按进行微调，按住即可爬升，松开后油门会回到当前四轴、配重、油门上限和电池对应的悬停位置，从而保持高度。落地后会回到怠速。仅适用于键盘。',
           KEY_THROTTLE_MODES,
           s.keyThrottle,
-          (id) => (id === 'hold' ? 'Stays put' : 'Springs back'),
+          (id) => (id === 'hold' ? '保持位置' : '自动回位'),
           (id) => { s.keyThrottle = normaliseKeyThrottle(id); },
         ),
         ratesItem(s, midRun),
         choice(
-          'Radio link',
+          '遥控链路',
           s.link === 'perfect'
-            ? 'No radio: every frame arrives, exactly on time. Feedforward and RC smoothing read that cadence, so this is sharper than any real link.'
-            : `${LINK_PRESETS[s.link].hz} Hz, ${LINK_PRESETS[s.link].delayMs} ms delay, ${LINK_PRESETS[s.link].jitterMs} ms jitter. Records set on a perfect link are not comparable.`,
+            ? '理想链路：每帧输入都会准时到达。前馈和遥控输入平滑会根据此节奏工作，因此响应会比任何真实链路都快。'
+            : `${LINK_PRESETS[s.link].hz} Hz，延迟 ${LINK_PRESETS[s.link].delayMs} 毫秒，抖动 ${LINK_PRESETS[s.link].jitterMs} 毫秒。使用理想链路创下的纪录不可直接比较。`,
           Object.keys(LINK_PRESETS),
           s.link,
           (id) => LINK_PRESETS[id].label,
           (id) => { s.link = id; },
         ),
-        { label: 'Screen', section: true },
+        { label: '画面', section: true },
         graphicsItem(s, this.autoScaleNow),
         /*
          * THE DOOR TO THE KNOBS. Render scale, the frame cap, low latency,
@@ -8242,15 +8226,15 @@ export class Ui {
          * flight log, one door down: see the Advanced room's comment.
          */
         {
-          label: 'Advanced',
+          label: '高级设置',
           action: 'advanced',
-          note: 'Render scale, frame cap, low latency and predicted view, frame pacing, what reaches the screen how fast, and the flight log. For when something is wrong; Auto looks after the picture otherwise.',
+          note: '调整渲染分辨率、帧率上限、低延迟画面、预测画面和帧同步，并查看飞行日志。用于排查问题；平时可交由自动画质管理。',
         },
         toggle(
-          'Fullscreen in flight',
+          '飞行时全屏',
           s.fullscreenFly
-            ? 'On: Fly, Restart and Resume go fullscreen, and back to the title gives the window back. Many desktops hand a fullscreen window straight to the display, which can take a frame off the time between your sticks and the picture. Escape leaves fullscreen and pauses, and Resume goes back to it.'
-            : 'Off: the page stays in its window. Fullscreen can take a frame off the time between your sticks and the picture on many desktops.',
+            ? '开启：起飞、重新开始和继续飞行时进入全屏，返回标题页时恢复窗口。许多桌面系统会将全屏窗口直接交给显示器，可缩短约一帧的摇杆输入到画面响应延迟。按 Escape 退出全屏并暂停，继续飞行时会重新进入全屏。'
+            : '关闭：页面保持在窗口中。在许多桌面系统上，全屏可缩短约一帧的摇杆输入到画面响应延迟。',
           s.fullscreenFly,
           (v) => { s.fullscreenFly = v; },
         ),
@@ -8264,10 +8248,10 @@ export class Ui {
          * not there.
          */
         toggle(
-          'Manga and scoring',
+          '漫画风格与计分',
           s.mangaAndScoring
-            ? 'On: the game\'s manga look and its score. The menus\' titles are lettered in the manga hand, Medium and High draw black outlines round the world, and on a freestyle map the score, its combos and the chase are drawn as you fly them. Clean FPV and the Impact frame below trim parts of it.'
-            : 'Off: no manga look anywhere, and no score while you fly. No black outlines round the world on Medium and High, as on Low, no speed lines, impact frame or lettering, menus in plain type, and no score, combo or chase meter over the picture. The counting goes on underneath, so a scored run still runs its two minutes and ends on its results.',
+            ? '开启：使用漫画风格画面并启用计分。菜单标题会以漫画字形绘制，中、高画质会为场景添加黑色描边；自由地图飞行时会显示分数、连击和追逐计分。下方的“清爽 FPV”和“撞击定格”可分别关闭部分效果。'
+            : '关闭：不显示漫画效果，也不在飞行时计分。中、高画质不再为场景添加黑色描边，与低画质一致；不显示速度线、撞击定格或漫画字形，菜单使用普通字体，画面上也不显示分数、连击或追逐计分。底层仍会继续计数，因此计分飞行仍会持续两分钟并显示结果。',
           s.mangaAndScoring,
           (v) => { s.mangaAndScoring = v; },
         ),
@@ -8278,12 +8262,12 @@ export class Ui {
          * as well as the lettering's.
          */
         toggle(
-          'Clean FPV',
+          '清爽 FPV',
           !s.mangaAndScoring
-            ? 'Nothing to do while Manga and scoring is off: every map is already clean. Turn that on and this keeps the score and the chase as plain words and numbers, with no manga look in flight.'
+            ? '漫画风格与计分关闭时，此设置不起作用，所有地图都已是清爽画面。开启计分后，此设置可让分数和追逐计分仅以普通文字和数字显示，不使用漫画飞行效果。'
             : (s.cleanFpv
-              ? 'On: freestyle maps look and read the way a race track does. No speed lines and no impact frame; callouts are words and numbers, and the results are a list.'
-              : 'Off: on a freestyle map, ink speed lines gather at the edges of the picture above about 20 m/s, a crash lands as an impact frame, tricks, gaps and combos are hand lettered like a manga with a small katakana sound effect beside the big ones, and the results come back as a page of panels. Race tracks are always clean.'),
+              ? '开启：自由地图的画面和信息显示方式与竞速赛道相同。没有速度线或撞击定格，动作提示以普通文字和数字显示，结果以列表呈现。'
+              : '关闭：自由地图上速度超过约 20 米/秒时，画面边缘会出现墨迹速度线；撞击时会显示定格画面；技巧、间隙和连击会以漫画字形标注，并在较大的特效文字旁显示片假名音效；结果以分格漫画页呈现。竞速赛道始终使用清爽画面。'),
           s.cleanFpv,
           (v) => { s.cleanFpv = v; },
         ),
@@ -8294,12 +8278,12 @@ export class Ui {
          * that it is never a white flash, and what else stops it.
          */
         toggle(
-          'Impact frame',
+          '撞击定格',
           !s.mangaAndScoring
-            ? 'Nothing to do while Manga and scoring is off: a crash cuts straight to where you are set down. Turn that on and this decides whether a crash holds the moment as an ink panel.'
+            ? '漫画风格与计分关闭时，此设置不起作用；撞机后会直接切换到重置位置。开启计分后，此设置决定撞机时是否以墨迹画面定格瞬间。'
             : (s.impactFrame
-              ? 'On: a crash on a freestyle map holds the moment for a beat as a high contrast ink panel with impact lines, then lets go. Never a white flash, at most one every two seconds. Off under Clean FPV, and whenever your system asks for reduced motion.'
-              : 'Off: a crash cuts straight to where you are set down, with no held frame. The rest of the manga look stays.'),
+              ? '开启：在自由地图上撞机时，会以高对比度墨迹画面和冲击线定格片刻，然后继续。不会出现白色闪光，最多每两秒一次。“清爽 FPV”开启或系统要求减少动态效果时，此功能会关闭。'
+              : '关闭：撞机后直接切换到重置位置，不显示定格画面。其他漫画效果保持不变。'),
           s.impactFrame,
           (v) => { s.impactFrame = v; },
         ),
@@ -8309,12 +8293,12 @@ export class Ui {
          * The note says per shape what it is, like Frame pacing's.
          */
         choice(
-          'Crosshairs',
+          '准星',
           {
-            off: 'A mark at the centre of the picture, which is where the camera points. Off: nothing is drawn there.',
-            wings: 'Wings: a short line either side of a centre dot, the flat mark a Betaflight OSD draws, fixed at the centre of the picture where the camera points.',
-            cross: 'Cross: four short arms round an open centre, fixed at the centre of the picture where the camera points, so what you aim at stays in view.',
-            dot: 'Dot: one small dot at the centre of the picture, where the camera points. The least in the way.',
+            off: '准星位于画面中心，也就是相机朝向的位置。关闭时此处不会绘制标记。',
+            wings: '翼形：中心点两侧各有一条短线，类似 Betaflight OSD 的扁平标记，固定在画面中心。',
+            cross: '十字：中心留空，周围有四条短臂，固定在画面中心，让瞄准目标保持可见。',
+            dot: '点：在画面中心显示一个小点，遮挡最少。',
           }[s.crosshair] || '',
           CROSSHAIRS,
           s.crosshair,
@@ -8322,69 +8306,69 @@ export class Ui {
           (id) => { s.crosshair = id; },
         ),
         toggle(
-          'Show FPS',
+          '显示帧率',
           s.showFps
-            ? 'On: the frame rate is drawn in the top corner while you fly, updated twice a second. It is the rate the browser is drawing at, so it reads the display, not the physics.'
-            : 'Off: no frame rate on screen. Turn it on to see how smoothly this machine is drawing the flight.',
+            ? '开启后，飞行时会在屏幕角落显示帧率，每秒更新两次。它表示浏览器绘制画面的速度，不代表物理模拟的频率。'
+            : '关闭后，屏幕不显示帧率。开启后可查看此设备绘制飞行画面的流畅程度。',
           s.showFps,
           (v) => { s.showFps = v; },
         ),
-        { label: 'Sound', section: true },
-        toggle('Sound', 'All sound: motors, wind, music, cues and every lap time called out loud.', s.sound, (v) => { s.sound = v; }),
-        stepper('Volume', 'Overall level, the lap call included. Zero to ten.', `${s.volume}`, (d) => {
+        { label: '声音', section: true },
+        toggle('声音', '控制所有声音：电机、风声、音乐、提示音和圈速播报。', s.sound, (v) => { s.sound = v; }),
+        stepper('音量', '整体音量，包括圈速播报。范围为 0 至 10。', `${s.volume}`, (d) => {
           s.volume = Math.max(0, Math.min(10, s.volume + d));
         }),
-        stepper('Motors', 'The blade pass tone. You fly on its pitch, so keep some of it.', `${s.motorLevel}`, (d) => {
+        stepper('电机', '螺旋桨掠过的声音。飞行时可根据音调判断状态，建议保留一定音量。', `${s.motorLevel}`, (d) => {
           s.motorLevel = Math.max(0, Math.min(10, s.motorLevel + d));
         }),
-        stepper('Wind', 'Air over the airframe. Rises with speed.', `${s.windLevel}`, (d) => {
+        stepper('风声', '气流掠过机身的声音，会随速度增大。', `${s.windLevel}`, (d) => {
           s.windLevel = Math.max(0, Math.min(10, s.windLevel + d));
         }),
         stepper(
-          'Music',
-          'Recorded tracks in flight, and a quieter bed in the menus. One level for both. The skip buttons on screen jump a track.',
-          s.musicLevel > 0 ? `${s.musicLevel}` : 'Off',
+          '音乐',
+          '飞行时播放完整音量的曲目，菜单中以较低音量播放。两者共用此音量。点击屏幕上的切歌按钮可跳到其他曲目。',
+          s.musicLevel > 0 ? `${s.musicLevel}` : '关',
           (d) => { s.musicLevel = Math.max(0, Math.min(10, s.musicLevel + d)); },
         ),
         choice(
-          'Music track',
+          '音乐曲目',
           s.musicTrack === 'rotation'
-            ? 'What flies. A random start, then every track in turn.'
-            : 'What flies. This track loops until you skip or pick another.',
+            ? '选择飞行时播放的曲目。随机选择起始曲目，然后依次播放所有曲目。'
+            : '选择飞行时播放的曲目。当前曲目会循环播放，直到跳过或选择其他曲目。',
           ids,
           s.musicTrack,
-          (id) => (id === 'rotation' ? 'Rotation' : trackById(id).name),
+          (id) => (id === 'rotation' ? '依次播放' : trackById(id).name),
           (id) => { s.musicTrack = id; },
         ),
         toggle(
-          'Binaural tone',
-          'A quiet 1000 Hz tone, 6 Hz apart between the ears. Needs headphones to do anything at all.',
+          '双耳节拍',
+          '播放轻柔的 1000 Hz 音调，左右耳相差 6 Hz。需要佩戴耳机才能听到效果。',
           s.focusTone,
           (v) => { s.focusTone = v; },
         ),
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
 
     /* ADVANCED: the rows Settings sends here. See the room's comment. */
     if (this.screen === 'advanced') {
       return [
-        { label: 'Picture and latency', section: true },
+        { label: '诊断', section: true },
         gpuItem(this.gpuInfo),
         choice(
-          'Render scale',
-          'Fewer pixels, then stretched to fit. The one lever that always helps a starved GPU, at the price of sharpness. 100 is native for the preset.',
+          '渲染分辨率',
+          '减少渲染像素后再拉伸至窗口大小。降低分辨率可减轻显卡负担，但会降低清晰度。100 表示使用当前画质预设的原生分辨率。',
           RENDER_SCALES,
           s.renderScale,
-          (n) => (n >= 100 ? 'Native' : `${n}%`),
+          (n) => (n >= 100 ? '原生' : `${n}%`),
           (n) => { s.renderScale = n; },
         ),
         choice(
-          'Frame cap',
-          'Caps how often the world is drawn. A steady 60 reads better than a heaving 90, and it spares the battery. Sticks are still read and the physics still steps every frame; only the picture waits.',
+          '帧率上限',
+          '限制画面绘制频率。稳定的 60 帧通常比上下波动的 90 帧更流畅，也更省电。摇杆输入和物理模拟仍逐帧运行，只有画面绘制会等待。',
           FPS_CAPS,
           s.fpsCap,
-          (n) => (n === 0 ? 'Uncapped' : `${n} fps`),
+          (n) => (n === 0 ? '不限制' : `${n} 帧/秒`),
           (n) => { s.fpsCap = n; },
         ),
         /*
@@ -8395,16 +8379,16 @@ export class Ui {
          * DEFAULTS and buildShell in src/render/shell.js.
          */
         toggle(
-          'Low latency view',
+          '低延迟画面',
           lowLatencyNote(s.lowLatency, this.gpuInfo),
           s.lowLatency,
           (v) => { s.lowLatency = v; },
         ),
         toggle(
-          'Predicted view',
+          '预测画面',
           s.predictView
-            ? 'On: in flight the view is drawn where the quad will be when the frame reaches the screen, from its speed and rotation, a frame ahead of where it was when the frame began. That takes about a frame off the time between your sticks and the picture. Only the picture moves; the flight, the lap and the physics are the same either way.'
-            : 'Off: the view is drawn where the quad was when the frame began, which the screen shows a frame later.',
+            ? '开启：飞行画面会根据四轴的速度和旋转，预测一帧后到达屏幕时的位置，可将摇杆输入到画面响应的延迟缩短约一帧。只有画面位置会变化，飞行、圈速和物理模拟均不受影响。'
+            : '关闭：画面显示每帧开始时四轴所在的位置，因此屏幕上看到的画面约晚一帧。',
           s.predictView,
           (v) => { s.predictView = v; },
         ),
@@ -8413,7 +8397,7 @@ export class Ui {
           pacingNote(s),
           PACING_MODES,
           s.pacing,
-          (id) => ({ auto: 'Timer with Low', timer: 'Timer, always', display: 'Display, always' }[id]),
+          (id) => ({ auto: '自动（计时器优先）', timer: '始终使用计时器', display: '始终使用显示器时钟' }[id]),
           (id) => { s.pacing = id; },
         ),
         /* What the pieces above add up to on this machine, measured: see
@@ -8421,17 +8405,17 @@ export class Ui {
         latencyItem(this.latencyProbe ? this.latencyProbe() : null),
         { label: 'Diagnostics', section: true },
         toggle(
-          'Flight log',
-          'Record the run for download as a Betaflight blackbox CSV. Holds the whole flight in memory.',
+          '飞行日志',
+          '记录本次飞行，并可下载为 Betaflight Blackbox CSV 文件。完整飞行记录会保存在内存中。',
           s.flightLog,
           (v) => { s.flightLog = v; },
         ),
         {
-          label: 'Download flight log',
+          label: '下载飞行日志',
           action: 'downloadflightlog',
-          note: 'Writes what was recorded as blackbox_decode CSV, which scripts/replay-log.js reads.',
+          note: '将记录内容导出为 blackbox_decode CSV 文件，可由 scripts/replay-log.js 读取。',
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
 
@@ -8448,12 +8432,12 @@ export class Ui {
       if (!t) {
         return [
           {
-            label: 'No track chosen',
+            label: '尚未选择赛道',
             info: true,
             disabled: true,
-            note: 'Pick a track in the Race room and open its standings from there.',
+            note: '请先在“竞速”页面选择赛道，然后从那里打开排行榜。',
           },
-          { label: 'Back', action: 'back' },
+          { label: '返回', action: 'back' },
         ];
       }
       const rows = [];
@@ -8462,12 +8446,12 @@ export class Ui {
       const room = t.trackClass === 'micro';
       const bestMs = best ? (room ? best.threeMs : best.lapMs) : null;
       rows.push({
-        label: 'Fly this track',
+        label: '飞行此赛道',
         action: 'standings-fly',
         primary: true,
         note: best
           ? `Loads ${t.name} and goes straight to the starting blocks. The time to beat is ${formatTime(bestMs)} by ${best.name || 'an unnamed pilot'}${room ? ', three laps.' : '.'}`
-          : `Loads ${t.name} and goes straight to the starting blocks. Nobody has posted a time yet, so the first one is yours.`,
+          : `加载${t.name}并返回起飞卡片。目前还没有人提交成绩，你可以来创造第一个纪录。`,
       });
       /*
        * Racing a recorded lap is the one thing a standings table is FOR
@@ -8478,17 +8462,17 @@ export class Ui {
       const ghosts = times.filter((x) => x.hasGhost && x.id);
       if (ghosts.length) {
         rows.push({
-          label: 'Chase the record',
+          label: '挑战纪录',
           action: 'standings-ghost',
           note: `${ghosts[0].name || 'An unnamed pilot'}'s ${formatTime(ghosts[0].lapMs)} flown as a ghost beside you, straight from the starting blocks.`,
         });
       }
       rows.push({
-        label: 'This track on Tracks and times',
+        label: '在网页中打开',
         action: 'card-board',
-        note: `${t.name} on the public board, opened on its own page. A link to send somebody. Opens in a new tab.`,
+        note: `${t.name}的公共页面，可将链接分享给他人。将在新标签页中打开。`,
       });
-      rows.push({ label: 'Back', action: 'back' });
+      rows.push({ label: '返回', action: 'back' });
       return rows;
     }
 
@@ -8506,12 +8490,12 @@ export class Ui {
       const trackName = seat && seat.name ? seat.name : m.name;
       return [
         {
-          label: 'Track',
+          label: '赛道',
           value: trackName,
           info: true,
           note: seat && seat.gates
-            ? `${seat.gates} gates. This is what your time will be measured on.`
-            : 'This is what your time will be measured on.',
+            ? `${seat.gates} 个门。本次成绩将按此赛道计时。`
+            : '本次成绩将按此赛道计时。',
         },
         /*
          * TUNE, NOT QUAD, because the tune is what a run is filed under and
@@ -8522,40 +8506,40 @@ export class Ui {
          * else (postTime in src/share/board.js; MENUS-PLAN.md 1.35).
          */
         tuneItem(s, false),
-        { label: 'What this run counts as', section: true },
+        { label: '本次飞行的计分规则', section: true },
         choice(
-          'Laps',
+          '圈数',
           s.laps === PRACTICE_LAPS
-            ? 'Practice has no end: fly as many laps as you like, each one called out with its time as you cross the line, and stop from the pause menu. Nothing flown in practice goes to the public board. Latched when you launch, so changing it mid-run does nothing until the next one.'
-            : 'How many laps a run lasts before the result screen. Practice has no end and keeps nothing for the board. Latched when you launch, so changing it mid-run does nothing until the next one.',
+            ? '练习模式没有结束圈数：可随意飞行，每次过线都会播报圈速，并可从暂停菜单结束。练习成绩不会提交到公开排行榜。此设置在起飞时生效，飞行中更改要到下一次起飞才应用。'
+            : '设置显示结果前飞行的圈数。练习模式没有结束圈数，且不记录排行榜成绩。此设置在起飞时生效，飞行中更改要到下一次起飞才应用。',
           LAP_COUNTS,
           s.laps,
           lapsLabel,
           (n) => { s.laps = n; },
         ),
         choice(
-          'Pack charge',
-          'A tired pack sags harder and gives less punch. Best laps are kept per charge level, so a time set on a fresh pack and a time set on a tired one are two different records.',
+          '电池电量',
+          '电量较低时电压下陷更明显，动力也会减弱。最佳圈速按电量分别记录，因此满电和低电量时的成绩会分别保存。',
           PACK_VOLTAGES,
           s.packVoltage,
-          (n) => `${n.toFixed(2)} volts per cell`,
+          (n) => `每节 ${n.toFixed(2)} V`,
           (n) => { s.packVoltage = n; },
         ),
         choice(
-          'Flight model',
+          '飞行模型',
           s.flightStyle === 'arcade'
-            ? 'Arcade: the ideal quad. No propwash shake, no gyro noise, no build asymmetry, so any tune flies glass smooth. Times flown here stay off the public board.'
-            : 'Expert: the full physics, propwash, gyro noise and build tolerance included, which is what every board time is flown on. Arcade turns the imperfections off for a friendlier machine.',
+            ? '街机：使用理想四轴模型，不包含螺旋桨气流抖动、陀螺仪噪声或机体不对称，因此任何调校都能平滑飞行。此模式的成绩不会提交到公开排行榜。'
+            : '专家：启用完整物理模型，包括螺旋桨气流、陀螺仪噪声和机体公差，排行榜成绩均使用此模型。街机模式会关闭这些细节，让飞行器更容易操控。',
           FLIGHT_STYLES,
           s.flightStyle === 'arcade' ? 'arcade' : 'expert',
-          (id) => (id === 'arcade' ? 'Arcade' : 'Expert'),
+          (id) => (id === 'arcade' ? '街机' : '专家'),
           (id) => { s.flightStyle = id; },
         ),
         choice(
-          'Radio link',
+          '遥控链路',
           s.link === 'perfect'
-            ? 'A perfect link is sharper than any real radio: every frame arrives, exactly on time. Pick a real link to race on what a real radio feels like. The board is not told which link a time was flown on.'
-            : `${LINK_PRESETS[s.link].hz} Hz, ${LINK_PRESETS[s.link].delayMs} ms delay, ${LINK_PRESETS[s.link].jitterMs} ms jitter.`,
+            ? '理想链路比任何真实遥控器都更灵敏：每帧输入都会准时到达。使用此链路的成绩会在排行榜上标记。'
+            : `${LINK_PRESETS[s.link].hz} Hz，延迟 ${LINK_PRESETS[s.link].delayMs} 毫秒，抖动 ${LINK_PRESETS[s.link].jitterMs} 毫秒。`,
           Object.keys(LINK_PRESETS),
           s.link,
           (id) => LINK_PRESETS[id].label,
@@ -8566,12 +8550,12 @@ export class Ui {
          * is the one screen with no run in front of it. */
         ...this.ghostItems(),
         {
-          label: 'Fly',
+          label: '起飞',
           action: 'launch-go',
           primary: true,
           note: recordSentence(s, trackName),
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
 
@@ -8616,12 +8600,12 @@ export class Ui {
       const stickRow = padTroubleItem(this.padInfo, this.stickPlatform);
       const trouble = stickRow ? { ...stickRow, action: 'stickhelp' } : null;
       return [
-        { label: 'Resume', action: 'resume', primary: true },
-        { label: 'Restart run', action: 'restart' },
+        { label: '继续飞行', action: 'resume', primary: true },
+        { label: '重新开始', action: 'restart' },
         ...(builder ? [builder] : []),
         ...this.ghostItems(),
         ...(trouble ? [trouble] : []),
-        { label: 'Does it feel wrong?', section: true },
+        { label: '手感不对？', section: true },
         tuneItem(s, true),
         /*
          * RATES, ONE PRESS FROM THE PAUSE MENU, because that is when a pilot
@@ -8639,10 +8623,10 @@ export class Ui {
          * resetting the run.
          */
         {
-          label: 'Rates',
+          label: '速率',
           value: ratesShort(s.rates),
           action: 'rates',
-          note: 'How far the sticks go, and the throttle limit. Yours, not the tune\'s. Changing them here leaves the quad where it is and the clock running.',
+          note: '摇杆输入幅度和油门上限属于飞手，而非调校配置。在此更改不会让四轴返回起点线，计时也会继续。',
         },
         weightItem(s),
         feelItem(),
@@ -8658,17 +8642,17 @@ export class Ui {
          * they are one row from the title in About. At 1600x900 the last
          * row, the way out, was cut off by the legend; now it is not.
          */
-        { label: 'Elsewhere', section: true },
+        { label: '其他', section: true },
         {
-          label: 'Settings',
+          label: '四轴',
           action: 'pilot',
           /* Rates are the first thing in this room and they no longer cost
            * the run, so the blanket warning would be wrong more often than
            * right. The rows that still restart a run carry it themselves. */
-          note: 'Your name, your radio, graphics and sound.',
+          note: '昵称、遥控器、速率、画面和声音设置。',
         },
-        { label: 'How to fly', action: 'howto' },
-        { label: 'Quit to title', action: 'title' },
+        { label: '飞行教程', action: 'howto' },
+        { label: '返回标题页', action: 'title' },
       ];
     }
     if (this.screen === 'results') {
@@ -8701,18 +8685,18 @@ export class Ui {
          * reason. */
         const built = this.settings.map === 'built';
         return [
-          { label: 'Fly again', action: 'restart', primary: true },
+          { label: '再飞一次', action: 'restart', primary: true },
           this.runPosted
             ? {
-              label: this.runPosted.improved === false ? 'Your best still stands' : 'Run posted',
+              label: this.runPosted.improved === false ? '个人最佳仍有效' : '飞行已提交',
               action: 'postrun',
               disabled: true,
               note: this.runPosted.improved === false
-                ? `The board already holds a better run of yours, ${formatScore(this.runPosted.score)}. Only your best is kept.`
-                : `The board kept that run.${this.runPosted.rank != null ? ` Rank ${this.runPosted.rank}.` : ''}`,
+                ? `排行榜上已有更好的个人成绩：${formatScore(this.runPosted.score)}。仅保留个人最佳成绩。`
+                : `已保存本次成绩。${this.runPosted.rank != null ? ` 排名：${this.runPosted.rank}。` : ''}`,
             }
             : {
-              label: 'Post this run',
+              label: '提交本次飞行',
               action: 'postrun',
               /*
                * FREE FLIGHT IS REFUSED HERE, on the row, rather than by a
@@ -8724,18 +8708,18 @@ export class Ui {
               disabled: built || nothing || Boolean(run && run.assisted)
                 || (run && run.timed === false) || Boolean(run && run.weightMixed),
               note: built ? (this.sharedMap ? BOARD_MAP_OFF_BOARD : BUILT_OFF_BOARD) : (nothing
-                ? 'A run with no tricks in it is not a score. Fly one and it appears here.'
+                ? '本次飞行没有技巧动作，因此不计为成绩。完成技巧动作后即可在此提交。'
                 : (run && run.timed === false
-                  ? 'Free flight has no clock, so there is nothing for a board to compare it against. Set Scoring to Scored run in the Maps room and fly it again.'
+                  ? '自由飞行没有计时，排行榜无法比较成绩。请在自由飞行页面将计分模式切换为“计分”，然后重新飞行。'
                   : (run && run.assisted
-                    ? 'This run used the harness hooks, so it is not a flown score and the board will not take it.'
+                    ? '本次飞行使用了测试接口，不属于实际飞行成绩，无法提交到排行榜。'
                     /* The weight goes up with the run and the board prints
                      * it; a run whose tricks landed at two weights has no
                      * one weight to print, so it is the one weight refusal
                      * left. See submitFreestyleRun in main.js. */
                     : (run.weightMixed
-                      ? 'The weight changed during this run, so it has no one weight for the board to show. Fly it again at one weight.'
-                      : `${formatScore(run.total)} from ${run.tricks} tricks${Number.isInteger(run.weight) && run.weight !== WEIGHT_STOCK ? `, marked Weight ${run.weight}%` : ''}. One entry per pilot on the board, and only your best.`)))),
+                      ? '本次飞行期间更改了重量，排行榜无法为成绩标注单一重量。请保持重量不变并重新飞行。'
+                      : `${run.tricks} 个技巧动作，共 ${formatScore(run.total)} 分${Number.isInteger(run.weight) && run.weight !== WEIGHT_STOCK ? `，重量 ${run.weight}%` : ''}。每位飞手仅保留一条个人最佳成绩。`)))),
             },
           /*
            * THE SHARE CARD, the run's manga page beside its score. A row of
@@ -8747,32 +8731,32 @@ export class Ui {
             const drawn = Boolean(run) && mangaPanels(run).length > 0;
             const saved = this.cardSaved;
             return {
-              label: saved && saved.name ? 'Share card saved' : 'Save share card',
+              label: saved && saved.name ? '分享卡片已保存' : '保存分享卡片',
               action: 'savecard',
               disabled: !drawn,
               note: !drawn
-                ? 'A run with nothing to draw has no card. A trick, a gap, a skim or a tail puts one here.'
+                ? '没有可展示内容的飞行无法生成卡片。完成技巧动作、穿越间隙、贴地滑行或追逐后即可生成。'
                 : (saved && saved.error
-                  ? `The card could not be made: ${saved.error}`
+                  ? `无法生成卡片：${saved.error}`
                   : (saved && saved.name
-                    ? `Saved as ${saved.name}. Choose this row again for another copy.`
-                    : 'The run as a manga page beside its score, 1200 by 630, the size a link preview uses. Saved as a JPEG to post wherever you like.')),
+                    ? `已保存为 ${saved.name}。再次选择此项可保存另一份。`
+                    : '将本次飞行和成绩排版为漫画页面，尺寸为 1200 × 630，适合用作链接预览。将保存为 JPEG 图片，可发布到任意平台。')),
             };
           })(),
           {
-            label: 'Tracks and times',
+            label: '打开赛道与统计',
             action: 'leaderboard',
-            note: 'Every published track and map, and the times flown on them. Opens in a new tab.',
+            note: '查看所有已发布赛道及其飞行成绩。',
           },
           feelItem(),
-          { label: 'Back to title', action: 'title' },
+          { label: '返回标题页', action: 'title' },
         ];
       }
       if (!listing) {
         return [
-          { label: 'Fly again', action: 'restart', primary: true },
+          { label: '再飞一次', action: 'restart', primary: true },
           feelItem(),
-          { label: 'Back to title', action: 'title' },
+          { label: '返回标题页', action: 'title' },
         ];
       }
       /*
@@ -8785,7 +8769,7 @@ export class Ui {
        */
       const onBoard = Boolean(listing.shareId || listing.published || this.coursePublished);
       return [
-        { label: 'Fly again', action: 'restart', primary: true },
+        { label: '再飞一次', action: 'restart', primary: true },
         ...applicableRows([
           uploadAction(listing, {
             row: this.resultsBoard,
@@ -8795,12 +8779,12 @@ export class Ui {
         ]),
         editAction(listing, activeCourseSummary()),
         ...(onBoard ? [{
-          label: 'This track on Tracks and times',
+          label: '打开赛道与统计',
           action: 'seat-board',
           note: `${listing.name || 'This track'} on the public board, opened on its own page: every time posted on it and who flew them. Opens in a new tab.`,
         }] : []),
         feelItem(),
-        { label: 'Back to title', action: 'title' },
+        { label: '返回标题页', action: 'title' },
       ];
     }
     if (this.screen === 'rates') {
@@ -8872,18 +8856,18 @@ export class Ui {
       const loaded = presetMatching(r);
       const presetValue = loaded
         ? loaded.name
-        : (ratesAreDefault(r) ? 'Stock' : 'Not saved');
+        : (ratesAreDefault(r) ? '默认值' : '未保存');
       const presetRow = presets.length === 0
         ? {
-          label: 'Preset',
-          value: 'None saved',
+          label: '预设',
+          value: '尚未保存',
           info: true,
-          note: `Save the numbers below under a name and they come back in one press, which is what a second track wants. ${RATES_STORAGE_WARNING}`,
+          note: `为以下数值命名并保存，之后即可一键恢复，方便切换赛道时使用。${RATES_STORAGE_WARNING}`,
         }
         : {
           ...choice(
-            'Preset',
-            `${presets.length === 1 ? 'One saved profile' : `${presets.length} saved profiles`}. Loading one sets every number below, the throttle limit included, and does not put you back on the start line. ${RATES_STORAGE_WARNING}`,
+            '预设',
+            `${presets.length === 1 ? '已保存 1 个配置' : `已保存 ${presets.length} 个配置`}。加载预设会设置下方所有数值，包括油门上限，但不会让四轴返回起点。${RATES_STORAGE_WARNING}`,
             presets.map((p) => p.id),
             loaded ? loaded.id : '',
             (id) => (ratePresetById(id) || { name: presetValue }).name,
@@ -8900,18 +8884,18 @@ export class Ui {
         ...this.stickPathRow(),
         presetRow,
         choice(
-          'Rates type',
-          `Which rate system the numbers below are in. All five are Betaflight's own and all five fly: the curve is chosen in fc/rc.c by this one field. Actual is the Betaflight 4.5 default and the one whose Max rate column means exactly what it says at the stop. Changing this loads that system's own defaults, because a Betaflight RC rate of 1.00 and an Actual centre sensitivity of 70 are the same stored number and not the same setting.`,
+          '速率类型',
+          `选择下方数值所属的速率系统。Betaflight 提供的五种系统均可飞行；此参数会由 fc/rc.c 选择对应曲线。实际速率是 Betaflight 4.5 的默认类型，其最大速率表示摇杆满行程时的真实转速。切换类型会载入该系统的默认值，因为 Betaflight 的 RC rate 1.00 与实际速率的中心灵敏度 70 在底层存储值相同，但含义不同。`,
           RATE_TYPES,
           r.type,
           (t) => RATE_TYPE_LABEL[t],
           (t) => { s.rates = profileForType(t, r); },
         ),
         toggle(
-          'Separate pitch',
+          '俯仰独立设置',
           split
-            ? 'On. Pitch has its own three numbers and its own curve on the graph. Turning this off copies roll onto pitch.'
-            : 'Off. Roll and pitch share one set of numbers, which is how most quads are set up and what Betaflight ships. Turn it on to give pitch its own.',
+            ? '开启：俯仰使用独立的三个数值，并在图表中显示独立曲线。关闭后会将横滚数值复制到俯仰。'
+            : '关闭：横滚和俯仰共用一组数值，这是多数四轴和 Betaflight 默认的配置。开启后可为俯仰单独设置数值。',
           split,
           (on) => {
             s.ratesSplitPitch = on;
@@ -8922,21 +8906,21 @@ export class Ui {
             }
           },
         ),
-        { label: split ? 'Roll' : 'Roll and pitch', section: true },
+        { label: split ? '横滚' : '横滚与俯仰', section: true },
         ...axisRows('roll'),
-        ...(split ? [{ label: 'Pitch', section: true }, ...axisRows('pitch')] : []),
-        { label: 'Yaw', section: true },
+        ...(split ? [{ label: '俯仰', section: true }, ...axisRows('pitch')] : []),
+        { label: '偏航', section: true },
         ...axisRows('yaw'),
         this.cameraAngleRow(s),
-        { label: 'Throttle', section: true },
+        { label: '油门', section: true },
         choice(
-          'Throttle limit',
+          '油门上限',
           r.throttleCap >= 100
-            ? `Off. This quad is almost nine to one thrust to weight and hovers at ${hover.toFixed(1)} percent of stick, so most of the travel is above hover. Capping it scales the whole stick down and gives the resolution back.`
-            : `Betaflight SCALE limit: full stick commands ${r.throttleCap} percent, and the whole travel is redistributed under it. Hover moves to about ${hover.toFixed(1)} percent of stick, so the throttle is less touchy.`,
+            ? `关闭。此四轴的推重比接近 9:1，约在摇杆 ${hover.toFixed(1)}% 处悬停，因此大部分行程都高于悬停油门。限制油门会缩放整个摇杆行程，提高悬停附近的控制精度。`
+            : `Betaflight 的 SCALE 限制：摇杆满行程时输出 ${r.throttleCap}%，并将整个行程缩放到该上限内。悬停位置约为摇杆 ${hover.toFixed(1)}%，油门操控会更柔和。`,
           THROTTLE_CAP_CHOICES,
           r.throttleCap,
-          (n) => (n >= 100 ? 'Off' : `${n}%`),
+          (n) => (n >= 100 ? '关' : `${n}%`),
           (n) => { r.throttleCap = n; },
         ),
         /* Betaflight's own throttle curve, thr_mid and thr_expo, the two
@@ -8946,7 +8930,7 @@ export class Ui {
          * curve, so a bent curve moves where hover sits on the stick. */
         number(
           THROTTLE_CURVE_FIELDS.thrMid.label,
-          `${THROTTLE_CURVE_FIELDS.thrMid.note} This quad hovers near ${hover.toFixed(1)} percent of stick on the factory curve.`,
+          `${THROTTLE_CURVE_FIELDS.thrMid.note} 使用出厂曲线时，此四轴约在摇杆 ${hover.toFixed(1)}% 处悬停。`,
           THROTTLE_CURVE_FIELDS.thrMid,
           r.thrMid,
           (v) => { r.thrMid = v; },
@@ -8958,7 +8942,7 @@ export class Ui {
           r.thrExpo,
           (v) => { r.thrExpo = v; },
         ),
-        { label: 'Presets', section: true },
+        { label: '预设', section: true },
         /*
          * ONLY HERE WHEN SOMETHING WENT WRONG. A refused write is state the
          * pilot has to know about and cannot see anywhere else, so it wears
@@ -8967,37 +8951,37 @@ export class Ui {
          * successful save says so by changing the Preset row's value.
          */
         ...(this.ratesNotice ? [{
-          label: 'Not saved',
+          label: '未保存',
           value: '',
           info: true,
           rowClass: 'row-warn',
           note: this.ratesNotice,
         }] : []),
         {
-          label: 'Save as preset',
+          label: '另存为预设',
           action: 'rates-save',
           note: loaded
-            ? `Save these numbers again under a name. They already match ${loaded.name}, so saving under that name replaces it and any other name makes a second profile. ${RATES_STORAGE_WARNING}`
-            : `Name these numbers and they come back in one press. ${RATES_STORAGE_WARNING}`,
+            ? `为这些数值命名并保存。当前数值与 ${loaded.name} 一致，使用相同名称保存会替换该预设，使用其他名称则会另存为新配置。${RATES_STORAGE_WARNING}`
+            : `为这些数值命名并保存，之后即可一键恢复。${RATES_STORAGE_WARNING}`,
         },
         {
-          label: 'Delete preset',
+          label: '删除预设',
           action: 'rates-delete',
           disabled: !loaded,
           rowClass: loaded ? undefined : 'row-grey',
           note: loaded
-            ? `Forget ${loaded.name}. This browser is the only copy, so it cannot be undone. The numbers stay on the quad; only the saved profile goes.`
-            : 'Load a preset first. This deletes the profile the rows below are flying, and they are not flying a saved one.',
+            ? `删除 ${loaded.name}。预设仅保存在此浏览器中，删除后无法撤销。四轴会保留当前数值，只有已保存的配置会被删除。`
+            : '请先加载预设。删除后会移除下方当前使用的配置；目前没有正在使用已保存的预设。',
         },
         {
-          label: 'Revert to defaults',
+          label: '恢复默认值',
           action: 'rates-default',
           disabled: !ratesChanged(s),
           note: ratesChanged(s)
-            ? `Back to what a freshly flashed Betaflight 4.5.1 flies: Actual rates, ${formatRate(rateField('ACTUAL', 'rcRate'), RATE_DEFAULTS.roll.rcRate)} deg/s at centre, ${formatRate(rateField('ACTUAL', 'srate'), RATE_DEFAULTS.roll.srate)} deg/s at the stop on every axis, no expo, no throttle limit.`
-            : 'Already on the Betaflight 4.5.1 defaults.',
+            ? `恢复为全新 Betaflight 4.5.1 的默认值：实际速率，中点为 ${formatRate(rateField('ACTUAL', 'rcRate'), RATE_DEFAULTS.roll.rcRate)} 度/秒，所有轴满杆为 ${formatRate(rateField('ACTUAL', 'srate'), RATE_DEFAULTS.roll.srate)} 度/秒，不使用指数或油门上限。`
+            : '当前已使用 Betaflight 4.5.1 默认值。',
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       ];
     }
     if (this.screen === 'pids') {
@@ -9099,9 +9083,9 @@ export class Ui {
       ];
       if (!live) {
         rows.push({
-          label: `Loading ${tuneName}`,
+          label: `正在加载${tuneName}`,
           info: true,
-          note: 'The tune is being fetched and applied. Its sliders appear the moment the module reads back.',
+          note: '正在获取并应用调校配置。模块读取完成后，滑块会立即显示。',
         });
       } else {
         rows.push(toggle(
@@ -9115,14 +9099,14 @@ export class Ui {
           },
         ));
         if (!expert) {
-          rows.push({ label: 'Betaflight\'s tuning sliders', section: true });
+          rows.push({ label: 'Betaflight 调校滑块', section: true });
           for (const k of SLIDER_KEYS) {
             rows.push(sliderRow(k));
           }
         }
         if (expert) {
           for (const axis of PID_AXES) {
-            rows.push({ label: axis === 'roll' ? 'Roll' : axis === 'pitch' ? 'Pitch' : 'Yaw', section: true });
+            rows.push({ label: axis === 'roll' ? '横滚' : axis === 'pitch' ? '俯仰' : '偏航', section: true });
             for (const f of PID_FIELDS) {
               rows.push(pidRow(axis, f));
             }
@@ -9131,19 +9115,19 @@ export class Ui {
       }
       rows.push(
         {
-          label: 'Firmware bench',
+          label: '全部设置',
           action: 'fc',
-          note: 'The Firmware bench: filters, features and every firmware key, not just the PIDs. Configurator-shaped. No CLI paste.',
+          note: '打开完整的飞控配置器页面，查看滤波器、功能和所有固件参数，而不仅是 PID。布局与原配置器相似。不支持粘贴 CLI 命令。',
         },
         {
-          label: 'Back to the tune\'s own values',
+          label: '恢复此配置的原始数值',
           action: 'pids-default',
           disabled: !pidsAdjusted(s.pids, s.tune),
           note: pidsAdjusted(s.pids, s.tune)
-            ? `Forgets every slider and hand-set PID for ${tuneName} and flies the tune as it ships. Other tunes' adjustments are kept.`
-            : `${tuneName} is already flying its own values.`,
+            ? `清除 ${tuneName} 的所有滑块和手动 PID 修改，并恢复该调校的出厂数值。其他调校的修改会保留。`
+            : `${tuneName} 已使用其原始数值飞行。`,
         },
-        { label: 'Back', action: 'back' },
+        { label: '返回', action: 'back' },
       );
       return rows;
     }
@@ -9997,7 +9981,7 @@ export class Ui {
     wrap.setAttribute('role', 'group');
     wrap.setAttribute('aria-label', it.label);
     for (const seg of [false, true]) {
-      const b = btn(`sw-seg${it.on === seg ? ' on' : ''}`, seg ? 'On' : 'Off');
+      const b = btn(`sw-seg${it.on === seg ? ' on' : ''}`, seg ? '开' : '关');
       b.setAttribute('aria-pressed', String(it.on === seg));
       b.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -10912,7 +10896,7 @@ export class Ui {
          * where a word rewraps the name and the card grows, and every card
          * under it moves the moment after a double click asked for a page
          * that holds still. */
-        const wait = el('div', 'course-card-wait', 'Loading');
+        const wait = el('div', 'course-card-wait', '正在加载');
         wait.hidden = true;
         if (fresh) {
           shot.append(el('div', 'course-card-plus', '+'));
@@ -11382,7 +11366,7 @@ export class Ui {
        * load below is what the pilot asked for. */
     }
     if (held && held.id !== doc.id && !keepDisplaced(held).ok) {
-      this.boardNote.textContent = `This browser would not keep "${held.name}", the track in the builder, so it is still there. Export it from the builder first.`;
+      this.boardNote.textContent = `当前浏览器无法保存编辑器中的“${held.name}”，因此它仍保留在编辑器里。请先从编辑器导出。`;
       return false;
     }
     /* inspectCourse reads the share seat BEFORE the autosave, so a share
@@ -11390,7 +11374,7 @@ export class Ui {
      * just chosen and the pilot would fly the wrong one. */
     clearShareImport(cls);
     if (!writeAutosave(doc)) {
-      this.boardNote.textContent = 'This browser would not store that track.';
+      this.boardNote.textContent = '当前浏览器无法保存此赛道。';
       return false;
     }
     this.setShare(null);
@@ -11412,7 +11396,7 @@ export class Ui {
       return;
     }
     this.boardLoading = true;
-    this.boardNote.textContent = 'Reading the board';
+    this.boardNote.textContent = '正在读取排行榜';
     fetchTrackList(this.share && this.share.board ? this.share.board : undefined)
       .then((list) => {
         this.boardLoading = false;
@@ -11467,10 +11451,10 @@ export class Ui {
           const other = list.some((t) => (t.trackClass === 'micro' ? 'micro' : 'full') !== want);
           const name = airframeById(this.settings.airframe).name.toLowerCase();
           this.boardNote.textContent = other
-            ? `No ${name} tracks on the board yet. Build one and publish it, or change aircraft.`
+            ? `排行榜上还没有适用于${name}的赛道。你可以创建并发布一条赛道，或更换飞行器。`
             : '';
         } else {
-          this.boardNote.textContent = 'No published tracks on the board yet. Build one and publish it.';
+          this.boardNote.textContent = '排行榜上还没有已发布的赛道。创建并发布一条赛道吧。';
         }
         if (this.screen === 'courses') {
           this.renderMenu();
@@ -11479,7 +11463,7 @@ export class Ui {
       .catch(() => {
         this.boardLoading = false;
         this.boardCourses = [];
-        this.boardNote.textContent = 'The board is not answering, so only your own tracks are listed.';
+        this.boardNote.textContent = '排行榜暂时无法响应，此处仅显示你自己的赛道。';
         if (this.screen === 'courses') {
           this.renderMenu();
         }
@@ -11502,19 +11486,21 @@ export class Ui {
       return;
     }
     this.boardMapsLoading = true;
-    this.boardMapNote.textContent = 'Reading the board';
+    this.boardMapNote.textContent = '正在读取排行榜';
     fetchMapList()
       .then((list) => {
         this.boardMapsLoading = false;
         const own = ownMapId();
         this.boardMapNote.textContent = list.length
           ? ''
-          : 'No freestyle maps on the board yet. Build one in the builder and publish it.';
+
+          : '排行榜上还没有自由飞行地图。请在赛道编辑器中创建并发布一张地图。';
+
         this.relistBoardMaps(pickNewestMaps(list.filter((m) => m.id !== own)));
       })
       .catch(() => {
         this.boardMapsLoading = false;
-        this.boardMapNote.textContent = 'The board is not answering, so only the town and your own map are listed.';
+        this.boardMapNote.textContent = '排行榜暂时无法响应，此处仅显示城镇地图和你自己的地图。';
         this.relistBoardMaps([]);
       });
   }
@@ -11563,7 +11549,7 @@ export class Ui {
       return;
     }
     this.openingBoardMap = true;
-    this.boardMapNote.textContent = `Loading ${m.name}`;
+    this.boardMapNote.textContent = `正在加载${m.name}`;
     this.onBoardMap(m).then((shared) => {
       this.openingBoardMap = false;
       this.boardMapNote.textContent = '';
@@ -11651,7 +11637,7 @@ export class Ui {
         }
         this.standingsLoading = null;
         this.standingsTimes = [];
-        this.standingsError = 'The board is not answering, so its times cannot be shown.';
+        this.standingsError = '排行榜暂时无法响应，因此无法显示成绩。';
         if (this.screen === 'standings') {
           this.paintStandings();
           this.renderMenu();
@@ -11676,7 +11662,7 @@ export class Ui {
     table.textContent = '';
     if (this.standingsLede) {
       this.standingsLede.textContent = t
-        ? [t.name, t.gates ? `${t.gates} gates` : '', byLine(t)]
+        ? [t.name, t.gates ? `${t.gates} 个门` : '', byLine(t)]
           .filter(Boolean).join(' \u00b7 ')
         : '';
     }
@@ -11684,7 +11670,7 @@ export class Ui {
       return;
     }
     if (this.standingsTimes == null) {
-      table.append(el('div', 'standings-note', 'Reading the board'));
+      table.append(el('div', 'standings-note', '正在读取排行榜'));
       return;
     }
     if (this.standingsError) {
@@ -11694,15 +11680,15 @@ export class Ui {
     const room = t.trackClass === 'micro';
     if (!this.standingsTimes.length) {
       table.append(el('div', 'standings-note', room
-        ? 'No three lap time on this track yet. RaceGOW scores three laps in a row, and the first one is yours.'
-        : 'No times posted on this track yet. The first one is yours.'));
+        ? '此赛道还没有三圈总成绩。RaceGOW 按连续三圈计分，你可以来跑出第一个成绩。'
+        : '此赛道还没有已提交的成绩。来跑出第一个成绩吧。'));
       return;
     }
     const me = (readPilotName() || '').trim().toLowerCase();
     const head = el('div', 'standings-row standings-head');
     head.append(el('span', 'standings-rank', ''));
-    head.append(el('span', 'standings-pilot', 'Pilot'));
-    head.append(el('span', 'standings-lap', room ? 'Three laps' : 'Lap'));
+    head.append(el('span', 'standings-pilot', '飞手'));
+    head.append(el('span', 'standings-lap', room ? '三圈' : '单圈'));
     table.append(head);
     this.standingsTimes.forEach((row, i) => {
       const line = el('div', 'standings-row');
@@ -11713,17 +11699,17 @@ export class Ui {
         line.classList.add('is-record');
       }
       line.append(el('span', 'standings-rank', String(i + 1)));
-      const who = el('span', 'standings-pilot', row.name || 'Unnamed pilot');
+      const who = el('span', 'standings-pilot', row.name || '匿名飞手');
       /* A time flown off 100 says so, as the board's own table does. The
        * board ranks every weight on the clock, so the label is the only
        * thing that tells two rows apart. */
       if (Number.isInteger(row.weight) && row.weight !== WEIGHT_STOCK) {
-        who.append(' ', el('span', 'standings-weight', `Weight ${row.weight}%`));
+        who.append(' ', el('span', 'standings-weight', `配重 ${row.weight}%`));
       }
       if (row.hasGhost) {
         /* A ghost is the difference between reading a time and racing it,
          * so the rows that carry one say so. */
-        who.append(el('span', 'standings-ghost', 'ghost'));
+        who.append(el('span', 'standings-ghost', '幽灵'));
       }
       line.append(who);
       line.append(el('span', 'standings-lap', formatTime(room ? row.threeMs : row.lapMs)));
@@ -12733,7 +12719,7 @@ export class Ui {
       return;
     }
     this.openingBoardCourse = true;
-    this.boardNote.textContent = `Loading ${track.name}`;
+    this.boardNote.textContent = `正在加载${track.name}`;
     if (!this.onBoardCourse) {
       this.openingBoardCourse = false;
       this.boardNote.textContent = `${track.name} could not be loaded from the board.`;
@@ -12774,7 +12760,7 @@ export class Ui {
       return;
     }
     this.openingBoardCourse = true;
-    this.boardNote.textContent = `Loading ${track.name}`;
+    this.boardNote.textContent = `正在加载${track.name}`;
     if (!this.onBoardCourse) {
       this.openingBoardCourse = false;
       this.boardNote.textContent = `${track.name} could not be loaded from the board.`;
@@ -12829,63 +12815,63 @@ export class Ui {
     this.howtoKeys.textContent = '';
     const rows = source === 'touch'
       ? [
-        ['Left thumb', `${stickCaption(this.settings.stickMode, 'left')}.${thrNote(this.settings.stickMode, 'left')}`],
-        ['Right thumb', `${stickCaption(this.settings.stickMode, 'right')}.${thrNote(this.settings.stickMode, 'right')}`],
-        ['The whole corner', 'The pad is bigger than the drawing: the stick is wherever your thumb lands in the lower corner, and deflection is the drag from there.'],
-        ['Landscape', 'Turn the phone sideways. The pads sit under both thumbs, the way a radio sits in both hands.'],
-        ['Turtle', 'If you end up inverted on the ground, a TURTLE MODE prompt appears. Pitch or roll on the right pad to flip over. You do not have to time it. Let go, then take off.'],
-        ['Pause', 'The Pause chip, top right. Hits bounce. Time is the penalty. Resume, then pitch or roll if you are inverted.'],
+        ['左侧拇指', `${stickCaption(this.settings.stickMode, 'left')}.${thrNote(this.settings.stickMode, 'left')}`],
+        ['右侧拇指', `${stickCaption(this.settings.stickMode, 'right')}.${thrNote(this.settings.stickMode, 'right')}`],
+        ['整个角落', '触控区比图示更大：屏幕下方角落的任意位置都可作为摇杆起点，拖动距离决定输入幅度。'],
+        ['横屏', '将手机横过来。两个触控摇杆会分别位于左右拇指下方，就像双手握住遥控器一样。'],
+        ['翻正模式', '四轴倒扣在地面时会出现翻正模式提示。用右侧触控摇杆控制俯仰或横滚即可翻正，无需卡准时机。松开摇杆后即可起飞。'],
+        ['暂停', '点击右上角的“暂停”。碰撞会反弹并消耗时间。继续飞行后，如果四轴倒扣，可操作俯仰或横滚翻正。'],
         ['Gates', 'Fly the one that pulses. Green is the way through, red is its wrong face.'],
       ]
       : source === 'radio'
       ? [
-        [`Left stick (Mode ${normaliseStickMode(this.settings.stickMode)})`, `${stickCaption(this.settings.stickMode, 'left')}. Set the mode on the radio; this page follows it in Settings.`],
-        ['Right stick', `${stickCaption(this.settings.stickMode, 'right')}.`],
-        ['Before you fly', this.radioBlind
+        [`左侧摇杆（模式 ${normaliseStickMode(this.settings.stickMode)}）`, `${stickCaption(this.settings.stickMode, 'left')}。请在遥控器上设置摇杆模式；本页面会同步“设置”中的模式。`],
+        ['右侧摇杆', `${stickCaption(this.settings.stickMode, 'right')}。`],
+        ['起飞前', this.radioBlind
           ? this.radioBlind.howto
-          : 'Put the radio in joystick mode before loading this page, then run Calibrate sticks in Settings.'],
-        ['In the menus', 'Pitch moves the cursor, roll right selects, roll left goes back. After a pause or a finish, wait a moment with the sticks at rest and hold the roll a beat.'],
-        ['Restart', 'R on the keyboard, or a switch on the radio: Settings, Restart switch, then flip it.'],
-        ['Acro', 'Hands off holds the attitude you left it in. Every turn has to be flown back out again.'],
-        ['Turtle', 'If you end up inverted on the ground, a TURTLE MODE prompt appears. Pitch or roll with the right stick to flip over. You do not have to time it. Centre the stick, then take off.'],
+          : '加载此页面前，请将遥控器设为摇杆模式，然后在“设置”中校准摇杆。'],
+        ['菜单操作', '俯仰控制移动光标，向右横滚确认，向左横滚返回。暂停或结束后，请先让摇杆回中片刻，再按住横滚摇杆一拍。'],
+        ['重新开始', '按键盘上的 R，或拨动遥控器开关：进入“设置”>“重新开始开关”，然后拨动开关。'],
+        ['自稳特技模式', '松开摇杆后会保持当前姿态。每次转向后都需要主动飞回原来的方向。'],
+        ['翻正模式', '四轴倒扣在地面时会出现翻正模式提示。用右侧摇杆控制俯仰或横滚即可翻正，无需卡准时机。将摇杆回中后即可起飞。'],
         ['Gates', 'Fly the one that pulses. Green is the way through, red is its wrong face.'],
       ]
       : source === 'launch'
         ? [
-          ['What it is', 'Betaflight race start. Pitch the quad, let go of the stick, and it holds that angle at idle until you punch throttle. No looping off the blocks.'],
-          ['Turn it on', 'Quad, Launch control, On. It stays off until you do. Then press L on the start line, before you raise throttle.'],
-          ['Set the angle', 'Throttle at idle. Pitch forward until the OSD reads around 30 to 40 degrees. Centre the stick. The motors hold it.'],
-          ['Go', 'Punch throttle past about 20 percent. The hold dumps, the props bite, and you are flying. L again resets it after a launch.'],
-          ['Keyboard', 'Up arrow is pitch forward. W is throttle. Launch control switches you to Acro for the hold, then your own mode comes back after you go.'],
-          ['Radio', 'Same sequence as a real board. L is the mode switch. Fine-tune launch_angle_limit and launch_trigger_throttle_percent on the Firmware bench, under Quad.'],
-          ['Turtle', 'If you tip over on the blocks, TURTLE MODE takes over. Pitch or roll to flip. You do not have to time it. Centre the stick, then press L and launch again.'],
+          ['功能说明', '这是 Betaflight 的竞速起步控制。推动俯仰摇杆并松手，四轴会在怠速时保持该角度，直到你快速推高油门。起步时不会翻滚。'],
+          ['开启功能', '进入“四轴”>“起步控制”并选择“开”。默认关闭。开启后，在起点线、提高油门前按 L。'],
+          ['设置角度', '保持油门怠速，向前推动俯仰摇杆，直到 OSD 显示约 30 至 40 度，然后将摇杆回中。电机将保持该角度。'],
+          ['起飞', '将油门快速推过约 20%。角度保持解除，螺旋桨开始提供推力，四轴随即起飞。起飞后再次按 L 可重置。'],
+          ['键盘', '上方向键控制俯仰前推，W 控制油门。起步控制会暂时切换到自稳特技模式，起飞后恢复原模式。'],
+          ['遥控器', '操作顺序与真实飞控相同。L 是模式开关。可在飞控配置器页面调整 launch_angle_limit 和 launch_trigger_throttle_percent。'],
+          ['翻正模式', '如果四轴在起点线上翻倒，会进入翻正模式。控制俯仰或横滚即可翻正，无需卡准时机。将摇杆回中后按 L 重新起飞。'],
         ]
       : [
         ...keyHowtoRows(this.settings.stickMode, this.settings.keyThrottle),
-        ['L', 'Launch control, if you turned it on in Quad. Pitch, centre, punch.'],
-        ['M', 'Switches Angle and Acro in flight, and keeps the choice.'],
-        ['R, then Escape', 'Back to the start line, and pause.'],
-        ['Turtle', 'If you end up inverted on the ground, a TURTLE MODE prompt appears. Pitch or roll with the arrow keys to flip over. You do not have to time it. Let go, then take off.'],
-        ['F8', 'Report a bug or give feedback. Pauses if you are in the air, then opens the form.'],
+        ['L', '如果在“四轴”中开启了起步控制，可按 L。推动俯仰摇杆、回中，然后快速加油门。'],
+        ['M', '飞行中切换自稳和角度模式，并记住当前选择。'],
+        ['R，然后按 Escape', '返回起点线并暂停。'],
+        ['翻正模式', '四轴倒扣在地面时会出现翻正模式提示。用方向键控制俯仰或横滚即可翻正，无需卡准时机。松开按键后即可起飞。'],
+        ['F8', '报告问题或提交反馈。飞行中会先暂停，然后打开表单。'],
         ['Gates', 'Fly the one that pulses. Green is the way through, red is its wrong face.'],
       ];
     for (const [k, v] of rows) {
       this.howtoKeys.append(el('dt', null, k), el('dd', null, v));
     }
     this.howtoLive.textContent = source === 'touch'
-      ? 'The pads appear in flight, under your thumbs.'
+        ? '飞行时，触控摇杆会显示在拇指下方。'
       : source === 'radio'
-        ? 'Move your sticks. These follow the radio.'
+          ? '拨动摇杆，图示会跟随遥控器输入。'
         : source === 'launch'
-          ? 'L arms it. Pitch, centre, punch. The gimbals still follow your hands.'
-          : 'Press the keys. These follow your hands.';
+            ? '按 L 开启。推动俯仰、回中、快速加油门。摇杆图示会跟随你的操作。'
+            : '按下按键，图示会跟随你的操作。';
     this.howtoMode.textContent = source === 'touch'
-      ? 'Thumb sticks are a real proportional stick, so they fly whichever Flight mode is set in Quad: Acro, like a radio, by default. Angle is gentler while you learn: let go of the right pad and the quad levels itself.'
+        ? '触控摇杆是比例摇杆，可使用“四轴”中设置的任意飞行模式。默认是像遥控器一样的自稳特技模式。初学时可试试角度模式：松开右侧摇杆，四轴会自动保持水平。'
       : source === 'radio'
-        ? 'A radio flies Acro by default: the sticks ask for a rate of rotation, and letting go asks for none, which holds whatever attitude the quad is in. Change it under Flight mode in Quad, or with M in flight.'
+          ? '遥控器默认使用自稳特技模式：摇杆控制旋转速率，松开摇杆后停止旋转并保持当前姿态。可在“四轴”中的“飞行模式”设置，或在飞行中按 M 切换。'
         : source === 'launch'
-          ? 'Off by default, because a punch from a hold is violent and not everyone wants it. Turn it on in Quad, then L on the pad. The green LAUNCH readout is the pitch angle. It blinks when throttle is close to firing.'
-          : 'Keys are on or off, so hold time is the analog: a tap moves the stick a little, a hold sits at a flyable amount, a long hold goes to full. Races on keys start in Angle, so letting go levels the quad.';
+            ? '此功能默认关闭，因为从保持状态突然加速很猛烈，并非人人都需要。请先在“四轴”中开启，然后在起点按 L。绿色起步读数显示俯仰角；接近触发油门时会闪烁。'
+            : '键盘输入只有按下或松开两种状态，因此按住时长决定输入幅度：轻按幅度较小，按住保持适中输入，长按则达到最大值。使用键盘竞速时默认启用角度模式，松开按键后四轴会自动回平。';
   }
 
   /* Live channels for the tutorial's gimbals, fed by the shell's loop. */
@@ -13028,7 +13014,7 @@ export class Ui {
    * destination rather than saying Back is deliberate, see legendFor, and
    * "what to fly" is what the three cards between them ask. */
   gateLabel() {
-    return 'What to fly';
+    return '回首页';
   }
 
   onGate() {
@@ -13108,7 +13094,7 @@ export class Ui {
        * vocabulary. No gates is true in all three positions and is the
        * Freestyle room's own first sentence about the place.
        */
-      this.brandSub.textContent = freestyle ? `${worldName}, no gates` : `${worldName}, time trial`;
+      this.brandSub.textContent = freestyle ? `${worldName}，无门赛` : `${worldName}，计时赛`;
     }
     this.titleBest.textContent = '';
     if (freestyle) {
@@ -13128,17 +13114,17 @@ export class Ui {
        * the same trap.
        */
       this.titleBest.textContent = this.settings.freestyleScoring === 'scored'
-        ? 'No gates, no lap, two minutes'
-        : 'No gates, no lap, no clock';
+        ? '无门、无圈速，限时两分钟'
+        : '无门、无圈速、无计时';
       this.osdBest.textContent = '';
       return;
     }
     if (ms != null) {
-      this.titleBest.append('Track record ', el('span', 'brand-best-time', formatTime(ms)));
+      this.titleBest.append('赛道纪录 ', el('span', 'brand-best-time', formatTime(ms)));
     } else {
-      this.titleBest.textContent = 'No lap recorded yet';
+      this.titleBest.textContent = '尚无圈速记录';
     }
-    this.osdBest.textContent = ms != null ? `Record ${formatTime(ms)}` : 'No record yet';
+    this.osdBest.textContent = ms != null ? `纪录 ${formatTime(ms)}` : '暂无纪录';
   }
 
   /*
@@ -13218,15 +13204,15 @@ export class Ui {
 
     this.resultsKicker.textContent = this.resultsCourseName();
     if (!clean.length) {
-      setHeadingText(this.resultsHead, 'Run ended');
+      setHeadingText(this.resultsHead, '飞行结束');
       this.resultsHeroTime.textContent = '';
       this.resultsHeroMeta.textContent = '';
       this.resultsHeroMeta.className = 'results-hero-meta';
-      this.resultsBody.append(el('p', 'results-empty', 'No clean lap this run. Hitting the ground or a gate frame costs the time it takes to get going again. Only an out of sequence gate voids the lap and sends you back to the mint ring.'));
+      this.resultsBody.append(el('p', 'results-empty', '本次飞行没有有效圈。撞地或碰到门框会让你损失重新起飞所需的时间；只有门的通过顺序错误才会使本圈作废，并让你返回薄荷色起点环。'));
     } else {
       setHeadingText(this.resultsHead, isRecord
-        ? 'New track record'
-        : (matched ? 'Matched the record' : 'Run complete'));
+        ? '赛道新纪录'
+        : (matched ? '追平纪录' : '飞行完成'));
       /*
        * RACEGOW IS SCORED ON THREE CONSECUTIVE LAPS, so on a micro track
        * that total is the headline and the best single lap moves to the
@@ -13241,34 +13227,34 @@ export class Ui {
       const three = Number.isFinite(opts.threeMs) ? opts.threeMs : null;
       const threeUp = opts.trackClass === 'micro' && three != null;
       this.resultsHeroCap.textContent = threeUp
-        ? 'Best three laps'
-        : (clean.length === 1 ? 'Lap time' : 'Best lap');
+        ? '最佳三圈'
+        : (clean.length === 1 ? '单圈用时' : '最佳单圈');
       this.resultsHeroTime.textContent = formatTime(threeUp ? three : fastest);
       if (threeUp) {
         /* Three consecutive is what the run is scored on, so the lap that
          * carries the record is named here rather than left to the rows. */
-        const lapWord = clean.length === 1 ? 'Lap' : 'Best lap';
+        const lapWord = clean.length === 1 ? '单圈' : '最佳单圈';
         if (isRecord) {
-          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}, a track record`;
+          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}，赛道新纪录`;
           this.resultsHeroMeta.className = 'results-hero-meta gain';
         } else if (matched) {
-          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}, equals the record`;
+          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}，追平纪录`;
           this.resultsHeroMeta.className = 'results-hero-meta gain';
         } else {
-          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}, ${formatDelta(fastest - best)} off ${formatTime(best)}`;
+          this.resultsHeroMeta.textContent = `${lapWord} ${formatTime(fastest)}，比最佳成绩慢 ${formatDelta(fastest - best)}（${formatTime(best)}）`;
           this.resultsHeroMeta.className = 'results-hero-meta off';
         }
       } else if (isRecord && hadRecord) {
-        this.resultsHeroMeta.textContent = `${formatDelta(fastest - recordAtStart)}  previous ${formatTime(recordAtStart)}`;
+        this.resultsHeroMeta.textContent = `${formatDelta(fastest - recordAtStart)}  上次纪录 ${formatTime(recordAtStart)}`;
         this.resultsHeroMeta.className = 'results-hero-meta gain';
       } else if (isRecord) {
-        this.resultsHeroMeta.textContent = 'First record on this track';
+        this.resultsHeroMeta.textContent = '此赛道的首个纪录';
         this.resultsHeroMeta.className = 'results-hero-meta gain';
       } else if (matched) {
-        this.resultsHeroMeta.textContent = `Equals the record  ${formatTime(best)}`;
+        this.resultsHeroMeta.textContent = `追平纪录  ${formatTime(best)}`;
         this.resultsHeroMeta.className = 'results-hero-meta gain';
       } else {
-        this.resultsHeroMeta.textContent = `${formatDelta(fastest - best)} off the record  ${formatTime(best)} to beat`;
+        this.resultsHeroMeta.textContent = `比纪录慢 ${formatDelta(fastest - best)}  目标 ${formatTime(best)}`;
         this.resultsHeroMeta.className = 'results-hero-meta off';
       }
     }
@@ -13276,15 +13262,15 @@ export class Ui {
       const fastestRow = entry.ms != null && entry.ms === fastest;
       const row = el('div', `result-row${entry.ms == null ? ' void' : ''}${fastestRow ? ' fastest' : ''}`);
       const main = el('div', 'result-main');
-      main.append(el('span', 'result-label', `Lap ${entry.n}`));
+      main.append(el('span', 'result-label', `第 ${entry.n} 圈`));
       if (entry.ms == null) {
-        main.append(el('span', 'result-time', 'void'));
+        main.append(el('span', 'result-time', '作废'));
         main.append(el('span', 'result-why', (entry.reason || '').replace(/\n/g, ' ').toLowerCase()));
         row.append(main);
       } else {
         main.append(el('span', 'result-time', formatTime(entry.ms)));
         if (fastestRow && clean.length > 1) {
-          main.append(el('span', 'result-tag', 'fastest'));
+          main.append(el('span', 'result-tag', '最快'));
         }
         row.append(main);
         if (slowest > 0) {
@@ -13323,8 +13309,8 @@ export class Ui {
        * put a rule on the screen that does not apply to the run. */
       totalRow(
         opts.trackClass === 'micro' && three != null && three === total
-          ? 'Best three consecutive'
-          : (clean.length === log.length ? 'Total' : 'Clean laps total'),
+          ? '最佳连续三圈'
+          : (clean.length === log.length ? '总用时' : '有效圈总用时'),
         total,
       );
     }
@@ -13336,7 +13322,7 @@ export class Ui {
      * the race computes it for every class, but the sixty metre field is
      * scored on one lap and its sheet must not grow a RaceGOW row. */
     if (opts.trackClass === 'micro' && three != null && three !== total) {
-      totalRow('Best three consecutive', three);
+      totalRow('最佳连续三圈', three);
     }
     /* How the run went against the ghost that was being chased, one line,
      * written by the shell because only it knows who the ghost was. */
@@ -13350,18 +13336,18 @@ export class Ui {
     if (this.settings.map !== 'custom') {
       this.resultsNote.textContent = '';
     } else if (this.share && this.share.id) {
-      const by = this.share.author ? ` by ${this.share.author}` : '';
+      const by = this.share.author ? `，发布者：${this.share.author}` : '';
       this.resultsNote.textContent = `${this.share.name || 'This track'}${by} is on the public board. Post a time under your name to appear on it.`;
     } else {
       try {
         const listing = inspectCourse();
         if (listing && listing.kind === 'remix') {
-          const of = listing.sourceName ? ` of ${listing.sourceName}` : '';
-          this.resultsNote.textContent = `${listing.name} is your copy${of}. Publish it under a new name to put it on the board.`;
+          const of = listing.sourceName ? `（来源：${listing.sourceName}）` : '';
+          this.resultsNote.textContent = `${listing.name}是你的副本${of}。使用新名称发布后即可加入排行榜。`;
         } else if (listing && listing.kind === 'local' && listing.canPublishNew) {
-          this.resultsNote.textContent = `${listing.name} lives in this browser. Publish it to put it on the board, then you can post a time.`;
+          this.resultsNote.textContent = `${listing.name}保存在此浏览器中。发布到排行榜后即可上传成绩。`;
         } else if (listing && listing.kind === 'owned' && listing.layoutDrift) {
-          this.resultsNote.textContent = `${listing.name} has a layout that is not on the board yet. Update the track before posting a time.`;
+          this.resultsNote.textContent = `${listing.name}的赛道布局尚未同步到排行榜。请先更新赛道，再上传成绩。`;
         }
       } catch (e) {
         /* A summary failure must not hide the times. */
@@ -14249,14 +14235,14 @@ export class Ui {
     const world = seatedFreestyleMap(this.settings);
     /* A map from the board by its own name, for the same reason. */
     const shared = world && world.id === 'built' && this.sharedMap ? this.sharedMap.name : '';
-    const where = shared || (world ? world.name : 'Freestyle');
+    const where = shared || (world ? world.name : '自由式');
     this.resultsKicker.textContent = summary.timed === false
-      ? `${where}, free flight`
+      ? `${where}，自由飞行`
       : where;
     setHeadingText(this.resultsHead, scored
-      ? (clean ? 'Clean run' : 'Run complete')
-      : 'Run ended');
-    this.resultsHeroCap.textContent = 'Score';
+      ? (clean ? '干净利落' : '飞行完成')
+      : '飞行结束');
+    this.resultsHeroCap.textContent = '得分';
     this.resultsHeroTime.textContent = formatScore(counter);
     /* A town has no plan drawing, and an empty blueprint plate beside a
      * freestyle score is a picture of nothing. */
@@ -14267,22 +14253,22 @@ export class Ui {
       this.resultsHeroMeta.textContent = '';
       this.resultsHeroMeta.className = 'results-hero-meta';
       this.resultsBody.append(el('p', 'results-empty', summary.timed === false
-        ? 'Nothing the recogniser could name. A trick is a whole rotation about one axis, or a lap around something: a flip, a roll, a 360 of yaw, a powerloop under a rail. Turning a corner is not a trick and is deliberately worth nothing.'
-        : 'Two minutes and nothing the recogniser could name. A trick is a whole rotation about one axis, or a lap around something: a flip, a roll, a 360 of yaw, a powerloop under a rail. Turning a corner is not a trick and is deliberately worth nothing.'));
+        ? '没有识别到有效动作。特技是绕单一轴完成整周旋转，或绕某个物体飞行一圈，例如翻转、横滚、偏航 360 度，或从横杆下方穿越的动力环绕。转弯不算特技，因此不会得分。'
+        : '两分钟内没有识别到有效动作。特技是绕单一轴完成整周旋转，或绕某个物体飞行一圈，例如翻转、横滚、偏航 360 度，或从横杆下方穿越的动力环绕。转弯不算特技，因此不会得分。'));
     } else {
       const calls = closeCallCount(summary.closeCalls);
       const counted = summary.counter != null;
       const parts = [
-        counted && summary.counterImproved && localBestOf(summary) > 0 ? 'a new best for this map' : '',
+        counted && summary.counterImproved && localBestOf(summary) > 0 ? '本地图新纪录' : '',
         counted && !summary.counterImproved && localBestOf(summary) > 0
-          ? `best ${formatScore(localBestOf(summary))}` : '',
-        counted ? `trick score ${formatScore(summary.total || 0)}${this.settings.map === 'built' ? '' : ', the board\'s'}` : '',
-        summary.tricks > 0 ? `${summary.tricks} tricks, ${summary.unique} of them different` : '',
-        summary.gaps > 0 ? `${summary.gaps} gap${summary.gaps === 1 ? '' : 's'}` : '',
-        calls > 0 ? `${calls} close call${calls === 1 ? '' : 's'}` : '',
-        summary.bestCombo > 0 ? `best chain ${formatScore(summary.bestCombo)}` : '',
-        summary.bonus > 0 ? `variety bonus ${formatScore(summary.bonus)}` : '',
-        summary.crashes === 0 ? 'no crashes' : `${summary.crashes} crash${summary.crashes === 1 ? '' : 'es'}`,
+          ? `最佳 ${formatScore(localBestOf(summary))}` : '',
+        counted ? `特技得分 ${formatScore(summary.total || 0)}${this.settings.map === 'built' ? '' : '（排行榜计分）'}` : '',
+        summary.tricks > 0 ? `${summary.tricks} 个特技，其中 ${summary.unique} 种不同动作` : '',
+        summary.gaps > 0 ? `${summary.gaps} 次穿越间隙` : '',
+        calls > 0 ? `${calls} 次险些失误` : '',
+        summary.bestCombo > 0 ? `最佳连招 ${formatScore(summary.bestCombo)}` : '',
+        summary.bonus > 0 ? `动作多样性奖励 ${formatScore(summary.bonus)}` : '',
+        summary.crashes === 0 ? '无碰撞' : `${summary.crashes} 次碰撞`,
       ].filter(Boolean);
       this.resultsHeroMeta.textContent = parts.join('  ·  ');
       this.resultsHeroMeta.className = clean ? 'results-hero-meta gain' : 'results-hero-meta';
@@ -14328,7 +14314,7 @@ export class Ui {
         const line = el('div', 'result-row result-more');
         const main = el('div', 'result-main');
         main.append(
-          el('span', 'result-label', rest.length === 1 ? 'One more kind of trick' : `${rest.length} more kinds of trick`),
+          el('span', 'result-label', rest.length === 1 ? '另有一种特技' : `另有 ${rest.length} 种特技`),
           el('span', 'result-time', formatScore(rest.reduce((sum, r) => sum + (r.points || 0), 0))),
         );
         line.append(main);
@@ -14339,8 +14325,8 @@ export class Ui {
     if (summary.counter != null && summary.counter !== summary.total
       && this.settings.map !== 'built' && summary.timed !== false) {
       notes.push(summary.tricks > 0
-        ? `Post this run sends the board the trick score, ${formatScore(summary.total)}. The board knows tricks and nothing else yet, so the gaps, close calls and the chase in ${formatScore(summary.counter)} are counted here and not there.`
-        : `The board takes tricks only, and this run named none, so there is nothing to post. The gaps, close calls and the chase in ${formatScore(summary.counter)} are counted here.`);
+        ? `提交本次飞行时，排行榜只会收到特技得分 ${formatScore(summary.total)}。排行榜目前只记录特技，因此间隙穿越、险些失误和追逐得分 ${formatScore(summary.counter)} 只会计入此处，不会上传。`
+        : `排行榜只记录特技，本次飞行没有识别到特技，因此没有可提交的内容。间隙穿越、险些失误和追逐得分 ${formatScore(summary.counter)} 仍会计入此处。`);
     }
     /* The best line leads the note: it is the sentence the pilot was
      * waiting for, and the board's small print can follow it. */
@@ -14480,7 +14466,7 @@ export class Ui {
     const world = seatedFreestyleMap(this.settings);
     const canvas = document.createElement('canvas');
     drawRunCard(canvas, card.CARD_W, card.CARD_H, {
-      summary: run, panels, mapName: world ? world.name : 'Freestyle', stf: this.mangaStf,
+      summary: run, panels, mapName: world ? world.name : '自由式', stf: this.mangaStf,
     }, card.drawWordmark);
     return card.encodeCard(canvas);
   }
@@ -14876,7 +14862,7 @@ export class Ui {
      * learns to stop reading it.
      */
     const stock = v === WEIGHT_STOCK;
-    air.cap.textContent = `Weight ${v}%`;
+    air.cap.textContent = `配重 ${v}%`;
     Ui.klass(air.cap, stock ? 'osd-air-cap is-stock' : 'osd-air-cap');
   }
 
@@ -14903,14 +14889,14 @@ export class Ui {
       return;
     }
     const how = {
-      calibrated: 'read through your calibration',
-      standard: 'read as a standard gamepad',
+      calibrated: '按校准结果读取',
+      standard: '按标准游戏手柄读取',
     }[view.map] || (view.guess === 'firefox'
-      ? 'read the way Firefox lays out a radio'
-      : 'read by the built in guess of a radio\'s channel order');
+      ? '按 Firefox 的遥控器通道顺序读取'
+      : '按内置的遥控器通道顺序推测读取');
     Ui.text(this.stickPad, view.pad
-      ? `${view.pad}: ${view.axisCount} ${view.axisCount === 1 ? 'axis' : 'axes'}, ${how}.`
-      : 'No radio or gamepad.');
+      ? `${view.pad}：${view.axisCount} 个通道，${how}。`
+      : '未检测到遥控器或游戏手柄。');
     this.stickAxisCells = paintAxisStrip(this.stickAxes, this.stickAxisCells, view.axes || [], true);
     Ui.text(this.stickSay, stickSay(view, this.stickPlatform, this.stickBrowser));
     const key = `${this.stickPlatform}|${this.stickBrowser}|${view.fourAxes ? view.axisCount : ''}`;
@@ -14957,7 +14943,7 @@ export class Ui {
       return;
     }
     const n = view.stepIndex + 1;
-    this.calKicker.textContent = `Step ${n} of ${view.stepCount}, ${view.title}`;
+    this.calKicker.textContent = `第 ${n}/${view.stepCount} 步，${view.title}`;
     this.calPrompt.textContent = view.prompt;
     this.calHint.textContent = view.hint;
     this.calCanSave = Boolean(view.canSave);
@@ -14981,12 +14967,18 @@ export class Ui {
         /* Named, and it says which way it is going: a pilot who has already
          * pressed it once needs to know this puts it back. */
         const on = view.reverse && view.reverse[view.moving];
-        Ui.text(this.calRevBtn, `${on ? 'Un-reverse' : 'Reverse'} ${view.moving}`);
+        const channel = ({
+          throttle: '油门',
+          roll: '横滚',
+          pitch: '俯仰',
+          yaw: '偏航',
+        })[view.moving] || view.moving;
+        Ui.text(this.calRevBtn, `${on ? '取消反转' : '反转'}${channel}通道`);
       }
     }
     if (this.calModeBtn) {
       this.calModeBtn.hidden = !this.calOnConfirm;
-      Ui.text(this.calModeBtn, `Stick mode ${normaliseStickMode(this.settings.stickMode)}`);
+      Ui.text(this.calModeBtn, `摇杆模式 ${normaliseStickMode(this.settings.stickMode)}`);
     }
     const ch = view.channels || { roll: 0, pitch: 0, yaw: 0, throttle: 0 };
     placeSticks(this.calStickLeft, this.calStickRight, ch, this.settings.stickMode);
@@ -15115,8 +15107,8 @@ export class Ui {
       return;
     }
     this.padKicker.textContent = view.pads.length > 1
-      ? `${view.pads.length} joysticks plugged in`
-      : (view.pads.length === 1 ? 'One joystick plugged in' : 'No joystick');
+      ? `已连接 ${view.pads.length} 个摇杆`
+      : (view.pads.length === 1 ? '已连接 1 个摇杆' : '未检测到摇杆');
     this.padPrompt.textContent = view.prompt;
     /*
      * WHAT THE DRAWN STICKS ARE, said beside them. They are the page's
@@ -15129,8 +15121,8 @@ export class Ui {
     const read = !view.pads.length
       ? ''
       : (view.mapKnown
-        ? ' The sticks drawn follow your saved calibration.'
-        : ` The sticks drawn are how this page reads it now, which is a guess until you calibrate. If they do not follow your hands, choose it anyway and run Calibrate sticks in ${SCREEN_TITLES.pilot}.`);
+        ? ' 摇杆图示会按照已保存的校准结果显示。'
+        : ` 摇杆图示目前根据页面的猜测绘制，尚未校准。如果图示不随你的操作移动，请仍选择此设备，然后在“${SCREEN_TITLES.pilot}”中校准摇杆。`);
     this.padHint.textContent = `${view.hint}${read}`;
     if (this.padYesBtn) {
       this.padYesBtn.disabled = !view.canAccept;
@@ -15163,8 +15155,8 @@ export class Ui {
       node.title.textContent = pad.title;
       node.name.textContent = pad.name;
       node.status.textContent = pad.chosen
-        ? 'Use this one?'
-        : (pad.live ? 'Moving' : 'Resting');
+        ? '使用此设备？'
+        : (pad.live ? '正在输入' : '等待输入');
       node.card.classList.toggle('is-live', pad.live && !pad.chosen);
       node.card.classList.toggle('is-on', pad.chosen);
       /* The same plates, captions and placement as the flight overlay and
@@ -15264,18 +15256,18 @@ export class Ui {
     }
     if (String(st.source).includes('touch')) {
       return [{
-        label: 'Stick path',
-        value: 'Thumb sticks',
+        label: '摇杆输入',
+        value: '触屏摇杆',
         info: true,
-        note: 'A thumb on glass has about a quarter of a gimbal\'s travel and nothing centring it, so the numbers below are seeded gentler than the radio defaults. Roll, pitch and yaw spring back when you lift off; throttle stays where you left it, the way a radio\'s does.',
+        note: '触屏摇杆的行程约为实体摇杆的四分之一，且没有回中机构，因此下方速率默认值比遥控器默认值更柔和。松开后，横滚、俯仰和偏航会回中；油门则保持在松开时的位置，与遥控器一致。',
       }];
     }
     if (String(st.source).includes('keyboard')) {
       return [{
-        label: 'Stick path',
-        value: 'Keyboard',
+        label: '摇杆输入',
+        value: '键盘',
         info: true,
-        note: 'A key is not a stick. Holding one ramps the stick to 34 percent and stays there until about three quarters of a second, then stretches to full at one and a quarter. So the rates below are the rates a RADIO would fly: a tap reaches roughly a third of them, which is why keyboard flight feels firmer and slower to bite than the numbers say. A gamepad or a radio in USB joystick mode gets the whole curve. And a key race starts in Angle, which ignores this curve: Keyboard races under Quad, or M in flight, makes it Acro.',
+        note: '按键并非摇杆。按住按键时，输入会逐渐升至 34%，并保持到约 0.75 秒，然后在 1.25 秒时达到满量程。因此下方速率按遥控器输入显示，轻点按键只能达到约三分之一的速率，所以键盘飞行的响应会比数值看起来更柔和、更慢。游戏手柄或 USB 摇杆模式下的遥控器则可使用完整曲线。',
       }];
     }
     /*
@@ -15293,19 +15285,19 @@ export class Ui {
     const levels = Number(st.stickLevels) || 0;
     const bits = [];
     if (padHz <= 0) {
-      bits.push('Waiting for the radio to report. Move a stick.');
+      bits.push('正在等待遥控器报告数据，请移动摇杆。');
     } else {
-      bits.push(`Your radio is refreshing ${padHz} times a second. Betaflight is flown on a fixed 250 Hz frame grid either way, so this is how fresh the value on each of those frames is.`);
+      bits.push(`遥控器每秒更新 ${padHz} 次。无论如何，Betaflight 都以固定的 250 Hz 帧率运行，因此此数值表示每帧输入数据的新鲜程度。`);
     }
     if (tracksFrames) {
-      bits.push(`That is your frame rate, ${fps} per second, which means this browser is only reading the radio once per drawn frame. Feedforward works on the CHANGE between frames, so a stick that steps once a frame is felt as a series of nudges rather than a push. Nothing in the rates below fixes that.`);
+      bits.push(`这与当前帧率（每秒 ${fps} 帧）相同，说明浏览器每绘制一帧才读取一次遥控器。前馈会根据帧间变化工作，因此每帧才变化一次的摇杆输入会像一连串轻推，而不是连续施力。下方的速率设置无法修正此问题。`);
     }
     if (levels > 0 && levels < 512) {
-      bits.push(`This radio reports about ${levels} steps across a stick's full travel, which is coarse enough to feel at high rates. A radio with a finer USB report, or lower rates, both soften it.`);
+      bits.push(`此遥控器在摇杆全行程内约报告 ${levels} 个步进，高速率下可能会感觉不够细腻。使用 USB 分辨率更高的遥控器，或降低速率，都能改善这一点。`);
     }
     return [{
-      label: 'Stick path',
-      value: padHz > 0 ? `Radio, ${padHz} Hz` : 'Radio',
+      label: '摇杆输入',
+      value: padHz > 0 ? `遥控器，${padHz} Hz` : '遥控器',
       info: true,
       rowClass: tracksFrames ? 'row-warn' : undefined,
       note: bits.join(' '),
@@ -15631,11 +15623,11 @@ export class Ui {
      * choosing a map read "Flying" and the name of a race track there
      * (MENUS-PLAN.md 1.17). */
     if (flying && !(this.screen === 'freestyle' && m.id === 'custom')) {
-      out.push({ label: 'Flying', value: seat && seat.name ? seat.name : (shared || m.name) });
+      out.push({ label: '飞行中', value: seat && seat.name ? seat.name : (shared || m.name) });
     }
     const name = pilot ? readPilotName() : '';
     if (name) {
-      out.push({ label: 'Pilot', value: name });
+      out.push({ label: '飞手', value: name });
     }
     return out;
   }
@@ -15662,7 +15654,7 @@ export class Ui {
       const out = [];
       out.push({ keys: [], text: this.cardScreen() ? 'Tap a card' : 'Tap a row' });
       if (this.screen !== 'title') {
-        out.push({ keys: [], text: 'Back', action: 'back' });
+        out.push({ keys: [], text: '返回', action: 'back' });
       }
       /* The title's own way out is the last row of its menu now, where a
        * thumb can find it without reading the legend. See titleItems. */
@@ -16681,7 +16673,7 @@ export class Ui {
          * This used to open the Freestyle room so a first visit could choose
          * among four worlds with the cards in front of it. Three of those
          * worlds were removed on 2026-08-30 and the picker stayed, so
-         * answering "Freestyle" put a screen in front of a pilot whose only
+         * answering "自由式" put a screen in front of a pilot whose only
          * content was one card saying the name of the only place they could
          * possibly be going. That is a question with one answer, and a
          * question with one answer is a keypress somebody has to make.
@@ -17046,10 +17038,10 @@ export class Ui {
         return;
       }
       this.askConfirm({
-        title: `Delete ${loaded.name}?`,
-        detail: 'This browser is the only copy, so this cannot be undone. The numbers stay on the quad and keep flying; only the saved profile goes.',
-        yes: 'Delete',
-        no: 'Keep it',
+        title: `删除“${loaded.name}”？`,
+        detail: '预设仅保存在此浏览器中，删除后无法撤销。四轴仍会使用当前数值飞行，只有已保存的配置会被删除。',
+        yes: '删除',
+        no: '保留',
       }).then((ok) => {
         if (!ok) {
           return;

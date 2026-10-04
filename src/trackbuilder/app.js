@@ -301,7 +301,7 @@ function isPhone() {
 
 /* What each canvas is called where the builder names one to the author in
  * the middle of a sentence. */
-const CANVAS_NAMES = { full: 'five inch', micro: 'whoop', freestyle: 'freestyle' };
+const CANVAS_NAMES = { full: '5 英寸竞速', micro: '室内微型机竞速', freestyle: '自由式' };
 
 /*
  * THE STORAGE NOTICE IS READ ONCE. A first visit gets the full sentence as a
@@ -359,24 +359,24 @@ function keepSentence(noun) {
 const CHOICES = [
   {
     canvas: 'full',
-    label: 'Five inch racing',
+    label: '5 英寸竞速',
     art: '../../assets/gate/race.jpg',
-    blurb: 'A race track on a sixty metre field. MultiGP gates, flags and dive gates on a grid in metres, flown on the five inch and published to the board.',
-    facts: ['5 ft gates', '60 m field', 'The board'],
+    blurb: '在 60 米场地上设计竞速赛道。使用 MultiGP 赛门、旗帜和俯冲门，按米制网格布局，可驾驶 5 英寸飞行器飞行并发布到排行榜。',
+    facts: ['5 英尺赛门', '60 米场地', '排行榜'],
   },
   {
     canvas: 'micro',
-    label: 'Whoop racing',
+    label: '室内微型机竞速',
     art: '../../assets/gate/whoop.jpg',
-    blurb: 'A room for the 65 mm whoop. RaceGOW’s 28 inch gates in a ten by twelve metre hall, a grid in inches, and RaceGOW’s own rules checking the layout.',
-    facts: ['28 in gates', 'Indoors', 'RaceGOW'],
+    blurb: '为 65 mm Whoop 飞行器设计的室内赛道。在 10×12 米场馆中放置 RaceGOW 28 英寸赛门，使用英寸网格布局，并依据 RaceGOW 规则检查赛道。',
+    facts: ['28 英寸赛门', '室内场地', 'RaceGOW'],
   },
   {
     canvas: 'freestyle',
-    label: 'Freestyle',
+    label: '自由式',
     art: '../../assets/gate/freestyle.jpg',
-    blurb: 'A map of your own on a 160 metre plot. Buildings, cranes, a skate set and named gaps wherever you put them, flown on the five inch with no gates and no clock.',
-    facts: ['No gates', '160 m plot', 'Five inch'],
+    blurb: '在 160 米场地上创建专属地图。可自由放置建筑、起重机、滑板设施和命名间隙，使用 5 英寸飞行器飞行，没有赛门和计时。',
+    facts: ['无赛门', '160 米场地', '5 英寸飞行器'],
   },
 ];
 
@@ -559,16 +559,16 @@ function boardMayBeAsked() {
  * board on 2026-09-25, so a map is published by openPublishMap below, to
  * the board's own /api/maps, with the drawing its card is made from.
  */
-const PUBLISH_MAP_TITLE = 'Put this map on the public board, sponsor prints and all';
+const PUBLISH_MAP_TITLE = '将此地图及其标志发布到公开排行榜。';
 
 /* What a picked side is called in a toast. Left and right are left out on
  * purpose: which is which depends on where the author is standing, and the
  * pipe they just clicked is lit, so "that upright" is the clearer name. */
 const SIDE_WORDS = {
-  top: 'The top bar',
-  bottom: 'The bottom bar',
-  left: 'That upright',
-  right: 'That upright',
+  top: '顶部横杆',
+  bottom: '底部横杆',
+  left: '左侧立柱',
+  right: '右侧立柱',
 };
 
 /*
@@ -780,7 +780,7 @@ export class App {
        * counts, because a second toast would replace the first. */
       const said = this.seat();
       const fixed = held && held.repairs.length
-        ? `Recovered the working map. ${held.repairs.length} thing${held.repairs.length === 1 ? '' : 's'} needed repairing.`
+        ? `已恢复编辑中的地图，修复了 ${held.repairs.length} 处问题。`
         : '';
       if (fixed || said) {
         this.toast([fixed, said].filter(Boolean).join(' '));
@@ -797,7 +797,7 @@ export class App {
       const said = this.seat();
       applyAutoFaces(this.doc);
       const fixed = saved.repairs.length
-        ? `Recovered the working track. ${saved.repairs.length} thing${saved.repairs.length === 1 ? '' : 's'} needed repairing.`
+        ? `已恢复编辑中的赛道，修复了 ${saved.repairs.length} 处问题。`
         : '';
       if (fixed || said) {
         this.toast([fixed, said].filter(Boolean).join(' '));
@@ -824,7 +824,7 @@ export class App {
         } catch (e) {
           /* Left in the address, so a reload asks the board again: a board
            * that was asleep is the usual reason, and it wakes. */
-          this.toast(['Could not open that published track.', errorSentence(e), 'Reload to try again.'].filter(Boolean).join(' '));
+          this.toast(['无法打开已发布的赛道。', errorSentence(e), '请刷新页面重试。'].filter(Boolean).join(' '));
           return;
         }
         /* Read: a reload from here on is the author reloading their copy. */
@@ -907,7 +907,7 @@ export class App {
         if (!isEmptyCanvas(seated) && seated.id === incoming.id && localDrift(seated, incoming)) {
           const copy = duplicateTrack(seated, `${seated.name} (local changes)`);
           if (!saveTrack(copy)) {
-            this.toast(`Nothing was opened: "${seated.name}" has changes the board does not, and they could not be kept because local storage is unavailable or full. Export it first.`);
+            this.toast(`未打开赛道：“${seated.name}”包含排行榜上没有的修改，但本地存储不可用或空间不足，无法保留这些修改。请先导出赛道。`);
             return;
           }
           local = `Your local changes are in Load as "${copy.name}".`;
@@ -1065,7 +1065,7 @@ export class App {
     admin.textContent = 'Board admin? Sign in';
     admin.addEventListener('click', () => this.openAdmin(retry));
     body.append(admin);
-    return this.modal('Official track', body);
+    return this.modal('官方赛道', body);
   }
 
   /*
@@ -1154,12 +1154,12 @@ export class App {
     try {
       payload = await fetchMapDocument(id, boardOrigin());
     } catch (e) {
-      this.toast(`Could not open that published map. ${e.message || e}`);
+      this.toast(`无法打开已发布的地图：${e.message || e}`);
       return;
     }
     const incoming = normalize(payload.document || payload).doc;
     if (docModeOf(incoming) !== 'freestyle') {
-      this.toast('That link names a race track, not a map.');
+      this.toast('此链接指向竞速赛道，而不是地图。');
       return;
     }
     const name = payload.name || incoming.name;
@@ -1168,19 +1168,19 @@ export class App {
     if (owned && seated && seated.id === incoming.id) {
       /* Already on the canvas, perhaps with edits the board has not had.
        * Replacing it with the board's copy would throw those away. */
-      this.toast(`"${seated.name}" is already on your canvas.`);
+      this.toast(`“${seated.name}”已在当前画布中。`);
       return;
     }
     const doc = owned ? incoming : duplicateTrack(incoming, suggestRemixName(name));
-    const by = payload.author ? ` by ${payload.author}` : '';
+    const by = payload.author ? `，作者：${payload.author}` : '';
     const load = () => this.loadDocument(doc, owned
-      ? `Editing "${name}" on the board. Publish updates it.`
-      : `This is your copy of "${name}"${by}. Publish it to put it on the board under your name. The original stays.`);
+      ? `正在编辑排行榜上的“${name}”。发布后将更新原赛道。`
+      : `这是“${name}”${by}的副本。发布后将以你的名义添加到排行榜，原赛道不会改变。`);
     if (!isEmptyCanvas(seated) && seated.id !== doc.id) {
       this.confirm(
         ...this.replaceWords(seated, doc, owned ? `"${name}"` : `A copy of "${name}"`, [
-          owned ? `Open "${name}"?` : `Open a copy of "${name}"?`,
-          'The map on your canvas will be replaced. Save it first if you still need it.',
+          owned ? `打开“${name}”？` : `打开“${name}”的副本？`,
+          '当前地图将被替换。如需保留，请先保存。',
         ]),
         load,
       );
@@ -1520,7 +1520,7 @@ export class App {
       return null;
     }
     if (this.doc.sequence.length >= MAX_PASSES) {
-      this.toast(`A lap of ${MAX_PASSES} passes is as long as this builder will make one.`);
+      this.toast(`此编辑器最多支持每圈 ${MAX_PASSES} 次通过。`);
       return null;
     }
     let made = null;
@@ -1545,7 +1545,7 @@ export class App {
     /* A hurdle is not a gate, and nothing scores on it: the lap goes OVER it, which is a waypoint above its middle. */
     if ((el.type === 'barrier' || el.type === 'horizontalPole') && !this.isWhoopRace()) {
       if (this.doc.sequence.length >= MAX_PASSES) {
-        this.toast(`A lap of ${MAX_PASSES} passes is as long as this builder will make one.`);
+        this.toast(`此编辑器最多支持每圈 ${MAX_PASSES} 次通过。`);
         return null;
       }
       let made = null;
@@ -1661,7 +1661,7 @@ export class App {
     this.view3d.markDirty();
     this.requestDraw();
     if (side) {
-      this.toast(`${SIDE_WORDS[side]} picked. Delete takes away just that pipe: the opening still scores and still lights. Esc lets go of it.`);
+      this.toast(`已选中${SIDE_WORDS[side]}。按 Delete 仅移除这根管材，开口仍可计分并显示。按 Escape 取消选择。`);
     }
   }
 
@@ -1702,7 +1702,7 @@ export class App {
     } else {
       this.setFrameSide(p.id, p.side, false);
     }
-    this.toast(`${SIDE_WORDS[p.side]} taken away. The opening still scores. Put it back under Frame in the inspector, or undo.`);
+    this.toast(`已移除${SIDE_WORDS[p.side]}，开口仍可计分。可在属性面板的“门框”设置中恢复，或撤销操作。`);
   }
 
   /* ---------------- bending the line, in 3D ---------------- */
@@ -1730,7 +1730,7 @@ export class App {
     this.panels.renderAll();
     if (!this.bendSaid) {
       this.bendSaid = true;
-      this.toast(`That dropped a waypoint on the line, which bends it and scores nothing. The gates either side keep facing the way they face; ${this.panels.say('Re-derive')} in the inspector hands one back to the automatic rule.`);
+      this.toast(`此操作在路线中添加了弯折点，但弯折点不计分。两侧赛门的朝向保持不变；在检查器中选择“${this.panels.say('Re-derive')}”可恢复自动朝向。`);
     }
     return el.id;
   }
@@ -1888,12 +1888,12 @@ export class App {
       this.sayOnce('arm letter', `Pick the letter under the tool, then click the ${wordsFor(this.doc).place}. Each gap in it is a gate to fly through: a W has the one between its two Vs, a B has two.`);
     }
     if (this.armed === 'road') {
-      this.sayOnce('arm road', 'Click to lay the road’s nodes: it bends through them the way a car can drive. Click the first node to close a loop, press Enter or double click to finish it open, Escape to stop.');
+      this.sayOnce('arm road', '单击以放置道路节点，车辆会沿节点形成的曲线行驶。单击第一个节点可闭合成环；按 Enter 或双击可结束并保留为开放道路；按 Escape 可取消。');
     } else if (this.armed === 'vehicle') {
       const roads = this.doc.elements.some((e) => kindOf(e) === KIND.ROAD);
       this.sayOnce(roads ? 'arm vehicle' : 'arm vehicle, no road', roads
-        ? 'Click on a road to put a car there. On a two lane loop the side you click is the lane it drives.'
-        : 'A vehicle drives a road, and this map has none yet. Lay one with the Road tool first.');
+        ? '单击道路以放置车辆。在双车道环形道路上，车辆会驶入你单击的那条车道。'
+        : '车辆需要沿道路行驶，而当前地图还没有道路。请先使用“道路”工具绘制道路。');
     }
   }
 
@@ -1921,7 +1921,7 @@ export class App {
     this.armedLogoId = typeof logoId === 'string' ? logoId : '';
     this.panels.renderPalette();
     this.requestDraw();
-    this.toast(`Click the ${wordsFor(this.doc).place} where the paint goes. Its size is in the inspector.`);
+    this.toast(`点击${wordsFor(this.doc).place}以绘制标志。可在检查器中调整标志尺寸。`);
   }
 
   disarm() {
@@ -1973,8 +1973,8 @@ export class App {
     const road = roadFromDraft(nodes, closed);
     if (!road) {
       this.toast(closed
-        ? `A loop needs ${LOOP_MIN} nodes.`
-        : `A road needs ${OPEN_MIN} nodes: click where it goes next.`);
+        ? `环形道路至少需要 ${LOOP_MIN} 个节点。`
+        : `道路至少需要 ${OPEN_MIN} 个节点，请继续单击以添加节点。`);
       return;
     }
     let newId = null;
@@ -1990,7 +1990,7 @@ export class App {
     if (newId) {
       this.setSelection([newId]);
     }
-    this.sayOnce('laid', 'Road laid. Drag a node to reshape it, drag the knob between two nodes to add one, click a node and press Delete to take it out. Pick Vehicle and click on it to put a car on it.');
+    this.sayOnce('laid', '道路已绘制。拖动节点可调整形状，拖动两个节点之间的“+”可添加节点。单击节点后按 Delete 可删除节点。选择“车辆”工具并单击道路即可放置车辆。');
   }
 
   cancelDraft() {
@@ -2128,7 +2128,7 @@ export class App {
     const el = elementById(this.doc, id);
     const out = el ? deleteNode(el, index) : null;
     if (!out) {
-      this.toast('A road needs two nodes. Delete the road itself instead: click away from its nodes and press Delete.');
+      this.toast('道路至少需要两个节点。若要删除整条道路，请单击节点以外的区域，然后按 Delete。');
       return;
     }
     const wasLoop = el.closed === true;
@@ -2139,7 +2139,7 @@ export class App {
       e2.closed = out.closed;
     });
     if (wasLoop && !out.closed) {
-      this.toast('Two nodes cannot close a loop, so the road is open now.');
+      this.toast('两个节点无法闭合成环，因此道路保持开放。');
     }
   }
 
@@ -2154,8 +2154,8 @@ export class App {
     if (!snap) {
       const roads = this.doc.elements.some((e) => kindOf(e) === KIND.ROAD);
       this.toast(roads
-        ? 'A vehicle goes on a road: click on one, or close beside it.'
-        : 'A vehicle drives a road, and this map has none yet. Lay one with the Road tool first.');
+        ? '车辆必须放置在道路上：请单击道路或其附近。'
+        : '车辆需要沿道路行驶，而当前地图还没有道路。请先使用“道路”工具绘制道路。');
       return;
     }
     let newId = null;
@@ -2269,8 +2269,8 @@ export class App {
         });
         this.setSelection([existing.id]);
         this.toast(freestyle
-          ? 'A map has one set of start pads, where the pilot starts, so this moved the ones you had.'
-          : 'A track has one set of start pads, so this moved the ones you had.');
+          ? '地图只能有一组起飞垫，因此已移动原有起飞垫。'
+            : '赛道只能有一组起飞垫，因此已移动原有起飞垫。');
         return;
       }
     }
@@ -2326,7 +2326,7 @@ export class App {
         if (!this.pathVisible) {
           this.togglePath();
         }
-        this.toast(`Each hole is its own gate. This stack is a spiral up: bottom, wrap around, then the top. Change it under ${this.panels.say('How it is flown')}.`);
+        this.toast(`每个开口都是独立赛门。此叠层按螺旋顺序从底部绕到顶部。可在“${this.panels.say('How it is flown')}”中更改飞行顺序。`);
       }
     }
   }
@@ -2455,7 +2455,7 @@ export class App {
     this.activeNode = null;
     this.panels.renderAll();
     if (stranded.length) {
-      this.toast(`${stranded.length === 1 ? 'A vehicle was' : `${stranded.length} vehicles were`} on that road, and ${stranded.length === 1 ? 'it is' : 'they are'} parked now with no road, in the row along the south edge of the plot. Drag ${stranded.length === 1 ? 'it' : 'each'} onto a road, or delete ${stranded.length === 1 ? 'it' : 'them'}.`);
+      this.toast(`${stranded.length} 辆车辆原本位于该道路上，现在因道路移除而停在场地南侧边缘。将${stranded.length === 1 ? '它' : '车辆'}拖到其他道路上，或将其删除。`);
     }
   }
 
@@ -2533,7 +2533,7 @@ export class App {
    * hopped over instead of flown through. One undo step; the waypoint is what is selected after, as the Fly order tool leaves it. */
   flyOverPiece(id) {
     if (this.doc.sequence.length >= MAX_PASSES) {
-      this.toast(`A lap of ${MAX_PASSES} passes is as long as this builder will make one.`);
+      this.toast(`此编辑器最多支持每圈 ${MAX_PASSES} 次通过。`);
       return null;
     }
     let made = null;
@@ -2658,7 +2658,7 @@ export class App {
     this.letterTool = next;
     rememberLetter(next);
     this.panels.renderLetterOptions();
-    this.toast(`That gate is a ${next} now, in the same place and the same place in the flying order. Letter on its card changes it to another, and Make it a gate puts it back.`);
+    this.toast(`该赛门现在是${next}，位置和飞行顺序均未改变。可在卡片中更改字母；选择“设为赛门”可恢复。`);
   }
 
   /* A letter as a plain gate again, standing where its primary hole was and as big as it was. */
@@ -3241,7 +3241,7 @@ export class App {
     /* A room's furniture is not a building: it is on the whoop canvas, and the
      * words about buildings and cranes are about a map. */
     if (el && isRoomType(el.type)) {
-      this.toast('A table, a chair or a banner turns in quarter turns: it is made of boxes, and they stand square to the room.');
+      this.toast('建筑、集装箱、桥梁和滑板设施目前只能沿罗盘方向每次旋转四分之一圈，飞行模型暂不支持旋转后的盒体。起重机、树木、桅杆和赛门可自由旋转。');
       return;
     }
     this.toast('Buildings, containers, bridges and the skate set keep to the compass for now: they turn in quarter turns until the physics learns turned boxes. Cranes, trees, masts and gates turn freely.');
@@ -3416,7 +3416,7 @@ export class App {
      * of view3d.js for why the preview is not allowed to be load bearing. */
     this.view3d.setEnabled(mode === '3d').then((ok) => {
       if (!ok) {
-        this.toast(`The 3D view could not load Three.js: ${this.view3d.loadError}. The 2D view is unaffected.`);
+        this.toast(`无法加载 Three.js 3D 预览：${this.view3d.loadError}。2D 视图不受影响。`);
         this.setMode('2d');
       }
     });
@@ -3537,10 +3537,10 @@ export class App {
     }
     const where = CANVAS_NAMES[canvasOf(incoming)];
     return [
-      `Replace "${seated.name}" on the ${where} canvas?`,
-      `${what} opens on the ${where} canvas in its place. ${trackExists(seated.id)
-        ? 'The copy saved in Load stays, and any changes made since it was saved go into Load beside it.'
-        : `"${seated.name}" goes into Load first, so it is not lost.`}`,
+      `替换${where}画布上的“${seated.name}”？`,
+      `${what}将在${where}画布中打开并替换当前内容。${trackExists(seated.id)
+        ? '已保存副本会保留，保存后所做的修改也会作为副本加入“打开”列表。'
+        : `“${seated.name}”会先保存到“打开”列表中，不会丢失。`}`,
     ];
   }
 
@@ -3568,7 +3568,7 @@ export class App {
     if (!kept.ok) {
       return {
         ok: false,
-        said: `Nothing was opened: "${seated.name}" is on the ${where} canvas and could not be kept, because local storage is unavailable or full. Export it first.`,
+        said: `未能打开内容：“${seated.name}”位于${where}画布中，但本地存储不可用或空间不足，无法保留。请先导出。`,
       };
     }
     if (!kept.saved) {
@@ -3577,8 +3577,8 @@ export class App {
     return {
       ok: true,
       said: kept.saved === seated
-        ? `"${seated.name}" was on the ${where} canvas, so it is in Load now.`
-        : `"${seated.name}" on the ${where} canvas had changes made after it was saved, so they are in Load as "${kept.saved.name}".`,
+        ? `“${seated.name}”原先位于${where}画布中，现已保存到“打开”列表。`
+        : `“${seated.name}”原先位于${where}画布中，保存后所做的修改已另存为“${kept.saved.name}”，并加入“打开”列表。`,
     };
   }
 
@@ -3725,13 +3725,13 @@ export class App {
 
   newTrack() {
     if (docModeOf(this.doc) === 'freestyle') {
-      this.confirm('Start a new map?', 'Anything unsaved in the current one is gone.', () => {
-        this.loadDocument(newMap(), 'New map, on a 160 metre plot.');
+      this.confirm('新建地图？', '当前地图中尚未保存的内容将会丢失。', () => {
+        this.loadDocument(newMap(), '已在 160 米场地上新建地图。');
       });
       return;
     }
-    this.confirm('Start a new track?', 'Anything unsaved in the current one is gone.', () => {
-      this.loadDocument(createTrack(undefined, newTrackClass()), 'New track.');
+    this.confirm('新建赛道？', '当前赛道中尚未保存的内容将会丢失。', () => {
+      this.loadDocument(createTrack(undefined, newTrackClass()), '已新建赛道。');
     });
   }
 
@@ -3807,9 +3807,9 @@ export class App {
   }
 
   removeCurrent() {
-    this.confirm(`Delete "${this.doc.name}"?`, 'It is removed from the saved list. This cannot be undone.', () => {
+    this.confirm(`删除“${this.doc.name}”？`, '此项目将从已保存列表中移除，且无法撤销。', () => {
       deleteTrack(this.doc.id);
-      this.loadDocument(docModeOf(this.doc) === 'freestyle' ? newMap() : createTrack(undefined, newTrackClass()), 'Deleted.');
+      this.loadDocument(docModeOf(this.doc) === 'freestyle' ? newMap() : createTrack(undefined, newTrackClass()), '已删除。');
     });
   }
 
@@ -3891,16 +3891,16 @@ export class App {
         const by = document.createElement('div');
         by.className = 'tb-load-meta';
         const bits = [];
-        if (t.credit.designer) bits.push(`by ${t.credit.designer}`);
+        if (t.credit.designer) bits.push(`设计者：${t.credit.designer}`);
         if (t.credit.series) bits.push(t.credit.series);
-        if (t.credit.sponsor) bits.push(`sponsored by ${t.credit.sponsor}`);
-        by.textContent = bits.join(', ');
+        if (t.credit.sponsor) bits.push(`赞助方：${t.credit.sponsor}`);
+        by.textContent = bits.join('，');
         name.append(by);
       }
       const open = document.createElement('button');
       open.type = 'button';
       open.className = 'tb-btn';
-      open.textContent = 'Open';
+      open.textContent = '打开';
       open.addEventListener('click', async () => {
         const found = loadTrack(t.id);
         const said = found ? `Opened "${found.doc.name}".` : '';
@@ -3936,7 +3936,7 @@ export class App {
         const del = document.createElement('button');
         del.type = 'button';
         del.className = 'tb-btn tb-danger';
-        del.textContent = 'Delete';
+        del.textContent = '删除';
         del.title = `Delete "${t.name}" from this browser. Undo puts it back while this list is open.`;
         del.addEventListener('click', () => this.deleteFromLoad(t, row));
         row.append(name, open, del);
@@ -3962,7 +3962,7 @@ export class App {
       note.append(go);
       body.append(note);
     }
-    this.modal(map ? 'Saved maps' : `Saved ${w.kind.toLowerCase()}s`, body);
+    this.modal(map ? '已保存的地图' : `已保存的${w.kind}`, body);
   }
 
   /*
@@ -3987,7 +3987,7 @@ export class App {
     const list = document.createElement('div');
     list.className = 'tb-load-list';
     body.append(lede, status, list);
-    const shown = this.modal('Start from a track on the board', body);
+    const shown = this.modal('从排行榜赛道开始', body);
     const origin = boardOrigin();
     /* Where the palette is: beside the drawing, or behind Tools on a phone. */
     const fromNothing = isPhone() ? 'Gate, in Tools, starts one from nothing.' : 'Gate on the left starts one from nothing.';
@@ -4112,7 +4112,7 @@ export class App {
   deleteFromLoad(t, row) {
     const raw = savedTrack(t.id);
     if (!raw || !deleteTrack(t.id)) {
-      this.toast(`Could not delete "${t.name}": local storage is unavailable.`);
+      this.toast(`无法删除“${t.name}”：本地存储不可用。`);
       return;
     }
     row.classList.add('tb-load-gone');
@@ -4126,7 +4126,7 @@ export class App {
     undo.title = `Put "${t.name}" back in Load`;
     undo.addEventListener('click', () => {
       if (!restoreTrack(raw)) {
-        this.toast(`Could not put "${t.name}" back: local storage is unavailable or full.`);
+        this.toast(`无法恢复“${t.name}”：本地存储不可用或空间不足。`);
         return;
       }
       /* The list again, with the row back where it sorts. */
@@ -4138,7 +4138,7 @@ export class App {
 
   exportFile() {
     downloadTrack(this.doc);
-    this.toast('Exported.');
+    this.toast('已导出。');
   }
 
   /*
@@ -4155,18 +4155,18 @@ export class App {
    */
   async exportAnimation() {
     if (this.nameInput && this.nameInput.value) {
-      this.doc.name = this.nameInput.value.trim() || 'Untitled track';
+      this.doc.name = this.nameInput.value.trim() || '未命名赛道';
     }
     /* A map has no lap to animate. The menu does not offer this on a map;
      * this is for any other way in. */
     if (docModeOf(this.doc) === 'freestyle') {
-      this.toast('An animation is one lap of a track, and a map has no lap.');
+      this.toast('赛道动画展示一圈飞行路线，地图没有圈可供制作动画。');
       return;
     }
     /* One element is not a lap, which is the same rule the racing line
      * itself applies, so the refusal says the same thing. */
     if (this.doc.sequence.length < 2) {
-      this.toast('An animation needs at least two elements in the flying order.');
+      this.toast('赛道动画至少需要两个飞行顺序中的元素。');
       return;
     }
 
@@ -4177,9 +4177,9 @@ export class App {
      * quad flies a steady pace and a longer lap simply takes longer to go
      * round. See LAP_SPEED in stage.js. No size named either, because the
      * pilot chooses it just below. */
-    help.textContent = 'One lap of the racing line, looping, flown at the same pace '
+    help.textContent = '以 512×512 分辨率循环展示一圈赛道路线，飞行速度固定，因此赛道越长，动画也越长。'
       + 'whatever the track, so a longer lap is a longer clip. This tab has to stay '
-      + 'open while it renders, and closing this box stops it.';
+      + '文件大小约为 1 至 2 MB，可发布到各类平台。渲染大约需要一分钟，期间请保持此标签页打开。';
     body.append(help);
 
     /*
@@ -4280,7 +4280,7 @@ export class App {
     const go = document.createElement('button');
     go.type = 'button';
     go.className = 'tb-btn tb-primary';
-    go.textContent = 'Render the animation';
+    go.textContent = '渲染动画';
     go.addEventListener('click', async () => {
       const edge = Number(sizePick.value);
       const field = setHere && settingPick.value === 'field';
@@ -4288,7 +4288,7 @@ export class App {
       /* Not changeable mid render: the file is the size it was asked for. */
       sizePick.disabled = true;
       settingPick.disabled = true;
-      status.textContent = 'Loading the renderer.';
+      status.textContent = '正在加载渲染器……';
       try {
         const { exportTrackGif } = await import('./animate.js');
         const bytes = await exportTrackGif(this.doc, {
@@ -4296,14 +4296,14 @@ export class App {
           field,
           signal: stop.signal,
           onProgress: (done, total) => {
-            status.textContent = `Frame ${done} of ${total}.`;
+            status.textContent = `正在渲染第 ${done}/${total} 帧。`;
           },
         });
         const file = animationFilename(this.doc, edge, field);
         downloadBlob(bytes, file, 'image/gif');
         const mb = (bytes.length / 1e6).toFixed(2);
         status.textContent = `Done. ${mb} MB, saved as ${file}.`;
-        go.textContent = 'Render it again';
+        go.textContent = '重新渲染';
       } catch (e) {
         /* The box was closed, which is the answer and not a failure, and
          * there is no box left to say anything in. */
@@ -4318,7 +4318,7 @@ export class App {
       }
     });
     body.append(go);
-    this.modal('Export animation', body);
+    this.modal('导出动画', body);
     /* Set after modal(), which clears it for the dialog it replaces. A render
      * left running behind a closed box would finish minutes later and save a
      * file nobody was expecting. */
@@ -4341,7 +4341,7 @@ export class App {
     const done = await sendCardAnimation(this.doc, {
       origin,
       onProgress: (n, total) => {
-        status.textContent = `${was} Drawing its card, frame ${n} of ${total}.`;
+        status.textContent = `${was}正在绘制赛道卡片，第 ${n}/${total} 帧。`;
       },
     });
     if (done.skipped) {
@@ -4350,8 +4350,8 @@ export class App {
     /* Said plainly, and said as what it is: the track went up, the picture
      * did not. */
     status.textContent = done.error
-      ? `${was} The track is up, but its card animation could not be sent: ${done.error}`
-      : `${was} Its card on the board is a lap of it.`;
+      ? `${was}赛道已发布，但卡片动画无法发送：${done.error}`
+      : `${was}排行榜上的赛道卡片会展示一圈赛道动画。`;
   }
 
   /*
@@ -4368,13 +4368,13 @@ export class App {
    */
   async renderShareCardForBoard({ kind, noun, origin, editKey, status }) {
     const was = status.textContent;
-    status.textContent = `${was} Drawing the picture a link to it shows.`;
+    status.textContent = `${was}正在绘制链接预览图片。`;
     const done = await sendShareCard({
       kind, id: this.doc.id, board: origin, editKey,
     });
     status.textContent = done.error
-      ? `${was} The ${noun} is up, but its share picture could not be sent, so a link to it shows the WebFPV card for now: ${done.error}`
-      : `${was} A link to it, posted anywhere, shows the ${noun}.`;
+      ? `${was}${noun}已发布，但分享图片无法发送，因此链接暂时会显示 WebFPV 卡片：${done.error}`
+      : `${was}分享链接发布到任何地方时，都会显示${noun}。`;
   }
 
   /*
@@ -4399,10 +4399,10 @@ export class App {
       return;
     }
     if (this.nameInput && this.nameInput.value) {
-      this.doc.name = this.nameInput.value.trim() || 'Untitled track';
+      this.doc.name = this.nameInput.value.trim() || '未命名赛道';
     }
     if (!this.doc.sequence.length) {
-      this.toast('A published track needs at least one gate in the flying order.');
+      this.toast('已发布的赛道至少需要一个位于飞行顺序中的门。');
       return;
     }
     /* A table, a chair or a banner is not something the board knows yet. Said here,
@@ -4413,7 +4413,7 @@ export class App {
       const say = document.createElement('p');
       say.className = 'tb-help';
       say.textContent = unknownPartsSentence(unknown);
-      this.modal('Not on the board yet', say);
+      this.modal('排行榜暂不支持', say);
       return;
     }
     this.autosaver.flush();
@@ -4424,15 +4424,15 @@ export class App {
     const help = document.createElement('p');
     help.className = 'tb-help';
     if (remix) {
-      const of = listing.sourceName ? ` of ${listing.sourceName}` : '';
-      const by = listing.sourceAuthor ? ` by ${listing.sourceAuthor}` : '';
-      help.textContent = `This is your copy${of}${by}. It goes on the board as a new track under the name below. The original stays.`;
+      const of = listing.sourceName ? `（来源：${listing.sourceName}）` : '';
+      const by = listing.sourceAuthor ? `，原作者：${listing.sourceAuthor}` : '';
+      help.textContent = `这是你的副本${of}${by}。它会以新赛道的形式使用下方名称发布到排行榜，原赛道不会改变。`;
     } else if (owned && listing.layoutDrift) {
-      help.textContent = 'The layout changed. Updating the board will clear posted times. A rename alone would have kept them.';
+      help.textContent = '赛道布局已更改。更新排行榜上的赛道会清除已提交的成绩；如果只重命名则不会清除。';
     } else if (owned) {
-      help.textContent = 'This track is already on the board. Updating it keeps the times if the flying layout has not changed.';
+      help.textContent = '此赛道已在排行榜上。如果飞行路线未改变，更新赛道会保留已有成绩。';
     } else {
-      help.textContent = 'The public board keeps a copy of this track, including every sponsor logo on the gates, the flags and the grass. Times people post are stored there.';
+      help.textContent = '公开排行榜会保存此赛道的副本，包括门、旗帜和草地上的所有赞助商标志。飞手提交的成绩也会保存在那里。';
     }
     body.append(help);
 
@@ -4440,7 +4440,7 @@ export class App {
     courseField.className = 'tb-field';
     const courseLabel = document.createElement('label');
     courseLabel.className = 'tb-field-label';
-    courseLabel.textContent = 'Track name';
+    courseLabel.textContent = '赛道名称';
     const courseInput = document.createElement('input');
     courseInput.type = 'text';
     courseInput.maxLength = 80;
@@ -4456,7 +4456,7 @@ export class App {
     nameField.className = 'tb-field';
     const nameLabel = document.createElement('label');
     nameLabel.className = 'tb-field-label';
-    nameLabel.textContent = 'Your name';
+    nameLabel.textContent = '你的名字';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.maxLength = 24;
@@ -4505,21 +4505,21 @@ export class App {
     tagField.className = 'tb-field';
     const tagLabelEl = document.createElement('label');
     tagLabelEl.className = 'tb-field-label';
-    tagLabelEl.textContent = 'What it is for';
+    tagLabelEl.textContent = '用途';
     const tagRow = document.createElement('div');
     tagRow.className = 'tb-tags';
     const tagHelp = document.createElement('p');
     tagHelp.className = 'tb-help';
     const sayTags = () => {
       if (chosen.size) {
-        tagHelp.textContent = `${[...chosen].map(tagLabel).join(', ')}. People filter the board by these.`;
+        tagHelp.textContent = `已选用途：${[...chosen].map(tagLabel).join('、')}。其他飞手可按用途筛选赛道。`;
       } else if (owned && !Array.isArray(held)) {
         /* Said, because an empty row on a track that is already on the
          * board reads as "it has no tags", and here it only means this
          * browser never heard which it has. */
-        tagHelp.textContent = 'This browser has no record of the tags this track wears on the board, so none are ticked. Leave them that way to keep whatever it wears, or tick some to replace them.';
+        tagHelp.textContent = '此浏览器没有记录此赛道在排行榜上的用途标签，因此当前没有选中任何标签。保持不选可保留现有标签，选择标签则会替换它们。';
       } else {
-        tagHelp.textContent = `Optional, and up to ${TRACK_TAGS_MAX}. People filter the board by these, so a track with none is harder to find.`;
+        tagHelp.textContent = `选填，最多选择 ${TRACK_TAGS_MAX} 项。其他飞手会按用途筛选赛道，没有标签的赛道较难被找到。`;
       }
     };
     for (const tag of shownTags) {
@@ -4536,7 +4536,7 @@ export class App {
           /* Refused rather than silently swapping one out, because a
            * control that quietly drops the thing you ticked first is worse
            * than one that says no. */
-          tagHelp.textContent = `That is ${TRACK_TAGS_MAX} already. Untick one to add another.`;
+          tagHelp.textContent = `已达到 ${TRACK_TAGS_MAX} 项上限。取消一项后即可添加其他用途。`;
           return;
         } else {
           chosen.add(tag.id);
@@ -4565,7 +4565,7 @@ export class App {
     const send = document.createElement('button');
     send.type = 'button';
     send.className = 'tb-btn tb-primary';
-    send.textContent = owned ? 'Update the board' : (remix ? 'Publish as yours' : 'Publish this track');
+    send.textContent = owned ? '更新榜单' : (remix ? '以你的名义发布' : '发布此赛道');
     send.addEventListener('click', async () => {
       /* A real name first: the board lists tracks by name (isPlaceholderName). */
       if (!nameAsk.ok()) {
@@ -4584,7 +4584,7 @@ export class App {
       }
       const origin = boardOrigin();
       send.disabled = true;
-      status.textContent = 'Sending the track, logos included.';
+      status.textContent = '正在发送赛道及其标志。';
       /* A list, empty when the author unticked every tag they were shown,
        * or undefined to leave the board's alone. See tagsToSend. */
       const tags = tagsToSend(held, [...chosen]);
@@ -4622,15 +4622,15 @@ export class App {
           commit();
           this.loadDocument(copy, '');
           posted = await sendDoc(this.doc);
-          status.textContent = `This id was already on the board, so it went up as a new track, "${posted.name}".`;
+          status.textContent = `排行榜中已存在相同 ID，因此已将其作为新赛道发布：“${posted.name}”。`;
         }
         const cleared = posted.timesCleared
-          ? ' The flying layout changed, so the old times were cleared.'
+          ? ' 飞行路线已更改，旧成绩已清除。'
           : '';
-        if (!status.textContent.startsWith('This id')) {
-          status.textContent = `Published as "${posted.name}".${cleared}`;
+        if (!status.textContent.startsWith('排行榜中已存在相同 ID')) {
+          status.textContent = `已发布为“${posted.name}”。${cleared}`;
         }
-        this.toast(`Published "${posted.name}" to the board.`);
+        this.toast(`已将“${posted.name}”发布到排行榜。`);
         /*
          * A ROOM'S CARD ON THE BOARD IS ITS ANIMATION, SO IT IS RENDERED
          * HERE, NOW.
@@ -4647,7 +4647,7 @@ export class App {
          */
         await this.renderCardForBoard(origin, status);
         await this.renderShareCardForBoard({
-          kind: 'track', noun: 'track', origin, editKey: readEditKey(this.doc.id), status,
+          kind: 'track', noun: '赛道', origin, editKey: readEditKey(this.doc.id), status,
         });
         this.updateTopBar();
         /*
@@ -4663,14 +4663,14 @@ export class App {
         /* The board's own tab, reused if it is already open. No rel here:
          * noopener would send this to a fresh tab every time. */
         open.target = BOARD_WINDOW;
-        open.textContent = 'This track on Tracks and times';
+        open.textContent = '打开赛道与统计页面';
         send.replaceWith(open);
         shown.close.textContent = 'Close';
         open.focus({ preventScroll: true });
       } catch (e) {
         send.disabled = false;
-        status.textContent = e.message || 'The board could not take that track.';
-        this.toast(`Could not publish: ${e.message || e}`);
+        status.textContent = e.message || '排行榜无法接收此赛道。';
+        this.toast(`无法发布：${e.message || e}`);
       }
     });
     /*
@@ -4751,7 +4751,7 @@ export class App {
       });
     }
 
-    const shown = this.modal(owned ? 'Update this track' : (remix ? 'Publish as yours' : 'Publish this track'), body, [], { primary: send });
+    const shown = this.modal(owned ? '更新此赛道' : (remix ? '以你的名义发布' : '发布此赛道'), body, [], { primary: send });
     nameAsk.start();
   }
 
@@ -4798,7 +4798,7 @@ export class App {
         this.toast('Signed out of the board admin.');
         this.updateTopBar();
       });
-      this.modal('Board admin', body, [], { primary: out });
+      this.modal('排行榜管理员', body, [], { primary: out });
       return;
     }
     const help = document.createElement('p');
@@ -4837,7 +4837,7 @@ export class App {
       try {
         const done = await adminSignIn({ email: email.value.trim(), password: password.value, origin });
         this.closeModal();
-        this.toast(`Signed in to the board as ${done.email}.`);
+        this.toast(`已作为 ${done.email} 登录排行榜。`);
         this.updateTopBar();
         if (then) {
           then();
@@ -4856,7 +4856,7 @@ export class App {
         submit();
       }
     });
-    this.modal('Board admin', body, [], { primary: go });
+    this.modal('排行榜管理员', body, [], { primary: go });
     email.focus();
   }
 
@@ -4922,7 +4922,7 @@ export class App {
    */
   openPublishMap() {
     if (this.nameInput && this.nameInput.value) {
-      this.doc.name = this.nameInput.value.trim() || 'Untitled map';
+      this.doc.name = this.nameInput.value.trim() || '未命名地图';
     }
     /* The board's own rule, asked here first so the author is told before
      * the request rather than by it: a label, the start and paint on the
@@ -4933,7 +4933,7 @@ export class App {
       return kind && kind !== KIND.ANNOTATION && kind !== KIND.START && kind !== KIND.DECAL;
     });
     if (!standing) {
-      this.toast('A published map needs at least one piece on it.');
+      this.toast('已发布的地图至少需要包含一个场地元素。');
       return;
     }
     this.autosaver.flush();
@@ -4942,8 +4942,8 @@ export class App {
     const help = document.createElement('p');
     help.className = 'tb-help';
     help.textContent = owned
-      ? 'This map is already on the board. Updating it puts this version up in its place.'
-      : 'The public board keeps a copy of this map, sponsor prints included, and draws its card from the pieces on it. Anybody can fly it from there.';
+      ? '此地图已发布到排行榜。更新后会以当前版本替换排行榜上的地图。'
+      : '公开排行榜会保存此地图的副本，包括赞助商标志，并根据地图中的元素生成卡片。所有人都可以从排行榜中驾驶此地图。';
     body.append(help);
 
     const field = (label, input) => {
@@ -4960,7 +4960,7 @@ export class App {
     mapInput.maxLength = 80;
     mapInput.id = 'tb-publish-name';
     mapInput.value = this.doc.name;
-    field('Map name', mapInput);
+    field('地图名称', mapInput);
     body.lastElementChild.querySelector('label').htmlFor = mapInput.id;
     const nameAsk = this.nameAsk(mapInput, 'map');
     body.append(nameAsk.line);
@@ -4968,7 +4968,7 @@ export class App {
     nameInput.type = 'text';
     nameInput.maxLength = 24;
     nameInput.value = readPilotName() || '';
-    field('Your name', nameInput);
+    field('你的名字', nameInput);
     const nameHelp = document.createElement('p');
     nameHelp.className = 'tb-help';
     nameHelp.textContent = nameRules();
@@ -4983,7 +4983,7 @@ export class App {
     const send = document.createElement('button');
     send.type = 'button';
     send.className = 'tb-btn tb-primary';
-    send.textContent = owned ? 'Update the board' : 'Publish this map';
+    send.textContent = owned ? '更新排行榜' : '发布此地图';
     send.addEventListener('click', async () => {
       if (!nameAsk.ok()) {
         return;
@@ -5001,7 +5001,7 @@ export class App {
       }
       const origin = boardOrigin();
       send.disabled = true;
-      status.textContent = 'Sending the map, sponsor prints included.';
+      status.textContent = '正在发布地图及赞助商标志……';
       const sendDoc = async (doc) => {
         const held = readMapListing(doc.id);
         const posted = await publishMap({
@@ -5040,17 +5040,17 @@ export class App {
           posted = await sendDoc(this.doc);
           forked = true;
         }
-        const verb = posted.updated ? 'Updated' : 'Published';
+        const verb = posted.updated ? '已更新' : '已发布';
         status.textContent = forked
-          ? `This id was already on the board, so it went up as a new map, "${posted.name}".`
-          : `${verb} as "${posted.name}".`;
-        this.toast(`${verb} "${posted.name}" on the board.`);
+          ? `排行榜中已存在相同 ID，因此已将其作为新地图发布：“${posted.name}”。`
+          : `${verb}为“${posted.name}”。`;
+        this.toast(`${verb}“${posted.name}”到排行榜。`);
         /* The board drops a map's share card on every republish, because
          * this is the only thing that republishes one, and it draws the
          * new card here. See publishMapUnlocked in the board's store.js. */
         const held = readMapListing(this.doc.id);
         await this.renderShareCardForBoard({
-          kind: 'map', noun: 'map', origin, editKey: held ? held.editKey : '', status,
+          kind: 'map', noun: '地图', origin, editKey: held ? held.editKey : '', status,
         });
         this.updateTopBar();
         const open = document.createElement('a');
@@ -5061,17 +5061,17 @@ export class App {
         /* The board's own tab, reused if it is already open. No rel here:
          * noopener would send this to a fresh tab every time. */
         open.target = BOARD_WINDOW;
-        open.textContent = 'This map on Tracks and times';
+        open.textContent = '打开赛道与统计页面';
         send.replaceWith(open);
         shown.close.textContent = 'Close';
         open.focus({ preventScroll: true });
       } catch (e) {
         send.disabled = false;
-        status.textContent = e.message || 'The board could not take that map.';
-        this.toast(`Could not publish: ${e.message || e}`);
+        status.textContent = e.message || '排行榜无法接收此地图。';
+        this.toast(`无法发布：${e.message || e}`);
       }
     });
-    const shown = this.modal(owned ? 'Update this map' : 'Publish this map', body, [], { primary: send });
+    const shown = this.modal(owned ? '更新此地图' : '发布此地图', body, [], { primary: send });
     nameAsk.start();
   }
 
@@ -5190,13 +5190,13 @@ export class App {
           note.className = 'tb-help';
           note.textContent = i === logos.length
             ? (map ? `Empty. Add a logo here, then paint it on the ${w.ground}.` : 'Empty. Add a logo here and the gates start sharing it.')
-            : 'Empty.';
+            : '空白。';
           slot.append(note);
           if (i === logos.length) {
             const add = document.createElement('button');
             add.type = 'button';
             add.className = 'tb-btn';
-            add.textContent = 'Add a logo';
+            add.textContent = '添加标志';
             add.addEventListener('click', () => { target = i; file.click(); });
             const btns = document.createElement('div');
             btns.className = 'tb-row-btns';
@@ -5230,7 +5230,7 @@ export class App {
 
         const caption = document.createElement('p');
         caption.className = 'tb-help';
-        caption.textContent = `${mark.name || `Logo ${i + 1}`}, ${Math.round(mark.image.length / 1024)} kB, stored in the track.`;
+        caption.textContent = `${mark.name || `标志 ${i + 1}`}，${Math.round(mark.image.length / 1024)} kB，已保存在赛道中。`;
         slot.append(caption);
 
         const btns = document.createElement('div');
@@ -5238,7 +5238,7 @@ export class App {
         const swap = document.createElement('button');
         swap.type = 'button';
         swap.className = 'tb-btn';
-        swap.textContent = 'Replace';
+        swap.textContent = '替换';
         swap.addEventListener('click', () => { target = i; file.click(); });
         /*
          * The one route from a logo to paint on the field. It arms the
@@ -5258,13 +5258,13 @@ export class App {
         const drop = document.createElement('button');
         drop.type = 'button';
         drop.className = 'tb-btn tb-danger';
-        drop.textContent = 'Remove';
+        drop.textContent = '移除';
         drop.addEventListener('click', () => {
           this.edit('remove logo', (d) => {
             d.branding.logos.splice(i, 1);
           });
           redraw();
-          this.toast(`Logo removed. Any ${w.ground} painted with it now shows nothing until you pick another.`);
+          this.toast(`标志已移除。所有使用该标志的${w.ground}都会暂时变为空白，直到你选择其他标志。`);
         });
         btns.append(swap, paint, drop);
         slot.append(btns);
@@ -5278,22 +5278,22 @@ export class App {
       const gates = dressOrder(this.doc).size;
       const n = logos.length;
       const left = Math.max(0, BRANDING_MAX_CHARS - spent);
-      const budget = `${Math.round(spent / 1024)} kB of ${Math.round(BRANDING_MAX_CHARS / 1024)} kB used, ${Math.round(left / 1024)} kB left.`;
+      const budget = `已使用 ${Math.round(spent / 1024)}/${Math.round(BRANDING_MAX_CHARS / 1024)} kB，剩余 ${Math.round(left / 1024)} kB。`;
       if (map) {
         summary.textContent = n
           ? `${n} logo${n === 1 ? '' : 's'}, painted where you put them. ${budget}`
           : `No logos yet. ${budget}`;
       } else if (!n) {
-        summary.textContent = `No logos yet. The gates carry a chequered flag device and their number. ${budget}`;
+        summary.textContent = `尚无标志。赛道门将显示方格旗图案和门编号。${budget}`;
       } else if (!gates) {
-        summary.textContent = `Nothing is in the flying order yet, so nothing is wearing them. ${budget}`;
+        summary.textContent = `飞行顺序中还没有元素，因此没有标志可供使用。${budget}`;
       } else {
         const base = Math.floor(gates / n);
         const extra = gates % n;
         const share = extra === 0
-          ? `${base} gate${base === 1 ? '' : 's'} each`
-          : `${base + 1} gates for the first ${extra}, ${base} for the rest`;
-        summary.textContent = `${gates} gate${gates === 1 ? '' : 's'} in the flying order, ${n} logo${n === 1 ? '' : 's'}: ${share}. ${budget}`;
+          ? `每个赞助商标志对应 ${base} 个赛门`
+          : `前 ${extra} 个赛门对应 ${base + 1} 个标志，其余赛门对应 ${base} 个`;
+        summary.textContent = `飞行顺序中有 ${gates} 个门、${n} 个标志：${share}。${budget}`;
       }
     };
 
@@ -5326,13 +5326,13 @@ export class App {
           }
         });
         redraw();
-        this.toast(`Logo ${slot + 1} set from ${logo.name}, ${logo.width} by ${logo.height}.`);
+        this.toast(`已将第 ${slot + 1} 个标志设置为“${logo.name}”，尺寸为 ${logo.width}×${logo.height}。`);
       } catch (e) {
-        this.toast(`Could not use that image: ${e.message}`);
+        this.toast(`无法使用此图片：${e.message}`);
       }
     });
 
-    this.modal('Sponsor logos', body);
+    this.modal('赞助商标志', body);
     redraw();
   }
 
@@ -5343,7 +5343,7 @@ export class App {
     try {
       await this.importText(await readFileText(file));
     } catch (e) {
-      this.toast(`Could not read the file: ${e.message}`);
+      this.toast(`无法读取文件：${e.message}`);
     }
   }
 
@@ -5373,7 +5373,7 @@ export class App {
     }
     const { doc, repairs, error } = deserialize(text);
     if (error) {
-      this.toast(`Could not import: ${error}`);
+      this.toast(`导入失败：${error}`);
       return;
     }
     const said = repairs.length
@@ -5408,7 +5408,7 @@ export class App {
     area.setAttribute('aria-label', 'A track, as text');
     area.placeholder = 'Paste a track here';
     body.append(help, choose, area);
-    this.modal('Import a track', body, [{ label: 'Import pasted text', run: () => this.importText(area.value) }]);
+    this.modal('导入赛道', body, [{ label: '导入已粘贴的文本', run: () => this.importText(area.value) }]);
   }
 
   /* What an import from another designer kept, changed and left out. */
@@ -5429,7 +5429,7 @@ export class App {
       }
       body.append(h, ul);
     }
-    this.modal('What came across', body);
+    this.modal('导入内容', body);
   }
 
   /*
@@ -5465,7 +5465,7 @@ export class App {
       ? ' It is long because it carries the sponsor logos, and some chat apps cut a link that long: for those, Export the file from More.'
       : '';
     if (copied) {
-      this.toast(`Link copied, ${link.length} characters. It carries the whole track and opens as a copy for whoever has it.${long}`);
+      this.toast(`已复制链接（${link.length} 个字符）。链接包含完整赛道，打开后会创建赛道副本。${long}`);
       return;
     }
     const body = document.createElement('div');
@@ -5478,7 +5478,7 @@ export class App {
     area.rows = 6;
     area.value = link;
     body.append(help, area);
-    this.modal('Share link', body);
+    this.modal('分享链接', body);
     area.focus();
     area.select();
   }
@@ -5498,7 +5498,7 @@ export class App {
       return;
     }
     downloadBlob(blob, pictureFilename(this.doc), 'image/png');
-    this.toast(`Saved ${pictureFilename(this.doc)}.`);
+    this.toast(`已保存 ${pictureFilename(this.doc)}。`);
   }
 
   /*
@@ -5564,7 +5564,7 @@ export class App {
   undo() {
     const doc = this.history.undo(this.doc);
     if (!doc) {
-      this.toast('Nothing to undo.');
+      this.toast('没有可撤销的操作。');
       return;
     }
     this.doc = doc;
@@ -5575,7 +5575,7 @@ export class App {
   redo() {
     const doc = this.history.redo(this.doc);
     if (!doc) {
-      this.toast('Nothing to redo.');
+      this.toast('没有可重做的操作。');
       return;
     }
     this.doc = doc;
@@ -5634,9 +5634,9 @@ export class App {
     const held = readAutosave(cls, mode);
     const doc = (held && held.doc) || (mode === 'freestyle' ? newMap() : createTrack(undefined, cls));
     const fresh = {
-      full: 'A new five inch track, on a sixty metre field.',
-      micro: 'A new whoop track, in a ten by twelve metre hall.',
-      freestyle: 'A new freestyle map, on a 160 metre plot.',
+      full: '5 英寸赛道，位于 60 米场地',
+      micro: 'Whoop 赛道，位于 10×12 米场馆',
+      freestyle: '自由式地图，位于 160 米场地。放置建筑、起重机和滑板设施后即可开始飞行',
     }[want];
     /*
      * WHAT THE SWITCH DID, said (MENUS-PLAN.md 4.2c). It has two effects an
@@ -5687,7 +5687,7 @@ export class App {
     const grid = document.createElement('div');
     grid.className = 'tb-choose';
     grid.setAttribute('role', 'group');
-    grid.setAttribute('aria-label', 'Which canvas');
+    grid.setAttribute('aria-label', '选择编辑模式');
     let current = null;
     for (const c of CHOICES) {
       const card = document.createElement('button');
@@ -5751,7 +5751,7 @@ export class App {
       cards[Math.max(0, Math.min(cards.length - 1, to))].focus();
     });
     body.append(lede, grid);
-    this.modal('What are you building?', body, [], { cls: 'tb-chooser' });
+    this.modal('你要创建什么？', body, [], { cls: 'tb-chooser' });
     this.afterModal = () => this.pointAtSwitch();
     (current || grid.querySelector('.tb-choose-card')).focus();
   }
@@ -5792,7 +5792,7 @@ export class App {
     name.value = this.doc.name;
     name.dataset.tbkey = 'track-name';
     name.addEventListener('change', () => {
-      this.edit('rename track', (d) => { d.name = name.value || 'Untitled track'; });
+      this.edit('rename track', (d) => { d.name = name.value || '未命名赛道'; });
       this.syncNameIfOwned();
     });
     this.nameInput = name;
@@ -5815,8 +5815,8 @@ export class App {
       return b;
     };
 
-    this.undoBtn = btn('Undo', () => this.undo(), 'Control Z');
-    this.redoBtn = btn('Redo', () => this.redo(), 'Control Shift Z');
+    this.undoBtn = btn('撤销', () => this.undo(), 'Control Z');
+    this.redoBtn = btn('重做', () => this.redo(), 'Control Shift Z');
     /*
      * ONE VIEW VOCABULARY (MENUS-PLAN.md 4.2): 2D and 3D on every canvas, and
      * V goes between them. 3D is where every canvas is built (the whoop's, the
@@ -5827,19 +5827,19 @@ export class App {
      * above. Any press on a view button is the author's own choice, and the
      * room opening by itself on a canvas never overrules it.
      */
-    this.mode2d = btn('2D', () => this.show2d(), 'Top down authoring view');
-    this.mode3d = btn('3D', () => this.show3d(), 'Build here, in 3D');
-    this.topBtn = btn('Top', () => this.toggleTop(), 'Look straight down on the room, north up, for measuring. Press again for the angle you had. Every gesture is the same.');
+    this.mode2d = btn('2D', () => this.show2d(), '俯视平面编辑');
+    this.mode3d = btn('3D', () => this.show3d(), '在 3D 视图中编辑');
+    this.topBtn = btn('顶视图', () => this.toggleTop(), '从正上方查看场地并测量。再次点击可恢复之前的视角，其他操作方式不变。');
     /* Plain, not primary. There is one green button on this bar and it is
      * the one that leaves for the air; a second would make neither read as
      * the thing to press. Show line goes amber while a line is showing,
      * which is the state that matters. */
     /* The line is derived on every edit now, so this only paints it. */
-    this.pathBtn = btn('Show line', () => this.togglePath(), 'Draw the racing line on the canvas');
-    this.labelsBtn = btn('Labels', () => this.toggleLabels(), 'Flying-order numbers on the gates. Turn them off to see the racing line.');
-    this.squareBtn = btn('Square', () => this.toggleSquare(), 'New gates face along the nearest axis and stay there, as a plan is drawn. Off, they face along the line from the one before.');
+    this.pathBtn = btn('显示路线', () => this.togglePath(), '在画布上绘制竞速路线');
+    this.labelsBtn = btn('编号', () => this.toggleLabels(), '显示赛门上的飞行顺序编号。关闭后可查看竞速路线。');
+    this.squareBtn = btn('方正', () => this.toggleSquare(), '开启后，新赛门沿最近的坐标轴摆放，适合绘制平面布局。关闭后，新赛门会沿着前一个赛门的连线朝向。');
     /* Whoop canvas only: with it off, a click in a gate is a click on the gate. */
-    this.bendBtn = btn('Bend line', () => this.toggleBendLine(), 'Drag the racing line to bend it into a waypoint. Off, a click on a gate is a click on the gate.');
+    this.bendBtn = btn('弯折路线', () => this.toggleBendLine(), '拖动竞速路线可添加弯折点。关闭后，点击赛门会直接选中赛门。');
 
     const file = document.createElement('input');
     file.type = 'file';
@@ -5859,8 +5859,8 @@ export class App {
      * somebody to remember to press Save before they fly is asking them to
      * fly the wrong track once.
      */
-    this.flyBtn = btn('Fly this track', () => this.flyThisTrack(), 'Build the world around this track and fly it', 'tb-btn tb-primary');
-    this.publishBtn = btn('Publish', () => this.openPublish(), 'Put this track on the public board, logos and all', 'tb-btn tb-publish');
+    this.flyBtn = btn('飞行此赛道', () => this.flyThisTrack(), '围绕此赛道构建场景并开始飞行', 'tb-btn tb-primary');
+    this.publishBtn = btn('发布', () => this.openPublish(), '将赛道及其标志发布到公开排行榜', 'tb-btn tb-publish');
     this.listingChip = document.createElement('span');
     this.listingChip.className = 'tb-listing';
 
@@ -5871,7 +5871,7 @@ export class App {
     const back = document.createElement('a');
     back.className = 'tb-btn tb-quiet tb-back';
     back.href = simulatorLink(this.doc);
-    back.textContent = 'Back to the simulator';
+    back.textContent = '返回模拟器';
     this.backLink = back;
 
     /*
@@ -5891,13 +5891,13 @@ export class App {
     this.moreWrap = document.createElement('div');
     this.moreWrap.className = 'tb-more';
     /* A click a keyboard made has no pointer position and a detail of 0. */
-    this.moreBtn = btn('More', (e) => this.toggleMore(e.detail === 0), 'Import, export, duplicate, delete');
+    this.moreBtn = btn('更多', (e) => this.toggleMore(e.detail === 0), '导入、导出、复制或删除');
     this.moreMenu = document.createElement('div');
     this.moreMenu.className = 'tb-more-menu';
     this.moreMenu.id = 'tb-more-menu';
     this.moreMenu.hidden = true;
     this.moreMenu.setAttribute('role', 'menu');
-    this.moreMenu.setAttribute('aria-label', 'More');
+    this.moreMenu.setAttribute('aria-label', '更多');
     this.moreBtn.setAttribute('aria-haspopup', 'menu');
     this.moreBtn.setAttribute('aria-expanded', 'false');
     this.moreBtn.setAttribute('aria-controls', 'tb-more-menu');
@@ -5921,16 +5921,16 @@ export class App {
      * animate. */
     this.moreItems = new Map();
     for (const [id, label, fn, title, cls] of [
-      ['duplicate', 'Duplicate', () => this.duplicate(), 'Copy this track under a new name', ''],
-      ['import', 'Import', () => this.openImport(), 'Read a .json track file, or paste one', ''],
-      ['export', 'Export', () => this.exportFile(), 'Write a .json track file', ''],
+      ['duplicate', '复制', () => this.duplicate(), '以新名称复制此赛道', ''],
+      ['import', '导入', () => this.openImport(), '读取 .json 赛道文件，或粘贴赛道数据', ''],
+      ['export', '导出', () => this.exportFile(), '写入 .json 赛道文件', ''],
       /* The whoop room's three ways out: a link, a picture and a sheet to build from. */
-      ['link', 'Copy share link', () => this.copyShareLink(), 'A link that carries the whole track, for a chat message. It opens as a copy.', ''],
-      ['sheet', 'Build sheet', () => this.openSheet(), 'A page to print: where every piece stands, measured from a corner, and what pipe and fittings to buy', ''],
-      ['picture', 'Picture', () => this.savePicture(), 'Save a picture of the room as it is on the screen, numbers and all', ''],
-      ['animation', 'Export animation', () => this.exportAnimation(), 'Write a looping .gif of one lap', ''],
-      ['admin', 'Admin', () => this.openAdmin(), 'Sign in as a board admin, to mark tracks official and to edit the ones that are', ''],
-      ['delete', 'Delete', () => this.confirmRemove(), 'Remove this track from this browser', 'tb-danger'],
+      ['link', '复制分享链接', () => this.copyShareLink(), '生成包含完整赛道的链接，可发送给他人。打开链接后会创建赛道副本。', ''],
+      ['sheet', '施工清单', () => this.openSheet(), '生成可打印的清单，列出每个元素的位置以及所需管材和接头。', ''],
+      ['picture', '保存图片', () => this.savePicture(), '保存当前场景的图片，包括图中显示的数据。', ''],
+      ['animation', '导出动画', () => this.exportAnimation(), '导出一圈路线的循环 .gif 动画', ''],
+      ['admin', '管理员', () => this.openAdmin(), '以排行榜管理员身份登录，设置官方赛道并编辑官方赛道。', ''],
+      ['delete', '删除', () => this.confirmRemove(), '从此浏览器中移除此赛道', 'tb-danger'],
     ]) {
       const b = btn(label, () => { this.closeMore(); fn(); }, title, `tb-more-item ${cls}`.trim());
       b.setAttribute('role', 'menuitem');
@@ -5967,7 +5967,7 @@ export class App {
     this.classToggle = document.createElement('div');
     this.classToggle.className = 'tb-class';
     this.classToggle.setAttribute('role', 'group');
-    this.classToggle.setAttribute('aria-label', 'Which canvas');
+    this.classToggle.setAttribute('aria-label', '选择编辑模式');
     this.classBtns = new Map();
     /*
      * THE THIRD CANVAS IS A MAP, not a third class. It is flown on the five
@@ -5993,20 +5993,20 @@ export class App {
     /* The storage notice once it has been read: a line beside Save, with the
      * sentence in its title, and a press says the sentence for a screen that
      * has no pointer to hover with. See SAVED_ONCE_KEY. */
-    this.keptChip = btn('Saved in this browser', () => this.toast(this.keptChip.title), '', 'tb-kept');
+    this.keptChip = btn('已保存在此浏览器', () => this.toast(this.keptChip.title), '', 'tb-kept');
     const zoneFile = document.createElement('div');
     zoneFile.className = 'tb-zone tb-zone-file';
     zoneFile.append(
       /* The page is the Builder, whichever canvas it is on: the glossary's
        * one name for it, where this bar, its tab and the simulator's gate had
        * three between them (MENUS-PLAN.md 4.1). */
-      Object.assign(document.createElement('span'), { className: 'tb-title', textContent: 'Builder' }),
+      Object.assign(document.createElement('span'), { className: 'tb-title', textContent: '赛道编辑器' }),
       this.classToggle,
       name,
       Object.assign(group(
-        (this.newBtn = btn('New', () => this.newTrack(), 'Start a blank track', 'tb-btn tb-new')),
-        (this.saveBtn = btn('Save', () => this.save(), 'Control S', 'tb-btn tb-save')),
-        (this.loadBtn = btn('Load', () => this.openLoad(), 'Open a saved track')),
+        (this.newBtn = btn('新建', () => this.newTrack(), '新建空白赛道', 'tb-btn tb-new')),
+        (this.saveBtn = btn('保存', () => this.save(), 'Control S', 'tb-btn tb-save')),
+        (this.loadBtn = btn('加载', () => this.openLoad(), '打开已保存的赛道')),
       ), { className: 'tb-bargroup tb-file-group' }),
       this.keptChip,
       this.moreWrap,
@@ -6015,12 +6015,12 @@ export class App {
     const zoneEdit = document.createElement('div');
     zoneEdit.className = 'tb-zone tb-zone-edit';
     this.viewGroup = Object.assign(group(this.mode2d, this.mode3d), { className: 'tb-bargroup tb-view-group' });
-    this.logosBtn = btn('Sponsor logos', () => this.openLogo(), 'Up to five sponsors\u2019 logos, shared out over the gates, the flags and the grass');
+    this.logosBtn = btn('赞助商标志', () => this.openLogo(), '最多添加五个赞助商标志，可分配到赛门、旗帜和场地草地上。');
     zoneEdit.append(
       Object.assign(group(this.undoBtn, this.redoBtn), { className: 'tb-bargroup tb-undo-group' }),
       this.viewGroup,
       Object.assign(group(
-        (this.fitBtn = btn('Fit', () => this.frameAll(), 'Frame the whole field')),
+        (this.fitBtn = btn('适应画布', () => this.frameAll(), '将整个场地显示在画布中')),
         this.topBtn,
         this.pathBtn,
         this.bendBtn,
@@ -6045,11 +6045,11 @@ export class App {
      * second row folds into More (buildPhoneMenu). The stylesheet's phone block
      * shows them and lays the bar out; on a bigger screen they are not there.
      */
-    this.toolsBtn = btn('Tools', (e) => this.toggleTools(null, { keys: e.detail === 0 }), 'The palette: pick a piece, then tap where it goes', 'tb-btn tb-phone-only tb-tools-btn');
+    this.toolsBtn = btn('工具', (e) => this.toggleTools(null, { keys: e.detail === 0 }), '选择元素后，点击要放置的位置', 'tb-btn tb-phone-only tb-tools-btn');
     this.toolsBtn.setAttribute('aria-controls', 'tb-palette');
     this.toolsBtn.setAttribute('aria-expanded', 'false');
-    this.detailsBtn = btn('Details', (e) => this.toggleDrawer(null, { from: e.currentTarget, keys: e.detail === 0 }),
-      'What is selected, the flying order and the results', 'tb-btn tb-phone-only tb-details-btn');
+    this.detailsBtn = btn('详情', (e) => this.toggleDrawer(null, { from: e.currentTarget, keys: e.detail === 0 }),
+      '查看所选元素、飞行顺序和成绩', 'tb-btn tb-phone-only tb-details-btn');
     this.detailsBtn.setAttribute('aria-controls', 'tb-side');
     this.detailsBtn.setAttribute('aria-expanded', 'false');
     /* Where a portrait phone's bar turns to its second row. */
@@ -6215,8 +6215,8 @@ export class App {
     }
     this.undoBtn.disabled = !this.history.canUndo();
     this.redoBtn.disabled = !this.history.canRedo();
-    this.undoBtn.title = this.history.canUndo() ? `Undo ${this.history.undoLabel()}` : 'Nothing to undo';
-    this.redoBtn.title = this.history.canRedo() ? `Redo ${this.history.redoLabel()}` : 'Nothing to redo';
+    this.undoBtn.title = this.history.canUndo() ? `撤销：${this.history.undoLabel()}` : '没有可撤销的操作';
+    this.redoBtn.title = this.history.canRedo() ? `重做：${this.history.redoLabel()}` : '没有可重做的操作';
     const whoop = this.isWhoopRace();
     const map = docModeOf(this.doc) === 'freestyle';
     /* Every canvas is built in the room: 3D first, then 2D, with Top beside Fit. */
@@ -6266,8 +6266,8 @@ export class App {
      */
     this.pathBtn.style.display = map ? 'none' : '';
     this.labelsBtn.title = map
-      ? 'The named gaps\u2019 labels and the names on the plan. Turn them off to see the map.'
-      : 'Flying-order numbers on the gates. Turn them off to see the racing line.';
+      ? '显示命名间隙标签和地图名称。关闭后可查看地图。'
+      : '显示赛门上的飞行顺序编号。关闭后可查看竞速路线。';
     document.body.classList.toggle('tb-map', map);
     /* The status bar's hints for the 3D view's own gestures. */
     document.body.classList.toggle('tb-in-3d', this.mode === '3d');
@@ -6277,16 +6277,16 @@ export class App {
       className: 'tb-long', textContent: map ? ' this map' : ' this track',
     }));
     this.flyBtn.title = map
-      ? 'Build this map in the town\u2019s style and fly it on the five inch'
-      : 'Build the world around this track and fly it';
-    this.newBtn.title = map ? 'Start a blank map' : 'Start a blank track';
-    this.loadBtn.title = map ? 'Open a saved map' : 'Open a saved track';
+      ? '使用城镇风格生成地图，并驾驶 5 英寸飞行器飞行'
+      : '根据此赛道生成场景并开始飞行';
+    this.newBtn.title = map ? '新建空白地图' : '新建空白赛道';
+    this.loadBtn.title = map ? '打开已保存的地图' : '打开已保存的赛道';
     if (this.moreItems) {
-      const noun = map ? 'map' : 'track';
-      this.moreItems.get('duplicate').title = `Copy this ${noun} under a new name`;
-      this.moreItems.get('import').title = `Read a .json ${noun} file`;
-      this.moreItems.get('export').title = `Write a .json ${noun} file`;
-      this.moreItems.get('delete').title = `Remove this ${noun} from this browser`;
+      const noun = map ? '地图' : '赛道';
+      this.moreItems.get('duplicate').title = `使用新名称复制此${noun}`;
+      this.moreItems.get('import').title = `导入 .json ${noun}文件`;
+      this.moreItems.get('export').title = `导出为 .json ${noun}文件`;
+      this.moreItems.get('delete').title = `从此浏览器中删除此${noun}`;
       this.moreItems.get('animation').style.display = map ? 'none' : '';
       /* Says who is signed in, so an admin can see it from here. Hidden on a
        * map: the board takes maps without any official mark. */
@@ -6305,9 +6305,9 @@ export class App {
        * button's word says whether this map is on the board. */
       const listed = Boolean(readMapListing(this.doc.id));
       this.listingChip.style.display = 'none';
-      this.publishBtn.textContent = listed ? 'Update board' : 'Publish';
+      this.publishBtn.textContent = listed ? '更新排行榜' : '发布';
       this.publishBtn.title = listed
-        ? 'This map is on the public board. Send this version up in its place.'
+        ? '此地图已发布到公开排行榜。发布此版本以替换当前版本。'
         : PUBLISH_MAP_TITLE;
       this.publishBtn.classList.remove('tb-off');
       this.publishBtn.removeAttribute('aria-disabled');
@@ -6331,16 +6331,16 @@ export class App {
         this.listingChip.classList.add('remix');
       }
       if (listing.kind === 'owned') {
-        this.publishBtn.textContent = listing.canUpdateListing ? 'Update board' : 'On the board';
+        this.publishBtn.textContent = listing.canUpdateListing ? '更新排行榜' : '已发布到排行榜';
         this.publishBtn.title = listing.layoutDrift
-          ? 'The layout changed. Updating the board will clear posted times.'
-          : 'This track is on the public board. A rename updates the listing.';
+          ? '布局已变更。更新榜单将清除已发布的圈速。'
+          : '此赛道已发布到公开排行榜。修改名称会同步更新列表。';
       } else if (listing.kind === 'remix') {
-        this.publishBtn.textContent = 'Publish as yours';
-        this.publishBtn.title = 'Put this copy on the board under a new name. The original stays.';
+        this.publishBtn.textContent = '以你的名义发布';
+        this.publishBtn.title = '使用新名称将此副本发布到排行榜，原赛道保持不变。';
       } else {
-        this.publishBtn.textContent = 'Publish';
-        this.publishBtn.title = 'Put this track on the public board, logos and all';
+        this.publishBtn.textContent = '发布';
+        this.publishBtn.title = '将此赛道及其标志发布到公开排行榜。';
       }
     }
     if (this.backLink) {
@@ -6420,12 +6420,12 @@ export class App {
     try {
       const result = await syncOwnedName(toPlain(this.doc));
       if (result && result.ok) {
-        this.toast(`Name updated on the board: "${this.doc.name}".`);
+        this.toast(`排行榜中的名称已更新为“${this.doc.name}”。`);
       } else if (result && result.skipped === 'layout-changed') {
-        this.toast('The layout changed too. Update the board to send the new name.');
+        this.toast('赛道布局也已更改。请更新排行榜以同步新名称。');
       }
     } catch (e) {
-      this.toast(`Could not update the name on the board. ${e.message || e}`);
+      this.toast(`无法更新排行榜中的名称：${e.message || e}`);
     }
     this.updateTopBar();
   }
@@ -6560,7 +6560,7 @@ export class App {
     const body = document.createElement('p');
     body.className = 'tb-help';
     body.textContent = detail;
-    this.modal(title, body, [{ label: 'Yes', run, danger: true }]);
+    this.modal(title, body, [{ label: '确定', run, danger: true }]);
   }
 
   closeModal() {

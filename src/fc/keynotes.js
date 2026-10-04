@@ -51,74 +51,74 @@
  */
 const NOTES = [
   /* ---- PID, per axis ------------------------------------------------ */
-  [/^p_(roll|pitch|yaw)$/, 'How hard the controller corrects the error it can see right now. More holds the line harder and shakes more in propwash.'],
-  [/^i_(roll|pitch|yaw)$/, 'How hard it corrects error that has been there a while. This is what holds an angle against wind and against a heavy battery.'],
-  [/^d_(roll|pitch|yaw)$/, 'Damping ceiling. Resists fast movement, which is what stops P ringing. Betaflight calls this D max in the GUI.'],
-  [/^d_min_(roll|pitch|yaw)$/, 'Damping floor: where D sits while the sticks are still. It rises toward the ceiling only when the quad is being thrown about, so cruise stays cool and quiet.'],
-  [/^f_(roll|pitch|yaw)$/, 'Feedforward. Pushes on stick MOVEMENT, before any error has appeared, so the quad starts turning with your thumb rather than after it.'],
-  [/^d_min_advance$/, 'How eagerly D climbs from its floor toward its ceiling as the gyro speeds up.'],
-  [/^d_min_boost_gain$/, 'How much of the gap between the D floor and the D ceiling a hard move is allowed to use.'],
+  [/^p_(roll|pitch|yaw)$/, '控制器对当前检测到的误差进行修正的力度。数值越大，保持姿态越有力，但螺旋桨气流扰动时也更容易抖动。'],
+  [/^i_(roll|pitch|yaw)$/, '对持续一段时间的误差进行修正的力度。它能帮助四轴抵抗风力和较重电池的影响，保持姿态。'],
+  [/^d_(roll|pitch|yaw)$/, '阻尼上限，用于抵抗快速运动，避免 P 项振荡。Betaflight 图形界面将其称为 D max。'],
+  [/^d_min_(roll|pitch|yaw)$/, '阻尼下限，即摇杆静止时的 D 值。只有四轴快速运动时才会升向上限，因此平稳飞行时电机温度较低、噪声较小。'],
+  [/^f_(roll|pitch|yaw)$/, '前馈会在误差出现前，根据摇杆的移动提前施力，让四轴随摇杆开始转向，而不是等误差出现后再响应。'],
+  [/^d_min_advance$/, '陀螺仪转速上升时，D 项从下限升向上限的响应速度。'],
+  [/^d_min_boost_gain$/, '快速动作时允许使用的 D 项上下限差值比例。'],
 
   /* ---- Iterm -------------------------------------------------------- */
-  [/^iterm_relax$/, 'Which axes stop accumulating I while the sticks are moving. Without it, a fast flick banks up I that then springs back when you stop: the bounce at the end of a roll.'],
-  [/^iterm_relax_type$/, 'Whether relax watches the gyro or the setpoint. Setpoint is the modern default and reacts to what you asked for rather than to what happened.'],
-  [/^iterm_relax_cutoff$/, 'How quick a stick movement counts as moving. Lower leaves relax on for longer and is calmer; higher lets I build sooner and holds better.'],
-  [/^iterm_windup$/, 'The motor saturation point past which I stops growing, so a quad pinned at full throttle does not bank up correction it can never deliver.'],
-  [/^iterm_limit$/, 'A hard ceiling on how much I is allowed to contribute at all.'],
-  [/^iterm_rotation$/, 'Rotates accumulated I with the craft as it yaws, so I earned on roll does not end up fighting pitch after a spin.'],
+  [/^iterm_relax$/, '选择摇杆移动时停止累积 I 项的轴。否则快速拨杆会积累 I 项，松杆后又回弹，造成横滚结束时的反弹。'],
+  [/^iterm_relax_type$/, '选择松弛功能监测陀螺仪还是设定点。现代默认值为设定点，会根据你的输入而不是实际运动作出响应。'],
+  [/^iterm_relax_cutoff$/, '摇杆移动达到何种速度时视为正在移动。数值越低，松弛保持时间越长，响应更平稳；数值越高，I 项越早开始累积，姿态保持能力更强。'],
+  [/^iterm_windup$/, '电机达到饱和后停止增加 I 项，避免油门已满时继续累积无法输出的修正量。'],
+  [/^iterm_limit$/, '限制 I 项可提供的最大修正量。'],
+  [/^iterm_rotation$/, '四轴偏航时随机体旋转已累积的 I 项，避免旋转后横滚方向积累的 I 项反过来影响俯仰。'],
 
   /* ---- Anti gravity -------------------------------------------------- */
-  [/^anti_gravity_gain$/, 'How much extra I is thrown in during a fast throttle change. This is what stops the nose dropping when you punch out.'],
-  [/^anti_gravity_(cutoff_hz|p_gain)$/, 'Shapes how anti gravity reacts to the throttle: how quickly it decides a throttle move counts, and how much P rides along with the I boost.'],
+  [/^anti_gravity_gain$/, '快速改变油门时额外增加的 I 项。它能避免大油门爬升时机头下沉。'],
+  [/^anti_gravity_(cutoff_hz|p_gain)$/, '调整抗重力对油门的响应：判断油门变化的速度，以及 I 项增强时附带的 P 项大小。'],
 
   /* ---- TPA and throttle ---------------------------------------------- */
-  [/^tpa_rate$/, 'How much PID gain is taken away at high throttle. Fast air needs less correction, and leaving full gain there is what makes a quad buzz on a straight.'],
-  [/^tpa_breakpoint$/, 'The throttle position where that reduction starts. Below this, gains are untouched.'],
-  [/^tpa_mode$/, 'Whether TPA reduces D only, or P and D together.'],
-  [/^throttle_boost/, 'A short kick of extra throttle on a fast throttle movement, so punch outs feel sharper than the motors alone would give.'],
-  [/^thr_mid$/, 'Where the middle of the throttle stick sits in output terms. Raising it gives finer control near hover at the cost of the top end.'],
-  [/^thr_expo$/, 'Softens the throttle around the middle of its travel, so hover is easier to hold and the ends stay reachable.'],
-  [/^throttle_limit_(type|percent)$/, 'Caps the throttle output, either by scaling the whole range or by clipping the top. Used to make a fast quad flyable on a tight track.'],
+  [/^tpa_rate$/, '高油门时降低 PID 增益的幅度。高速飞行需要更少修正；保持完整增益可能会让四轴直线飞行时震动。'],
+  [/^tpa_breakpoint$/, '开始降低增益的油门位置。低于此位置时，增益不变。'],
+  [/^tpa_mode$/, '选择 TPA 仅降低 D 项，还是同时降低 P 项和 D 项。'],
+  [/^throttle_boost/, '快速改变油门时短暂增加油门，让快速爬升的响应比电机本身更灵敏。'],
+  [/^thr_mid$/, '油门摇杆中点对应的输出位置。提高此值可提升悬停附近的控制精度，但会压缩高油门行程。'],
+  [/^thr_expo$/, '柔化油门行程中段的响应，让悬停更容易保持，同时保留两端的可用行程。'],
+  [/^throttle_limit_(type|percent)$/, '限制油门输出，可缩放整个范围或截断顶部输出。适合在狭窄赛道上降低高速四轴的速度。'],
 
   /* ---- Feedforward ---------------------------------------------------- */
-  [/^feedforward_transition$/, 'Fades feedforward in away from centre stick, so tiny corrections around the middle are not amplified.'],
-  [/^feedforward_smooth_factor$/, 'Smooths the feedforward signal. More is calmer and slightly later; less is sharper and noisier.'],
-  [/^feedforward_jitter_factor$/, 'Ignores the small stick jitter a radio always has, so feedforward does not chase a thumb tremor.'],
-  [/^feedforward_boost$/, 'Extra push on the sharpest part of a stick movement, on top of feedforward itself.'],
-  [/^feedforward_max_rate_limit$/, 'Stops feedforward asking for more rotation than the rates allow.'],
-  [/^feedforward_averaging$/, 'Averages feedforward over a number of RC frames. Smoother on a slow link, later on a fast one.'],
+  [/^feedforward_transition$/, '摇杆离开中心位置后逐渐启用前馈，避免放大中点附近的细微修正。'],
+  [/^feedforward_smooth_factor$/, '平滑前馈信号。数值越大，响应越平稳但略有延迟；数值越小，响应越灵敏但噪声越明显。'],
+  [/^feedforward_jitter_factor$/, '忽略遥控器常见的轻微摇杆抖动，避免前馈追随手指颤动。'],
+  [/^feedforward_boost$/, '在摇杆动作最剧烈的阶段额外增加推力，叠加在前馈之上。'],
+  [/^feedforward_max_rate_limit$/, '避免前馈请求超过速率限制的旋转速度。'],
+  [/^feedforward_averaging$/, '对多个遥控帧的前馈信号取平均。慢速链路下更平滑，快速链路下延迟更明显。'],
 
   /* ---- Filters -------------------------------------------------------- */
-  [/^gyro_lpf1_dyn_(min|max)_hz$/, 'The ends of the dynamic gyro filter’s travel. It sits low when the quad is calm and opens up when you move, so cruise is quiet without costing you sharpness in a corner.'],
-  [/^gyro_lpf1_(type|static_hz)$/, 'The first gyro lowpass. Lower is cleaner and hotter motors; higher is sharper and noisier. This is the cutoff to move first if the motors are cooking.'],
-  [/^gyro_lpf2_/, 'The second gyro lowpass, sitting after the first. A backstop for noise the first one let through.'],
-  [/^dterm_lpf1_dyn_(min|max)_hz$/, 'The ends of the dynamic D-term filter’s travel. D is the noisiest term, so this is usually the filter that decides how hot the motors run.'],
-  [/^dterm_lpf1_/, 'The first D-term lowpass. Lowering it is the usual cure for hot motors, at the cost of some damping authority.'],
-  [/^dterm_lpf2_/, 'The second D-term lowpass, after the first.'],
-  [/^dterm_notch_/, 'A narrow notch in the D-term, for one specific frequency a frame rings at.'],
-  [/^dyn_notch_count$/, 'How many moving notches hunt for motor noise at once. More catches more and costs more delay.'],
-  [/^dyn_notch_q$/, 'How narrow each moving notch is. Higher is narrower: it removes less signal along with the noise, but has to be more accurate to catch it.'],
-  [/^dyn_notch_(min|max)_hz$/, 'The band the moving notches are allowed to hunt in. Set the bottom above your frame’s natural ring or the notches will sit on it and never come off.'],
-  [/^rpm_filter_harmonics$/, 'How many multiples of the motor’s own turning frequency to notch out. Most of what a quad hears is the first two.'],
-  [/^rpm_filter_q$/, 'How narrow the RPM notches are. These track the motors exactly, so they can be narrow.'],
-  [/^rpm_filter_(min_hz|fade_range_hz|lpf_hz|weights)/, 'Shapes the RPM notch filter: where it starts working, how it fades in, and how strongly each harmonic is cut.'],
-  [/^yaw_lowpass_hz$/, 'A lowpass on yaw only. Yaw is slower and heavier than roll and pitch, so it tolerates more filtering than they do.'],
-  [/^simplified_/, 'One of Betaflight’s own simplified tuning sliders. Moving it rewrites a whole group of PIDs or filters the way the firmware would. The Quad room drives these same sliders with fewer steps.'],
+  [/^gyro_lpf1_dyn_(min|max)_hz$/, '动态陀螺仪滤波器的频率范围。四轴平稳时频率较低，动作时逐渐提高，兼顾巡航时的安静和转弯时的灵敏度。'],
+  [/^gyro_lpf1_(type|static_hz)$/, '第一阶陀螺仪低通滤波器。数值较低时信号更干净，但电机温度更高；数值较高时响应更灵敏，但噪声更多。电机过热时通常先调整此截止频率。'],
+  [/^gyro_lpf2_/, '位于第一阶之后的第二阶陀螺仪低通滤波器，用于进一步抑制第一阶未滤除的噪声。'],
+  [/^dterm_lpf1_dyn_(min|max)_hz$/, '动态 D 项滤波器的频率范围。D 项噪声通常最大，因此此滤波器往往决定电机温度。'],
+  [/^dterm_lpf1_/, '第一阶 D 项低通滤波器。降低截止频率通常可缓解电机过热，但会削弱部分阻尼能力。'],
+  [/^dterm_lpf2_/, '位于第一阶之后的第二阶 D 项低通滤波器。'],
+  [/^dterm_notch_/, '在 D 项中针对机架共振频率设置的窄带陷波。'],
+  [/^dyn_notch_count$/, '同时追踪电机噪声的动态陷波数量。数量越多，能捕捉的噪声越多，但延迟也会增加。'],
+  [/^dyn_notch_q$/, '每个动态陷波的带宽。数值越高，陷波越窄，滤除的信号和噪声越少，但需要更精确地捕捉噪声频率。'],
+  [/^dyn_notch_(min|max)_hz$/, '动态陷波可追踪的频率范围。下限应高于机架的固有共振频率，否则陷波可能会持续停留在该频率。'],
+  [/^rpm_filter_harmonics$/, '需要滤除的电机转动频率倍数。四轴噪声中大部分来自前两个倍频。'],
+  [/^rpm_filter_q$/, 'RPM 陷波的带宽。该滤波器会精确跟踪电机，因此可以使用较窄的带宽。'],
+  [/^rpm_filter_(min_hz|fade_range_hz|lpf_hz|weights)/, '调整 RPM 陷波滤波器，包括开始生效的频率、渐入范围和各倍频的滤除强度。'],
+  [/^yaw_lowpass_hz$/, '仅作用于偏航轴的低通滤波器。偏航运动比横滚和俯仰更慢、负载更重，因此可承受更强的滤波。'],
+  [/^simplified_/, 'Betaflight 简化调校滑块之一。移动滑块会像固件一样整体改写一组 PID 或滤波器参数。“四轴”页面也使用这些滑块，但步进更少。'],
 
   /* ---- Rates ---------------------------------------------------------- */
-  [/^rates_type$/, 'Which rates curve shape the sticks follow. All five of Betaflight’s are compiled and the quad flies whichever you choose.'],
-  [/_srate$|_rc_rate$|_expo$/, 'Part of the rates curve: how far the sticks go and how sharply they get there. The Rates screen draws this curve live and is the better place to set it.'],
+  [/^rates_type$/, '选择摇杆使用的速率曲线类型。Betaflight 的五种曲线均已编译，可选择任意一种用于飞行。'],
+  [/_srate$|_rc_rate$|_expo$/, '速率曲线参数，用于决定摇杆的最大转速和达到该转速的响应速度。“速率”页面会实时绘制曲线，建议在那里调整。'],
 
   /* ---- Angle and horizon ---------------------------------------------- */
-  [/^angle_limit$/, 'How far Angle mode will let the quad lean. This is the ceiling a hands-off recovery levels back to.'],
-  [/^level_/, 'How hard Angle and Horizon pull the quad back toward level, and how quickly.'],
-  [/^horizon_/, 'Shapes Horizon mode, which is Angle near centre stick and Acro at the ends.'],
+  [/^angle_limit$/, '限制角度模式下四轴的最大倾斜角度，也是松开摇杆后自动恢复水平时的倾斜上限。'],
+  [/^level_/, '控制角度模式和地平线模式将四轴拉回水平的力度和速度。'],
+  [/^horizon_/, '调整地平线模式的响应。该模式在摇杆中点附近类似角度模式，在摇杆行程两端类似特技模式。'],
 
   /* ---- Airmode and motors --------------------------------------------- */
-  [/^motor_output_limit$/, 'A cap on how much of the motor range the mixer may use.'],
-  [/^motor_poles$/, 'The magnet count on the motors, which is what turns eRPM from the ESC into real RPM.'],
-  [/^(mixer_type|thrust_linear)/, 'How the mixer turns the controller’s roll, pitch, yaw and throttle demands into four motor outputs.'],
-  [/^idle_min_rpm$|^dshot_idle_value$/, 'How hard the motors idle. Enough idle keeps the props loaded so a descent does not become a tumble; too much makes the quad creep.'],
+  [/^motor_output_limit$/, '限制混控器可使用的电机输出范围。'],
+  [/^motor_poles$/, '电机磁极数量，用于将 ESC 报告的 eRPM 换算为实际 RPM。'],
+  [/^(mixer_type|thrust_linear)/, '混控器将控制器的横滚、俯仰、偏航和油门指令转换为四个电机输出的方式。'],
+  [/^idle_min_rpm$|^dshot_idle_value$/, '电机怠速强度。适当的怠速可让螺旋桨保持负载，避免下降时翻滚；过高则会让四轴自行爬行。'],
 ];
 
 /*
@@ -129,11 +129,11 @@ const NOTES = [
 export function genericNote(field) {
   const bits = [];
   if (field.lookup) {
-    bits.push('A named choice from Betaflight’s own list.');
+    bits.push('从 Betaflight 自带列表中选择一项。');
   } else if (Number.isFinite(field.min) && Number.isFinite(field.max)) {
-    bits.push(`A number from ${field.min} to ${field.max}${field.units ? ` ${field.units}` : ''}.`);
+    bits.push(`数值范围为 ${field.min} 至 ${field.max}${field.units ? ` ${field.units}` : ''}。`);
   }
-  bits.push('No plain-English note has been written for this key yet, so nothing here will guess at one.');
+  bits.push('此参数暂时没有说明，因此不会臆测其用途。');
   return bits.join(' ');
 }
 

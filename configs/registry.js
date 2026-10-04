@@ -62,26 +62,26 @@ export const TUNES = [
   {
     id: 'betaflight-default',
     airframe: '5inch',
-    name: 'Betaflight default',
-    note: 'Factory 4.5.1 with four settings changed: a quarter more feedforward, and less bounce back after a stop.',
+    name: 'Betaflight 默认',
+    note: '基于 4.5.1 出厂设置，修改了四项参数：前馈增加四分之一，停止后的回弹减少。',
   },
   {
     id: 'whoop-champion',
     airframe: null,
-    name: 'Whoop stock',
-    note: 'The factory tune for the 36000 kV racer. Low gains, a narrow D boost band, and the gains coming off a fifth of the way up the stick because 1S sags.',
+    name: 'Whoop 原厂',
+    note: '适用于 36000 kV 竞速机的出厂调校。增益较低，D 项动态增强范围较窄，并在摇杆行程约五分之一处开始降低增益，以应对 1S 电池电压下陷。',
   },
   {
     id: 'whoop-racing',
     airframe: null,
-    name: 'Whoop racing',
-    note: 'The 30000 kV variant’s factory tune. More damping and less integral than the stock tune, which is the shape of a tune for a motor with less authority.',
+    name: 'Whoop 竞速',
+    note: '适用于 30000 kV 版本的出厂调校。与原厂调校相比，阻尼更强、积分项更低，适合动力较弱的电机。',
   },
   {
     id: 'whoop-freestyle',
     airframe: null,
-    name: 'Whoop freestyle',
-    note: 'The 25000 kV variant on the bigger GF1219S prop. The highest gains of the three, and the only one the maker ships on Betaflight rates rather than Actual.',
+    name: 'Whoop 自由飞行',
+    note: '适用于搭配较大 GF1219S 螺旋桨的 25000 kV 版本。三种调校中增益最高，也是唯一采用 Betaflight 速率而非实际速率出厂的版本。',
   },
 ];
 
@@ -155,8 +155,10 @@ export const CUSTOM_TUNE = {
    * on a five inch is a choice a pilot made on purpose, unlike picking a
    * shipped tune off a list that should not have shown it. */
   airframe: null,
-  name: 'Your edits',
-  note: 'The dump you saved on the Firmware bench, every field of it.',
+
+  name: '你的修改',
+  note: '在飞控配置器页面保存的配置文件，包含其中的所有参数。',
+
 };
 
 export function tuneById(id) {

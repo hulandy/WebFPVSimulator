@@ -141,7 +141,7 @@ export function mountTouchSticks({ onPause } = {}) {
   const right = makePlate(stickCaption(layout.mode, 'right', ' · '));
   right.zone.classList.add('touch-zone-right');
 
-  const pause = el('button', 'bug-chip touch-pause', 'Pause');
+  const pause = el('button', 'bug-chip touch-pause', '暂停');
   pause.type = 'button';
   pause.addEventListener('click', () => {
     if (onPause) {
@@ -149,7 +149,7 @@ export function mountTouchSticks({ onPause } = {}) {
     }
   });
 
-  const rotate = el('div', 'touch-rotate', 'Turn your phone sideways to fly');
+  const rotate = el('div', 'touch-rotate', '请将手机横屏以开始飞行');
 
   root.append(left.zone, right.zone, pause, rotate);
 

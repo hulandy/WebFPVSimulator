@@ -85,12 +85,12 @@ export const MEASURED_MS = {
 };
 
 const STAGE_NAMES = {
-  three: 'Renderer',
-  board: 'Board',
-  sim: 'Flight controller',
-  module: 'Map',
-  world: 'World',
-  frame: 'First frame',
+  three: '渲染器',
+  board: '排行榜',
+  sim: '飞控',
+  module: '地图',
+  world: '场景',
+  frame: '首帧',
 };
 
 /*
@@ -115,12 +115,12 @@ const STAGE_NAMES = {
  * label on a box.
  */
 const STAGE_DOING = {
-  three: 'Loading the renderer',
-  board: 'Asking the board',
-  sim: 'Starting the flight controller',
-  module: 'Loading the map',
-  world: 'Building the world',
-  frame: 'Drawing the first frame',
+  three: '正在加载渲染器',
+  board: '正在连接排行榜',
+  sim: '正在启动飞控',
+  module: '正在加载地图',
+  world: '正在构建场景',
+  frame: '正在绘制首帧',
 };
 
 /*
@@ -201,43 +201,43 @@ export const JOKE_MS = 4800;
 export const STALL_MS = 6000;
 
 export const LOADING_JOKES = [
-  'I complimented my quad on its propellers. It said thanks for the props.',
-  'My flight controller only eats Greek food. It loves a good gyro.',
-  'My LiPo went to prison. It\'s doing time in six cells.',
-  'My quad is a helicopter parent. It never stops hovering.',
-  'My tiny whoop just won the race. Big whoop.',
-  'Someone snapped my carbon. I\'ve been framed.',
-  'My quad broke an arm, and now it won\'t arm. Poetic.',
-  'Race directors are so exclusive. Pure gatekeeping.',
-  'My racing record is chequered. That\'s the whole point.',
-  'My VTX and I just click. Same wavelength.',
-  'My battery reads the news every morning. It likes to stay current.',
-  'The packs went on strike. It was revolting.',
-  'My old LiPo refuses to change. Too much internal resistance.',
-  'My battery left the army. Honourable discharge.',
-  'Why did the pilot bring soap to the track? Prop wash.',
-  'What does a baby battery call its mum? mAh.',
-  'My quad went low carb. Kept the fibre.',
-  'My quad was on a roll. Then a pitch. Then a yaw.',
-  'My quad asked for a raise, so I upped its rates.',
-  'The start gates are in mint condition. Never been hit. Yet.',
+  '我夸四轴的桨叶很棒，它说：多谢夸奖。',
+  '我的飞控只吃希腊菜，最爱陀螺烤肉（gyro）。',
+  '我的锂电池进了监狱，要在六个电芯里服刑。',
+  '我的四轴像个直升机家长，悬停起来就不肯停。',
+  '我的小穿越机刚赢了比赛，真是了不起。',
+  '有人撞断了我的碳纤维机架，我被“框”住了。',
+  '四轴摔断了一只机臂，现在怎么也无法解锁。真惨。',
+  '赛事裁判真排外，门槛高得很。',
+  '我的竞速纪录斑斑驳驳，这正是重点。',
+  '我的图传和我一拍即合，毕竟波长相同。',
+  '我的电池每天早上读新闻，因为它喜欢保持电流。',
+  '电池组罢工了，场面真是“震撼”。',
+  '我的旧锂电池拒绝改变，内阻太大了。',
+  '我的电池退伍了，光荣放电。',
+  '飞手为什么带肥皂去赛道？为了清洗桨洗（prop wash）。',
+  '小电池怎么称呼妈妈？“毫安时”（mAh）。',
+  '我的四轴开始低碳饮食，只留下了纤维。',
+  '我的四轴先横滚，再俯仰，最后偏航。',
+  '四轴要求加薪，所以我提高了它的速率。',
+  '起点门状态崭新，薄荷绿得发亮。还没撞过呢。',
   /* 2026-09-24, the owner asked for more after a long first load. At 4.8 s a
    * joke, twenty ran out in 96 s; thirty five last nearly three minutes. */
-  'My antenna got married. The reception was fantastic.',
-  'Never trust a gyro. It\'s always spinning a story.',
-  'My flight controller never loses its temper. Endless PIDience.',
-  'The ESC and the motor had an argument. Things got heated.',
-  'My motors won an award. Outstanding in their field.',
-  'I asked a pilot why they fly so low. They said it keeps them grounded.',
-  'My quad started a band. Mostly drone music.',
-  'My goggles and I broke up. I just couldn\'t see us together.',
-  'My quad is stuck in a tree again. It says it\'s branching out.',
-  'I clipped a hedge on the last lap. Officially, a bush landing.',
-  'My quad is terrible at poker. One crash and it folds.',
-  'I asked my quad to do my taxes. It filed a return to home.',
-  'My pack was feeling flat, so I gave it a pep talk. Now it\'s fully charged.',
-  'The prop shop had a huge sale. Business was really picking up.',
-  'My quad failed its exams. Too many crashes in the finals.',
+  '我的天线结婚了，婚宴信号特别好。',
+  '别相信陀螺仪，它总在编故事。',
+  '我的飞控从不发火，PID 耐心无穷。',
+  '电调和电机吵了一架，气氛顿时热了起来。',
+  '我的电机获奖了，在赛场上表现出众。',
+  '我问飞手为什么飞得这么低，他说这样才脚踏实地。',
+  '我的四轴组了个乐队，主打无人机音乐。',
+  '我和护目镜分手了，因为我看不到我们的未来。',
+  '我的四轴又卡在树上了，它说自己正在开枝散叶。',
+  '最后一圈我擦过树篱，官方称之为“灌木迫降”。',
+  '我的四轴打扑克很差，一摔就“折叠”了。',
+  '我让四轴帮我报税，它提交了返航申请。',
+  '电池组有点没精神，我鼓励了它一下，现在满电了。',
+  '螺旋桨店大甩卖，生意越转越旺。',
+  '我的四轴考试没通过，期末摔机太多了。',
 ];
 
 export function quotedJoke(index, offset) {
@@ -450,38 +450,38 @@ export function recoveryAdvice(probe, message) {
   const looksNetwork = /fetch|network|load|import|CDN|cdn|jsdelivr|timeout|Failed to/i.test(text);
 
   if (!probe.wasm) {
-    why = 'This browser cannot run WebAssembly, which is what the flight controller is compiled to.';
-    steps.push('Open the simulator in a <b>current Chrome, Edge or Firefox</b>. Every browser released since about 2017 supports WebAssembly, so a browser that does not is either very old or has it switched off by policy.');
+    why = '此浏览器无法运行 WebAssembly，而飞控是编译为 WebAssembly 的。';
+    steps.push('请使用<b>最新版 Chrome、Edge 或 Firefox</b>打开模拟器。约从 2017 年起发布的浏览器都支持 WebAssembly；如果当前浏览器不支持，可能版本过旧，或被管理策略禁用了。');
   } else if (!probe.webgl2) {
     why = probe.webgl1
-      ? 'This browser has WebGL 1 but not WebGL 2, and the renderer needs WebGL 2.'
-      : 'This browser is not giving the page a WebGL context at all, so nothing can be drawn.';
-    steps.push('Turn <b>hardware acceleration</b> back on. In Chrome and Edge it is Settings, System, "Use graphics acceleration when available". In Firefox it is Settings, General, Performance.');
-    steps.push('Update your <b>graphics driver</b>, then restart the browser. A blocked driver is the most common reason a working machine has no WebGL 2.');
-    steps.push('Try a different browser: <b>Chrome, Edge or Firefox</b>, all current.');
+      ? '此浏览器支持 WebGL 1，但不支持渲染器所需的 WebGL 2。'
+      : '此浏览器没有向网页提供 WebGL 图形环境，因此无法绘制画面。';
+    steps.push('请重新开启<b>硬件加速</b>。Chrome 和 Edge 的选项位于“设置 > 系统 > 可用时使用图形加速”；Firefox 位于“设置 > 常规 > 性能”。');
+    steps.push('更新<b>显卡驱动</b>后重启浏览器。驱动受阻是设备本身正常却无法使用 WebGL 2 的常见原因。');
+    steps.push('也可以试试最新版的 <b>Chrome、Edge 或 Firefox</b>。');
   } else if (looksNetwork || !probe.online) {
     why = probe.online
-      ? 'Something the page needed did not arrive. The renderer comes from a CDN, so a blocker or a work network can stop it.'
-      : 'This device looks offline.';
-    steps.push('Check the connection, then <b>reload</b>.');
-    steps.push('Turn off <b>ad blockers and script blockers</b> for this site, or allow <b>cdn.jsdelivr.net</b>. That is where the renderer is served from.');
-    steps.push('If you are on a work or school network, a proxy may be blocking the CDN. Try a <b>home network or a phone hotspot</b>.');
+      ? '网页所需的资源未能加载。渲染器托管在 CDN 上，拦截器或单位网络可能会阻止访问。'
+      : '此设备当前似乎处于离线状态。';
+    steps.push('检查网络连接，然后<b>重新加载</b>页面。');
+    steps.push('为此网站关闭<b>广告拦截器和脚本拦截器</b>，或允许访问 <b>cdn.jsdelivr.net</b>。渲染器由此提供。');
+    steps.push('如果你正在使用单位或学校网络，代理服务器可能拦截了 CDN。请试试<b>家庭网络或手机热点</b>。');
   } else {
-    why = 'The page got far enough to start, then stopped. That usually means a resource went missing or an extension interfered.';
-    steps.push('<b>Reload without the cache</b>: Ctrl and Shift and R, or Cmd and Shift and R on a Mac.');
-    steps.push('Try a <b>private window</b>. If it works there, an extension is the cause.');
-    steps.push('Try <b>Chrome, Edge or Firefox</b>, current version.');
+    why = '网页已经开始启动，但随后中断了。通常是资源缺失或浏览器扩展造成的。';
+    steps.push('<b>绕过缓存重新加载</b>：按 Ctrl + Shift + R；Mac 上按 Cmd + Shift + R。');
+    steps.push('试试<b>无痕窗口</b>。如果在那里可以正常运行，问题可能由某个扩展引起。');
+    steps.push('试试最新版的 <b>Chrome、Edge 或 Firefox</b>。');
   }
 
   /* Conditions that do not stop the boot on their own but make it fragile,
    * so they are worth saying once the real cause is named. */
   if (probe.softwareRenderer) {
-    steps.push(`Your browser is drawing with the <b>CPU</b> rather than the GPU${probe.renderer ? ` (${probe.renderer})` : ''}. It may load and then run very slowly. Turning hardware acceleration on fixes this too.`);
+    steps.push(`你的浏览器正在使用 <b>CPU</b> 而不是 GPU 绘图${probe.renderer ? `（${probe.renderer}）` : ''}。页面可能可以加载，但运行会很慢。开启硬件加速也能解决这个问题。`);
   }
   if (!probe.storage) {
-    steps.push('This browser is <b>blocking site data</b>, so settings and your times cannot be saved. A private window does this. Allow site data for this page if you want anything kept.');
+    steps.push('此浏览器正在<b>阻止网站数据</b>，因此无法保存设置和成绩。无痕窗口通常会这样做。若要保留数据，请允许此网页存储网站数据。');
   }
-  steps.push('If none of that works, the <b>Report a bug</b> link on the title screen sends the details, or open the browser console with F12 and copy what is in red.');
+  steps.push('如果以上方法都无效，请点击标题页上的<b>报告问题</b>链接发送诊断信息，或按 F12 打开浏览器控制台并复制红色错误信息。');
   return { why, steps };
 }
 
@@ -543,7 +543,7 @@ export class Loading {
     this.bar.style.background = '';
     this.jokeEl.classList.remove('is-error');
     this.visible = true;
-    this.stageEl.textContent = 'loading';
+    this.stageEl.textContent = '正在加载';
     /* Back to nothing, with no transition, or the new load's first aim is a
      * five second slide back from wherever the last one finished. */
     this.aimed = 0;
@@ -819,15 +819,15 @@ export class Loading {
     }
     const stage = this.index >= 0 ? this.stages[this.index] : null;
     const running = this.stageStartedAt ? performance.now() - this.stageStartedAt : 0;
-    let text = 'loading';
+    let text = '正在加载';
     if (stage && running > STALL_MS) {
-      const name = (STAGE_NAMES[stage.id] || stage.id).toLowerCase();
-      text = `still loading the ${name}`;
+      const name = STAGE_NAMES[stage.id] || stage.id;
+      text = `仍在加载${name}`;
       if (this.detail) {
         text += `, ${this.detail}`;
       }
     } else if (stage) {
-      text = STAGE_DOING[stage.id] || `Loading the ${(STAGE_NAMES[stage.id] || stage.id).toLowerCase()}`;
+      text = STAGE_DOING[stage.id] || `正在加载${STAGE_NAMES[stage.id] || stage.id}`;
     }
     if (this.stageEl.textContent !== text) {
       this.stageEl.textContent = text;
@@ -856,8 +856,8 @@ export class Loading {
    */
   fail(message) {
     this.failed = true;
-    this.stageEl.textContent = 'Could not start';
-    this.jokeEl.textContent = message;
+    this.stageEl.textContent = '启动失败';
+    this.jokeEl.textContent = `错误信息：${message}`;
     this.jokeEl.classList.add('is-error');
     /* Full, red, and STILL: a sweep under a dead end is a page pretending to
      * work on something. transition none as well as the aim, because the
@@ -897,13 +897,13 @@ export class Loading {
       probe = {};
       advice = {
         why: '',
-        steps: ['Reload the page. If it keeps failing, try a current <b>Chrome, Edge or Firefox</b>.'],
+        steps: ['重新加载页面。如果仍然失败，请试试最新版的 <b>Chrome、Edge 或 Firefox</b>。'],
       };
     }
 
     help.textContent = '';
     const h = document.createElement('h3');
-    h.textContent = 'What to try';
+    h.textContent = '可以尝试';
     help.append(h);
 
     if (advice.why) {
@@ -939,7 +939,7 @@ export class Loading {
     actions.className = 'loading-actions';
     const retry = document.createElement('button');
     retry.type = 'button';
-    retry.textContent = 'Try again';
+    retry.textContent = '重试';
     retry.addEventListener('click', () => {
       /* A plain reload. The cache-bypassing one needs a keystroke the page
        * cannot send, which is why it is step one in the list above. */
@@ -950,24 +950,24 @@ export class Loading {
     const copy = document.createElement('button');
     copy.type = 'button';
     copy.className = 'quiet';
-    copy.textContent = 'Copy the details';
+    copy.textContent = '复制诊断信息';
     copy.addEventListener('click', async () => {
       const report = [
-        `WebFPV failed to start: ${message}`,
-        `browser: ${probe.engine || 'unknown'} ${probe.version || ''}`.trim(),
-        `webgl2: ${probe.webgl2} webgl1: ${probe.webgl1} wasm: ${probe.wasm}`,
-        `storage: ${probe.storage} online: ${probe.online}`,
-        probe.renderer ? `renderer: ${probe.renderer}` : '',
-        `url: ${window.location.href}`,
-        `agent: ${navigator.userAgent}`,
+        `WebFPV 启动失败：${message}`,
+        `浏览器：${probe.engine || '未知'} ${probe.version || ''}`.trim(),
+        `WebGL2：${probe.webgl2}，WebGL1：${probe.webgl1}，WebAssembly：${probe.wasm}`,
+        `网站存储：${probe.storage}，联网状态：${probe.online}`,
+        probe.renderer ? `渲染器：${probe.renderer}` : '',
+        `网址：${window.location.href}`,
+        `浏览器标识：${navigator.userAgent}`,
       ].filter(Boolean).join('\n');
       try {
         await navigator.clipboard.writeText(report);
-        copy.textContent = 'Copied';
+        copy.textContent = '已复制';
       } catch (e) {
         /* Clipboard refused, which is common without a secure context. Show
          * the text instead so it can still be selected by hand. */
-        copy.textContent = 'Select and copy';
+        copy.textContent = '请手动选择并复制';
         const pre = document.createElement('div');
         pre.className = 'loading-detail';
         pre.textContent = report;
@@ -981,9 +981,9 @@ export class Loading {
     detail.className = 'loading-detail';
     detail.textContent = [
       probe.engine ? `${probe.engine} ${probe.version}` : '',
-      `WebGL2 ${probe.webgl2 ? 'yes' : 'no'}`,
-      `WebAssembly ${probe.wasm ? 'yes' : 'no'}`,
-      `site data ${probe.storage ? 'yes' : 'blocked'}`,
+      `WebGL2 ${probe.webgl2 ? '可用' : '不可用'}`,
+      `WebAssembly ${probe.wasm ? '可用' : '不可用'}`,
+      `网站存储 ${probe.storage ? '可用' : '已拦截'}`,
     ].filter(Boolean).join('  .  ');
     help.append(detail);
 

@@ -190,10 +190,10 @@ export const SKIM_BAR_M = 1;
  * for a screen reader; the drawing is aria-hidden.
  */
 const TIERS = [
-  { at: 2, en: 'Nice', jp: 'イイネ' },
-  { at: 3, en: 'Sweet', jp: 'スゴイ' },
-  { at: 4, en: 'Wild', jp: 'ヤバイ' },
-  { at: 5, en: 'Perfect', jp: 'サイコー' },
+  { at: 2, en: '不错', jp: 'イイネ' },
+  { at: 3, en: '真棒', jp: 'スゴイ' },
+  { at: 4, en: '厉害', jp: 'ヤバイ' },
+  { at: 5, en: '完美', jp: 'サイコー' },
 ];
 
 /* The tier words' kana, painted once each at a generous cell on first use
@@ -267,7 +267,7 @@ export function stackCall(e) {
       return {
         word: e.name,
         pts,
-        tag: ex !== 'CLEAN' ? ex.toLowerCase() : null,
+        tag: ex === 'BUMP' ? '碰撞' : (ex === 'SLOPPY' ? '不够干净' : null),
         fill: ex === 'BUMP' ? INKS.sakura : (ex === 'SLOPPY' ? INKS.amber : INKS.cream),
         burst: ex === 'BUMP' ? INKS.bail : (ex === 'SLOPPY' ? INKS.amber : INKS.cream),
         big: false,
@@ -281,7 +281,7 @@ export function stackCall(e) {
        * and a ズバッ for nothing would celebrate the wrong thing. */
       const paid = e.points > 0;
       return {
-        word: e.name || 'Gap',
+        word: e.name || '间隙',
         pts,
         tag: tagOf(again),
         fill: INKS.amber,
@@ -293,7 +293,7 @@ export function stackCall(e) {
     }
     case 'skim':
       return {
-        word: e.name || 'Skim',
+        word: e.name || '贴地滑行',
         pts,
         tag: tagOf(e.holdMs > 0 ? secs(e.holdMs) : '', again),
         fill: INKS.sky,
@@ -306,7 +306,9 @@ export function stackCall(e) {
     case 'thread':
     case 'lowpass':
       return {
-        word: e.name || (e.kind === 'lowpass' ? 'Low pass' : e.kind),
+        word: e.name || (e.kind === 'lowpass'
+          ? '低空飞行'
+          : (e.kind === 'under' ? '下穿' : '穿越')),
         pts,
         tag: e.kind === 'lowpass'
           ? tagOf(e.holdMs > 0 ? secs(e.holdMs) : '', again)
@@ -325,7 +327,7 @@ export function stackCall(e) {
     case 'egg':
     case 'partner':
       return {
-        word: `${e.name || 'STF'} mark`,
+        word: `${e.name || 'STF'} 标记`,
         pts,
         tag: null,
         fill: INKS.cream,
@@ -435,8 +437,8 @@ export class ScoreHud {
      * the run has named a trick: with trick scoring off it would be a
      * warning about nothing on the screen.
      */
-    const label = el('div', 'score-label', 'Score');
-    this.beta = el('span', 'score-beta', 'trick names in development');
+    const label = el('div', 'score-label', '得分');
+    this.beta = el('span', 'score-beta', '技巧名称识别仍在开发中');
     this.beta.hidden = true;
     label.append(this.beta);
     this.totalBox.append(label);
@@ -467,7 +469,7 @@ export class ScoreHud {
     this.skimBox = el('div', 'skim-meter is-off');
     const skimHead = el('div', 'skim-meter-head score-cut');
     this.skimGap = el('span', 'skim-meter-gap', '');
-    skimHead.append(el('span', 'skim-meter-kind', 'Skim'), this.skimGap);
+    skimHead.append(el('span', 'skim-meter-kind', '贴地滑行'), this.skimGap);
     const skimLine = el('div', 'skim-meter-line score-cut');
     this.skimTime = el('span', 'skim-meter-time', '0.0');
     skimLine.append(this.skimTime, el('span', 'skim-meter-unit', 's'));
@@ -692,7 +694,7 @@ export class ScoreHud {
         this.ring('');
       } else if (e.kind === 'bail') {
         this.showVerdict({
-          word: 'Bailed', pts: e.points > 0 ? `-${formatScore(e.points)}` : null, fill: INKS.bail, big: false, sfx: null,
+          word: '动作失误', pts: e.points > 0 ? `-${formatScore(e.points)}` : null, fill: INKS.bail, big: false, sfx: null,
         }, 'is-bail');
         this.ring('is-bail');
         this.names.textContent = '';

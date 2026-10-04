@@ -162,7 +162,7 @@ function sendFile(req, res, path, rel) {
 http
   .createServer(async (req, res) => {
     try {
-      const url = new URL(req.url, 'http://localhost');
+      const url = new URL(req.url, 'http://webfpv.gejing.org/');
       let rel = normalize(decodeURIComponent(url.pathname)).replace(/^([/\\])+/, '');
       if (rel === '') {
         rel = 'index.html';
@@ -179,7 +179,7 @@ http
       res.end('not found');
     }
   })
-  .listen(port, '127.0.0.1', () => {
-    console.log(`WebFPVSimulator: http://127.0.0.1:${port}/`);
+  .listen(port, '0.0.0.0', () => {
+    console.log(`WebFPVSimulator: http://0.0.0.0:${port}/`);
     console.log('Build the module first if you have not: npm run build:wasm');
   });

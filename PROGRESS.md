@@ -60094,6 +60094,7 @@ and what would count as wrong are under "For the owner" above. The live site
 was not loaded in a browser for this check, so as not to add a visit to its
 statistics.
 
+
 ## 2026-09-30 | board | Two tickets answered, and the 27 open feel reports closed wontfix
 
 Board only. Nothing in this repository changed but this entry: no code, no
@@ -65896,3 +65897,42 @@ the built geometry have not been looked at in a browser; the owner has not appro
 pull request.
 
 The owner approved the push of the per-opening stack sizing change to main on 2026-10-04 ("push to main"), without choosing a verification scale: the builder self test (2559 passed) and the lints named above were the only checks run, and the inspector, the 3D drawing and the built geometry are still unlooked at in a browser. It went as a fast forward of main.
+
+### Chinese interface localization, input checks (2026-10-02)
+
+Continued the requested Chinese localization across the simulator and track
+builder, including generated warnings, map and road diagnostics, input setup,
+and dynamically rendered menu rows. Kept keys, controls, and user-authored map
+names intact. Moved `trickDifficultyLabel` to module scope after the shell
+check exposed its invalid local scope. Updated the input-check selectors and
+tutorial assertion to use the localized row/action and label.
+
+`npm run lint:input`: 205 passed, 0 failed.
+`npm run lint:shell`: failed with 25 problems. Some checks still look up
+English row labels after localization; several measured screen overflows also
+grew from their prior baselines. No thresholds were changed. This check needs
+localized selectors and a separate review of the measured layout changes.
+`npm run build:wasm`: could not run because `emcc` is unavailable (`EMSDK` is
+not configured).
+`npm run verify` was not run, in keeping with the instruction not to run it
+unless requested. `git diff --check` passed, and
+`git diff --stat -- vendor/betaflight` was empty.
+
+### Rebase conflict cleanup (2026-10-04)
+
+Resolved the remaining conflict blocks in the simulator UI and track builder.
+Kept the official implementation paths, preserved translated text where the
+versions aligned, translated visible strings added by the official side, and
+retained both independent progress-log entries.
+
+What went wrong. The first scripted pass encountered older conflict remnants
+inside a conflict hunk and temporarily left malformed code. Recovered the
+official staged implementation and corrected the affected functions before
+validation.
+
+Checks: `node --check` passed for the changed JavaScript files, `git diff
+--check` passed, and the repository scan found no remaining conflict
+delimiters. `npm run check:clip` reported 2545 passed and 14 failed; its
+remaining assertions expect English labels and messages. `npm run lint:shell`
+reported 32 problems, including existing English-label selectors and layout
+baselines that grew in the official UI. No thresholds were changed.

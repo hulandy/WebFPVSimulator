@@ -29,12 +29,12 @@
 import { boardOrigin } from './board.js';
 
 export const BUG_KINDS = [
-  { id: 'crash', label: 'Crash or freeze' },
-  { id: 'blocking', label: 'Cannot play' },
-  { id: 'wrong', label: 'Wrong behaviour' },
-  { id: 'visual', label: 'Looks wrong' },
-  { id: 'feel', label: 'Flight feel' },
-  { id: 'other', label: 'Other' },
+  { id: 'crash', label: '崩溃或卡死' },
+  { id: 'blocking', label: '无法游玩' },
+  { id: 'wrong', label: '异常行为' },
+  { id: 'visual', label: '视觉异常' },
+  { id: 'feel', label: '飞行手感' },
+  { id: 'other', label: '其他' },
 ];
 
 function trimOrigin(value) {
@@ -56,7 +56,7 @@ export async function submitBug(payload, origin = boardOrigin()) {
     body = null;
   }
   if (!res.ok) {
-    const message = (body && body.error) || text || `The board answered ${res.status}.`;
+    const message = (body && body.error) || text || `排行榜返回了错误状态 ${res.status}。`;
     const err = new Error(message);
     err.status = res.status;
     throw err;

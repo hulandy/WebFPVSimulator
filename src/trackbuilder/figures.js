@@ -49,23 +49,23 @@ import { add, leftOf, lerp, normalize, scale, sub } from './geometry.js';
 export const FIGURES = {
   single: {
     id: 'single',
-    label: 'One opening',
-    hint: 'One hole counts. The others are scenery. Pick which hole below.',
+    label: '单个开口',
+    hint: '仅选定的一个开口计入飞行顺序，其余开口仅作场景装饰。请在下方选择开口。',
   },
   spiralUp: {
     id: 'spiralUp',
-    label: 'Spiral up',
-    hint: 'Each hole is its own gate. Bottom first, wrap around the side, then the next hole from the same face.',
+    label: '向上螺旋',
+    hint: '每个开口都单独计为一个赛门。从底部开口开始，绕到侧面，再从同一侧穿过上一个开口。',
   },
   spiralDown: {
     id: 'spiralDown',
-    label: 'Spiral down',
-    hint: 'Each hole is its own gate. Top first, wrap around the side, then the next hole down from the other face.',
+    label: '向下螺旋',
+    hint: '每个开口都单独计为一个赛门。从顶部开口开始，绕到侧面，再从另一侧穿过下一个开口。',
   },
   splitS: {
     id: 'splitS',
     label: 'Split-S',
-    hint: 'Two gates. Through the top, invert, back through the bottom the other way. A triple skips the middle.',
+    hint: '依次通过两个赛门：穿过顶部开口后倒转，再从另一方向穿过底部开口。三层门会跳过中间开口。',
   },
   revSplitS: {
     id: 'revSplitS',
@@ -87,16 +87,16 @@ export function figureBlurb(el, figureId) {
   const n = aperturesOf(el).length;
   if (figureId === 'spiralUp') {
     return n === 2
-      ? 'Two gates. Fly the bottom, wrap around the side, then the top from the same face.'
-      : 'Three gates. Bottom, wrap, middle from the same face, wrap, then the top.';
+      ? '两个赛门：先穿过底部开口，绕到侧面，再从同一侧穿过顶部开口。'
+      : '三个赛门：先穿过底部开口，绕到侧面，从同一侧穿过中间开口，再绕到顶部开口。';
   }
   if (figureId === 'spiralDown') {
-    return 'Three gates. Top, wrap, middle from the other face, wrap, then the bottom.';
+    return '三个赛门：先穿过顶部开口，绕到另一侧穿过中间开口，再绕到另一侧穿过底部开口。';
   }
   if (figureId === 'splitS') {
     return n === 2
-      ? 'Two gates. Through the top, flip, back through the bottom the other way.'
-      : 'Two gates. Through the top, flip, back through the bottom. The middle hole does not count.';
+      ? '两个赛门：穿过顶部开口后翻转，再从另一方向穿过底部开口。'
+      : '两个赛门：穿过顶部开口后翻转，再穿过底部开口。中间开口不计入飞行顺序。';
   }
   if (figureId === 'revSplitS') {
     return n === 2
@@ -104,7 +104,7 @@ export function figureBlurb(el, figureId) {
       : 'Two gates. Through the bottom, up and over in a half loop, back through the top. The middle hole does not count.';
   }
   return n > 1
-    ? 'One gate. Only the hole you pick below counts; the rest are just the frame.'
+    ? '仅有一个赛门。只有下方选择的开口计入飞行顺序，其余部分仅作门框。'
     : '';
 }
 
@@ -129,12 +129,12 @@ export function levelName(el, index) {
     return openingName(letterOfPiece(el), i);
   }
   if (n === 2) {
-    return i === 0 ? 'bottom' : 'top';
+    return i === 0 ? '底层' : '顶层';
   }
   if (n === 3) {
-    return ['bottom', 'middle', 'top'][i];
+    return ['底层', '中层', '顶层'][i];
   }
-  return `level ${i + 1}`;
+  return `第 ${i + 1} 层`;
 }
 
 /*

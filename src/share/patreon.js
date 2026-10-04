@@ -35,7 +35,7 @@ import { counting, eventsUrl } from './stats.js';
 /* The public page. Same address in the landing config and the board app. */
 export const PATREON_URL = 'https://www.patreon.com/cw/webfpv';
 
-export const PATREON_NOTE = 'Support WebFPV on Patreon. Keep the lights on, $3. Hosting + runway, $8. Build the sim, $20. USD a month.';
+export const PATREON_NOTE = '在 Patreon 上支持 WebFPV：每月 3 美元用于维持运营，8 美元用于托管与测试，20 美元用于开发模拟器。';
 
 /* Patreon's symbol. Do not restyle the path. */
 const MARK = 'M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003';

@@ -380,7 +380,7 @@ export function createTrack(name, cls = TRACK_CLASS_DEFAULT, mode = 'race') {
   /* Defaulted here rather than in the signature so a caller that only wants
    * to name the class can pass undefined for the name, which every one of
    * app.js's six call sites does. */
-  name = name ?? (freestyle ? 'Untitled map' : 'Untitled track');
+  name = name ?? (freestyle ? '未命名地图' : '未命名赛道');
   /* A freestyle map is always the full sized class. */
   if (freestyle) {
     cls = 'full';
@@ -1049,7 +1049,7 @@ export function sequenceRefCount(doc, elementId) {
 export function normalize(raw) {
   const repairs = [];
   const src = (raw && typeof raw === 'object') ? raw : {};
-  const base = createTrack(str(src.name, 'Untitled track'));
+  const base = createTrack(str(src.name, '未命名赛道'));
 
   const version = int(src.schemaVersion, 0, 0);
   if (version > SCHEMA_VERSION) {
@@ -1077,7 +1077,7 @@ export function normalize(raw) {
   const doc = {
     schemaVersion: SCHEMA_VERSION,
     id: str(src.id, base.id),
-    name: str(src.name, 'Untitled track'),
+    name: str(src.name, '未命名赛道'),
     createdUtc: str(src.createdUtc, base.createdUtc),
     modifiedUtc: str(src.modifiedUtc, base.modifiedUtc),
     /* Defaulted to 'full' rather than repaired, because a document without

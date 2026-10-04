@@ -28,11 +28,11 @@
   You should have received a copy of the GNU General Public License
   along with WebFPVSimulator. If not, see <https://www.gnu.org/licenses/>.
 -->
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Builder, WebFPV</title>
+    <title>赛道编辑器，WebFPV</title>
     <!--
       THE SCRIPTS OF THE DEPLOY THIS PAGE CAME FROM, ALWAYS: see src/fresh.js,
       and the same lines at the top of the simulator's index.html. This page
@@ -70,21 +70,21 @@
       rendered a picture. The image is the simulator's own card, because the
       thing a builder link leads to is a course flown in that simulator.
     -->
-    <meta name="description" content="Build a five inch race track, a whoop track or a freestyle map, fly it in the browser, and publish it to Tracks and times. No install, no account." />
+    <meta name="description" content="逐个绘制 FPV 竞速赛道门，在浏览器中飞行，并发布到公开排行榜。无需安装，无需注册。" />
     <link rel="canonical" href="https://webfpv.org/sim/src/trackbuilder/index.html" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WebFPV" />
     <meta property="og:url" content="https://webfpv.org/sim/src/trackbuilder/index.html" />
-    <meta property="og:title" content="WebFPV Builder" />
-    <meta property="og:description" content="Build a five inch race track, a whoop track or a freestyle map, fly it in the browser, and publish it to Tracks and times." />
+    <meta property="og:title" content="WebFPV 赛道编辑器" />
+    <meta property="og:description" content="逐个绘制竞速赛道门，在浏览器中飞行，并发布到公开排行榜。" />
     <meta property="og:image" content="https://webfpv.org/sim/og.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The WebFPV simulator: a lit start gate on mown grass, a five inch quad parked beside it." />
+    <meta property="og:image:alt" content="WebFPV 模拟器：修剪整齐的草地上亮起的起点门，旁边停着一架五英寸四轴飞行器。" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="WebFPV Builder" />
-    <meta name="twitter:description" content="Build a five inch race track, a whoop track or a freestyle map, fly it in the browser, and publish it to Tracks and times." />
+    <meta name="twitter:title" content="WebFPV 赛道编辑器" />
+    <meta name="twitter:description" content="创建五英寸竞速赛道、室内微型机赛道或自由式地图，在浏览器中飞行，并发布到公开排行榜。" />
     <meta name="twitter:image" content="https://webfpv.org/sim/og.png" />
     <meta name="theme-color" content="#0f150f" />
     <!--
@@ -2473,7 +2473,7 @@
         <!-- The sentence after the bold is app.js's, in the canvas's own noun
              (placeKeep): a map's notice says maps. -->
         <p>
-          <strong>This browser only.</strong>
+          <strong>仅保存在此浏览器中。</strong>
           <span id="tb-keep-text">Tracks you build stay here. Clearing the browser, or opening another device, starts you from nothing. Publish a track to put it on the board.</span>
         </p>
       </div>
@@ -2490,7 +2490,7 @@
           <div id="tb-lapbar"></div>
           <!-- The honest line for a screen too small even for the phone
                layout (MENUS-PLAN.md 4.4). The bar above it still works. -->
-          <p id="tb-small">This screen is too small to build on: the Builder needs 300 pixels each way. Fly and Load on the bar above still work.</p>
+          <p id="tb-small">屏幕空间不足，无法进行编辑：赛道编辑器需要至少 300 像素的宽度和高度。上方工具栏中的“飞行”和“打开”仍可使用。</p>
           <div id="tb-status">
             <span id="tb-readout"></span>
             <!--
@@ -2501,23 +2501,23 @@
             <span class="tb-keys">
               <!-- What a finger does, in place of the keys a touched screen
                    has none of: the room and the plan, each its own. -->
-              <span class="tb-touch-hint" data-whoop data-3d-only>Tap a piece to select it. Drag it to move it. Two fingers slide, pinch and twist the room.</span>
-              <span class="tb-touch-hint" data-2d-only>Tap a tool, then tap the plan to place it. Drag a piece to move it, or empty ground to select several. Two fingers slide and pinch the plan.</span>
-              <span><kbd>Wheel</kbd>zoom</span>
-              <span><kbd>Mid</kbd>pan</span>
-              <span><kbd>Click</kbd>select</span>
-              <span><kbd>Shift</kbd>add</span>
-              <span data-whoop><kbd>Drag</kbd>move</span>
-              <span data-whoop><kbd>Shift drag</kbd>box select</span>
-              <span data-whoop><kbd>Ring</kbd>turn</span>
-              <span data-whoop><kbd>Ctrl D</kbd>copy</span>
-              <span data-whoop><kbd>F</kbd>frame</span>
-              <span><kbd>Q E</kbd>rotate</span>
-              <span><kbd>Alt</kbd>off grid</span>
-              <span data-race-only><kbd>X</kbd>flip face</span>
-              <span><kbd>V</kbd>2D and 3D</span>
-              <span><kbd>Del</kbd>remove</span>
-              <span><kbd>Ctrl Z</kbd>undo</span>
+              <span class="tb-touch-hint" data-whoop data-3d-only>点击元素可选中，拖动可移动。双指可平移、缩放和旋转场景。</span>
+              <span class="tb-touch-hint" data-2d-only>点击工具，再点击平面图进行放置。拖动元素可移动，拖动空白处可框选多个元素。双指可平移和缩放平面图。</span>
+              <span><kbd>滚轮</kbd>缩放</span>
+              <span><kbd>中键</kbd>平移</span>
+              <span><kbd>单击</kbd>选择</span>
+              <span><kbd>Shift</kbd>添加</span>
+              <span data-whoop><kbd>拖动</kbd>移动</span>
+              <span data-whoop><kbd>Shift 拖动</kbd>框选</span>
+              <span data-whoop><kbd>圆环</kbd>旋转</span>
+              <span data-whoop><kbd>Ctrl D</kbd>复制</span>
+              <span data-whoop><kbd>F</kbd>聚焦</span>
+              <span><kbd>拖动</kbd>框选</span>
+              <span><kbd>Alt</kbd>旋转</span>
+              <span data-race-only><kbd>X</kbd>翻转朝向</span>
+              <span><kbd>V</kbd>切换 2D/3D</span>
+              <span><kbd>Del</kbd>删除</span>
+              <span><kbd>Ctrl Z</kbd>撤销</span>
             </span>
           </div>
         </div>

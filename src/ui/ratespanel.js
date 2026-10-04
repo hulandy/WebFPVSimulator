@@ -91,22 +91,22 @@ function el(tag, cls, text) {
 export function ratesCurves(rates) {
   const r = normaliseRates(rates || {});
   const yaw = {
-    id: 'yaw', label: 'Yaw', color: SLATE, dash: [5, 4], type: r.type, axis: rateAxis(r, 'yaw'),
+    id: 'yaw', label: '偏航', color: SLATE, dash: [5, 4], type: r.type, axis: rateAxis(r, 'yaw'),
   };
   if (pitchMatchesRoll(r)) {
     return [
       {
-        id: 'rollpitch', label: 'Roll, pitch', color: SAKURA, type: r.type, axis: rateAxis(r, 'roll'),
+        id: 'rollpitch', label: '横滚、俯仰', color: SAKURA, type: r.type, axis: rateAxis(r, 'roll'),
       },
       yaw,
     ];
   }
   return [
     {
-      id: 'roll', label: 'Roll', color: SAKURA, type: r.type, axis: rateAxis(r, 'roll'),
+      id: 'roll', label: '横滚', color: SAKURA, type: r.type, axis: rateAxis(r, 'roll'),
     },
     {
-      id: 'pitch', label: 'Pitch', color: MINT, dash: [2, 3], type: r.type, axis: rateAxis(r, 'pitch'),
+      id: 'pitch', label: '俯仰', color: MINT, dash: [2, 3], type: r.type, axis: rateAxis(r, 'pitch'),
     },
     yaw,
   ];
@@ -125,10 +125,10 @@ function curveFor(curves, id) {
 /* One sentence a screen reader can read instead of the picture. */
 function describe(curves) {
   const parts = curves.map((c) => {
-    const at = SAMPLE_STICKS.map((s) => `${Math.round(degAt(c, s))} at ${s === 1 ? 'the stop' : `${s * 100} percent`}`);
-    return `${c.label}: ${at.join(', ')} degrees per second`;
+    const at = SAMPLE_STICKS.map((s) => `${Math.round(degAt(c, s))}（摇杆${s === 1 ? '最大行程' : `${s * 100}%`}）`);
+    return `${c.label}：${at.join('，')} 度/秒`;
   });
-  return `Stick to rate curve. ${parts.join('. ')}.`;
+  return `摇杆至速率曲线。${parts.join('。')}。`;
 }
 
 export function mountRatesPanel() {
@@ -181,7 +181,7 @@ export function mountRatesPanel() {
     }
     for (const s of SAMPLE_STICKS) {
       const wrap = el('div', 'rates-cell');
-      wrap.append(el('dt', null, s === 1 ? 'Full stick' : `${s * 100}% stick`));
+      wrap.append(el('dt', null, s === 1 ? '摇杆满行程' : `摇杆 ${s * 100}%`));
       const dd = el('dd', null, '');
       /* The spans only, in curve order. The curve OBJECT is deliberately not
        * kept: it is rebuilt from the settings on every paint, and a cell
@@ -199,13 +199,13 @@ export function mountRatesPanel() {
         dd.append(num);
         return { num, sep };
       });
-      dd.append(el('span', 'rates-num-unit', ' deg/s'));
+      dd.append(el('span', 'rates-num-unit', ' 度/秒'));
       wrap.append(dd);
       readout.append(wrap);
       cells.push({ stick: s, nums });
     }
     const hoverWrap = el('div', 'rates-cell');
-    hoverWrap.append(el('dt', null, 'Hover sits at'));
+    hoverWrap.append(el('dt', null, '悬停油门位置'));
     hoverDd = el('dd', null, '');
     hoverWrap.append(hoverDd);
     readout.append(hoverWrap);
@@ -300,9 +300,9 @@ export function mountRatesPanel() {
     ctx.fillText('0', padL - 6, y0);
     ctx.fillText(`-${maxY}`, padL - 6, yOf(-maxY));
     ctx.textAlign = 'center';
-    ctx.fillText('centre', x0, padT + gh + 12);
-    ctx.fillText('left', padL + 16, padT + gh + 12);
-    ctx.fillText('right', padL + gw - 16, padT + gh + 12);
+    ctx.fillText('中', x0, padT + gh + 12);
+    ctx.fillText('左', padL + 16, padT + gh + 12);
+    ctx.fillText('右', padL + gw - 16, padT + gh + 12);
 
     /* Each curve's own maximum, on its own line, in its own colour. Equal
      * maxima would stack two strings on one baseline, so a label that lands
@@ -363,7 +363,7 @@ export function mountRatesPanel() {
     for (const c of curves) {
       const val = swatches.get(c.id);
       if (val) {
-        val.textContent = `${Math.round(degAt(c, 1))} deg/s`;
+        val.textContent = `${Math.round(degAt(c, 1))} 度/秒`;
       }
     }
     for (const cell of cells) {

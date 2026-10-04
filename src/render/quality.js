@@ -87,8 +87,8 @@ export const GRAPHICS_IDS = ['low', 'medium', 'high'];
 const PRESETS = {
   low: {
     id: 'low',
-    name: 'Low',
-    note: 'Steam Deck and similar handhelds. Lower internal resolution, no shadow maps, cheaper post, and a thinner town. Still uses a GPU if the machine has one. Changing this rebuilds the world.',
+    name: '低',
+    note: '适用于 Steam Deck 等掌机。降低内部渲染分辨率，关闭阴影贴图，简化后期效果，并减少城镇植被。设备有 GPU 时仍会使用 GPU。更改此设置会重建场景。',
     /* Cap at 1x, then 0.85: Deck native is 1280x800, so the compositor sees
      * about 1088x680. Fill rate is what a 4 to 15 W APU is short of. */
     pixelRatioCap: 1,
@@ -161,8 +161,8 @@ const PRESETS = {
   },
   medium: {
     id: 'medium',
-    name: 'Medium',
-    note: 'A 2020-era laptop with integrated graphics. Shadows at lower resolution, no bloom, and thinner planting in the town. Changing this rebuilds the world.',
+    name: '中',
+    note: '适用于 2020 年前后的集成显卡笔记本。降低阴影分辨率，关闭泛光效果，并减少城镇植被。更改此设置会重建场景。',
     pixelRatioCap: 1.25,
     resolutionScale: 1,
     shadows: true,
@@ -195,8 +195,8 @@ const PRESETS = {
   },
   high: {
     id: 'high',
-    name: 'High',
-    note: 'A 2021-era PC or a strong laptop. The authored look: full resolution, soft shadows, bloom, and the town at full planting. Changing this rebuilds the world.',
+    name: '高',
+    note: '适用于 2021 年前后的台式机或性能较强的笔记本。使用完整渲染分辨率、柔和阴影、泛光效果和完整城镇植被。更改此设置会重建场景。',
     /* Identical to the session default before this file existed. */
     pixelRatioCap: 2,
     resolutionScale: 1,

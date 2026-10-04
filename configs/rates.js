@@ -75,8 +75,8 @@ export const RATE_TYPE_LABEL = {
   BETAFLIGHT: 'Betaflight',
   RACEFLIGHT: 'Raceflight',
   KISS: 'KISS',
-  ACTUAL: 'Actual',
-  QUICK: 'Quick',
+  ACTUAL: '实际速率',
+  QUICK: '快速速率',
 };
 
 export const RATE_AXES = ['roll', 'pitch', 'yaw'];
@@ -118,56 +118,56 @@ function field(label, cliMin, cliMax, scale, decimals, unit, note) {
 const RATE_SYSTEMS = {
   BETAFLIGHT: {
     fields: {
-      rcRate: field('RC rate', 1, 255, 0.01, 2, '',
-        'The linear part of the curve, and the whole of it when Super rate is zero. 1.00 is 200 deg/s at full stick.'),
+      rcRate: field('RC 速率', 1, 255, 0.01, 2, '',
+        '曲线的线性部分；Super rate 为零时，它决定整条曲线。满杆时 1.00 对应 200 度/秒。'),
       srate: field('Super rate', 0, 100, 0.01, 2, '',
-        'How hard the ends of the travel are stretched. Zero is a straight line; every step up adds rate at the stop without touching the middle, and the top of the range is where a small stick move near the stop is worth a great deal.'),
-      expo: field('RC expo', 0, 100, 0.01, 2, '',
-        'Softens the middle of the stick and leaves the ends alone. Zero is linear.'),
+        '拉伸摇杆行程两端的程度。零表示直线；数值每增加一步，满杆转速就会提高，而中段保持不变。数值接近上限时，摇杆靠近满杆的小幅移动也会带来很大的转速变化。'),
+      expo: field('遥控指数', 0, 100, 0.01, 2, '',
+        '柔化摇杆中段响应，不影响两端。零表示线性响应。'),
     },
     defaults: { rcRate: 100, srate: 70, expo: 0 },
   },
   RACEFLIGHT: {
     fields: {
-      rcRate: field('Rate', 1, 200, 10, 0, 'deg/s',
-        'Raceflight states the rate directly, in degrees per second, before Acro+ stretches the ends.'),
+      rcRate: field('速率', 1, 200, 10, 0, '度/秒',
+        'Raceflight 直接以度/秒表示速率，之后由 Acro+ 拉伸行程两端。'),
       srate: field('Acro+', 0, 255, 1, 0, '',
-        'Raceflight\'s super rate. It adds to the rate in proportion to how far the stick is from centre, so the ends get faster and the middle does not.'),
-      expo: field('Expo', 0, 100, 1, 0, '',
-        'Softens the middle of the stick. Whole numbers here, not hundredths, which is how Raceflight writes it.'),
+        'Raceflight 的 super rate。根据摇杆偏离中心的程度增加速率，因此两端更快，中段保持不变。'),
+      expo: field('指数', 0, 100, 1, 0, '',
+        '柔化摇杆中段响应。此处使用整数，而非小数，因为 Raceflight 使用整数格式。'),
     },
     defaults: { rcRate: 37, srate: 80, expo: 50 },
   },
   KISS: {
     fields: {
-      rcRate: field('RC rate', 1, 255, 0.01, 2, '',
-        'KISS\'s linear term. The curve is Betaflight\'s with KISS\'s own scaling, so the numbers look like Betaflight\'s and do not mean quite the same thing.'),
-      srate: field('Rate', 0, 99, 0.01, 2, '',
-        'KISS\'s super rate, stopping at 0.99 because 1.00 divides by zero at full stick and the firmware would sit on its own clamp.'),
-      expo: field('RC curve', 0, 100, 0.01, 2, '',
-        'KISS calls its expo a curve. Same idea: it softens the middle and leaves the ends.'),
+      rcRate: field('RC 速率', 1, 255, 0.01, 2, '',
+        'KISS 的线性项。曲线与 Betaflight 类似，但使用 KISS 自身的缩放方式，因此数值看起来相同，含义略有不同。'),
+      srate: field('速率', 0, 99, 0.01, 2, '',
+        'KISS 的 super rate，最大为 0.99；满杆时 1.00 会导致除以零，固件只能使用自身的限值。'),
+      expo: field('遥控曲线', 0, 100, 0.01, 2, '',
+        'KISS 将 expo 称为曲线。作用相同：柔化摇杆中段，不影响两端。'),
     },
     defaults: { rcRate: 100, srate: 70, expo: 0 },
   },
   ACTUAL: {
     fields: {
-      rcRate: field('Centre sensitivity', 1, 200, 10, 0, 'deg/s',
-        'How quickly the quad answers a small stick move, as the SLOPE of the curve at the middle. Low is calm for a smooth line, high is twitchy and quick. It is not the rate at half stick: read the curve. Configurator calls this column Center Sensitivity.'),
-      srate: field('Max rate', 1, 200, 10, 0, 'deg/s',
-        'What the quad does at full stick, exactly. This is the number Actual rates exist for: the end of the curve is the number you type, whatever expo does to the middle.'),
-      expo: field('Expo', 0, 100, 0.01, 2, '',
-        'How much of the travel is spent near the middle. Zero is a straight line from centre sensitivity to the stop. Higher softens the middle and keeps the same maximum, which is why the ends of the curve do not move when you change it.'),
+      rcRate: field('中心灵敏度', 1, 200, 10, 0, '度/秒',
+        '表示曲线中点处的斜率，也就是四轴对小幅摇杆移动的响应速度。数值低时更平稳，数值高时更灵敏。它不等于半杆时的转速，请查看曲线。配置器将此列称为 Center Sensitivity。'),
+      srate: field('最大速率', 1, 200, 10, 0, '度/秒',
+        '四轴在摇杆满杆时的实际转速。实际速率系统以此数值定义曲线末端；指数只会影响中段。'),
+      expo: field('指数', 0, 100, 0.01, 2, '',
+        '摇杆行程中段的柔化程度。零表示从中心灵敏度到满杆转速的直线。数值越高，中段越柔和，但最大转速保持不变，因此曲线两端不会移动。'),
     },
     defaults: { rcRate: 7, srate: 67, expo: 0 },
   },
   QUICK: {
     fields: {
-      rcRate: field('RC rate', 1, 255, 0.01, 2, '',
-        'The slope at centre, in Betaflight\'s units: 1.00 is 200 deg/s of centre sensitivity. Quick rates work out the super rate for you from this and Max rate.'),
-      srate: field('Max rate', 1, 200, 10, 0, 'deg/s',
-        'What the quad does at full stick. Quick rates are Betaflight rates with the super rate solved for you, so this end of the curve is exact and the middle is whatever RC rate says.'),
-      expo: field('Expo', 0, 100, 0.01, 2, '',
-        'Softens the middle of the stick and leaves the ends alone.'),
+      rcRate: field('RC 速率', 1, 255, 0.01, 2, '',
+        'Betaflight 单位下的中心斜率：1.00 对应 200 度/秒的中心灵敏度。快速速率系统会根据此值和最大速率自动计算 super rate。'),
+      srate: field('最大速率', 1, 200, 10, 0, '度/秒',
+        '四轴在摇杆满杆时的转速。快速速率系统会自动计算 Betaflight super rate，因此曲线末端精确对应此数值，中段由 RC 速率决定。'),
+      expo: field('指数', 0, 100, 0.01, 2, '',
+        '柔化摇杆中段响应，不影响两端。'),
     },
     defaults: { rcRate: 100, srate: 67, expo: 0 },
   },
@@ -203,10 +203,10 @@ export const RATE_DEFAULTS = Object.freeze({
  * nothing is transcribed here.
  */
 export const THROTTLE_CURVE_FIELDS = Object.freeze({
-  thrMid: field('Throttle mid', 0, 100, 0.01, 2, '',
-    'Where the curve pivots. 0.50 is the factory middle; pilots who hover low often bring it down toward their hover stick so the expo softens the right part of the travel.'),
-  thrExpo: field('Throttle expo', 0, 100, 0.01, 2, '',
-    'Flattens the throttle around the mid point and steepens the ends, exactly Betaflight\'s thr_expo. 0 is the factory straight line.'),
+  thrMid: field('油门中点', 0, 100, 0.01, 2, '',
+    '曲线的转折中心。0.50 是出厂中点；悬停油门较低的飞手通常会将其调低至接近悬停位置，让指数柔化正确的行程范围。'),
+  thrExpo: field('油门指数', 0, 100, 0.01, 2, '',
+    '柔化油门中点附近的响应，并提高两端斜率，与 Betaflight 的 thr_expo 完全一致。0 表示出厂线性曲线。'),
 });
 
 /*

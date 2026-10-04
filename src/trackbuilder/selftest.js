@@ -392,7 +392,7 @@ function suiteElementCounts() {
 
   check('an empty field has no types and says so',
     countElementsByType([]).length === 0
-    && formatElementCounts([]) === 'no elements');
+    && formatElementCounts([]) === '暂无元素');
 
   const extras = createTrack();
   place(extras, 'startPads', 0, 0);
@@ -413,10 +413,10 @@ function suiteElementCounts() {
   check('types with none on the field are omitted',
     !byType.doubleStack && !byType.flaggedGate && !byType.waypoint);
   check('the printed mix is the palette order, pluralised',
-    formatElementCounts(rows) === '4 gates, 1 triple stack, 1 tower, 1 dive gate, 1 barrier, 1 flag, 1 cone',
+    formatElementCounts(rows) === '4 个赛门、1 个三层门、1 个高塔门、1 个俯冲门、1 个障碍物、1 个旗帜、1 个锥桶',
     formatElementCounts(rows));
   const stacks = formatElementCounts([{ type: 'containers', label: ELEMENTS.containers.label, count: 7 }]);
-  check('a label that is plural already is not pluralised again', stacks === '7 containers', stacks);
+  check('Chinese inventory labels use a consistent count format', stacks === '7 个集装箱', stacks);
 
   const mixed = createTrack();
   place(mixed, 'gate', 0, 0);
@@ -656,7 +656,7 @@ function suiteFaces() {
     Math.abs(elementById(dv, gate.id).pitch - Math.PI / 2) < 1e-5,
     `${(elementById(dv, gate.id).pitch * DEG).toFixed(4)} deg`);
   check('and is flown downward through', diveSeq.entry === -1, `entry ${diveSeq.entry}`);
-  check('which the inspector calls entering from above', faceLabel(dv, diveSeq) === 'enter from above',
+  check('which the inspector calls entering from above', faceLabel(dv, diveSeq) === '从上方进入',
     faceLabel(dv, diveSeq));
 }
 
@@ -1172,8 +1172,8 @@ function suiteWarnings() {
   const closeWarns = (d) => collectWarnings(d, buildPath(d)).filter((w) => w.code === 'close-stations');
   const together = closeWarns(orbitDoc('right'));
   check('two flags in a row whose squares coincide warn that one pass can reach both',
-    together.length === 1 && /0\.00 m apart/.test(together[0].message)
-      && together[0].message.includes(`${stationLegMin('full')} m more flying`),
+    together.length === 1 && /间距仅为 0\.00 m/.test(together[0].message)
+      && together[0].message.includes(`额外飞行 ${stationLegMin('full')} m`),
     together.map((w) => w.message).join(' | '));
   check('and the same flags passed on the other side, a real orbit, do not',
     closeWarns(orbitDoc('left')).length === 0,
@@ -1377,11 +1377,11 @@ function suiteSequenceNaming() {
     const el = elementById(doc, s.elementId);
     return el && el.type === 'ladder';
   });
-  check('a ladder entry names its level', /bottom|middle|top/.test(sequenceLabel(doc, ladderSeqs[0])),
+  check('a ladder entry names its level', /底层|中层|顶层/.test(sequenceLabel(doc, ladderSeqs[0])),
     sequenceLabel(doc, ladderSeqs[0]));
   check('a ladder has three openings', aperturesOf(elementById(doc, ladderSeqs[0].elementId)).length === 3);
   const flagSeq = doc.sequence.find((s) => elementById(doc, s.elementId).type === 'flag');
-  check('a marker names its pass side in prose', /pass on the (left|right)/.test(faceLabel(doc, flagSeq)),
+  check('a marker names its pass side in prose', /从(左|右)侧通过/.test(faceLabel(doc, flagSeq)),
     faceLabel(doc, flagSeq));
 }
 
@@ -1502,9 +1502,9 @@ function suiteFigures() {
   const course = courseFromDocument(dbl);
   const stacked = course.stations.filter((s) => s.type === 'doubleStack');
   check('the course scores two stacked stations', stacked.length === 2, `${stacked.length}`);
-  check('the first station cues the top of the split-S', stacked[0]?.cue === 'Split-S, top',
+  check('the first station cues the top of the split-S', stacked[0]?.cue === 'Split-S, 顶层',
     stacked[0]?.cue);
-  check('the second station cues the bottom', stacked[1]?.cue === 'Split-S, bottom',
+  check('the second station cues the bottom', stacked[1]?.cue === 'Split-S, 底层',
     stacked[1]?.cue);
   /* The plain gates either side of the Split-S. Before 2026-09-26 the
    * Split-S plan on one opening fell through to a single pass and matched
@@ -4126,7 +4126,7 @@ function suiteFreestyle() {
 
   const map = createTrack(undefined, 'full', 'freestyle');
   check('a new map says it is freestyle, on the full sized class',
-    docModeOf(map) === 'freestyle' && map.trackClass === 'full' && map.name === 'Untitled map');
+    docModeOf(map) === 'freestyle' && map.trackClass === 'full' && map.name === '未命名地图');
   check('and it stands on a 160 by 160 m plot',
     map.field.width === 160 && map.field.depth === 160, `${map.field.width} by ${map.field.depth}`);
 
@@ -4361,7 +4361,7 @@ function suiteFreestyle() {
     freestylePlace(d, 'building', 40, 40);
     const note = () => freestyleReport(d).warnings.find((x) => x.code === 'fs-no-start');
     check('no start pads: a note that says where the pilot starts, the point 8 m in when it is open',
-      Boolean(note()) && placeDocument(d).spawn.from === 'point' && note().message.includes('8 m in from the left edge'),
+      Boolean(note()) && placeDocument(d).spawn.from === 'point' && note().message.includes('距场地左侧 8 m'),
       note() ? note().message : 'no fs-no-start');
     /*
      * WITH NO PADS THE START IS IN THE OPEN (openSpawn in
@@ -4377,7 +4377,7 @@ function suiteFreestyle() {
       sp.from === 'open' && sp.y === 0 && planClearance(placed, sp.x, sp.z) >= OPEN_CLEAR && !codesOf(d).includes('fs-spawn'),
       `${sp.from} at (${sp.x}, ${sp.z}), ${planClearance(placed, sp.x, sp.z).toFixed(3)} m clear: ${codesOf(d).join(', ')}`);
     check('and the note says where, in the plan',
-      note().message.includes(`${(sp.x + d.field.width / 2).toFixed(1)} m in from the left edge and ${(d.field.depth / 2 - sp.z).toFixed(1)} m up`),
+      note().message.includes(`距场地左侧 ${(sp.x + d.field.width / 2).toFixed(1)} m、向上 ${(d.field.depth / 2 - sp.z).toFixed(1)} m`),
       note().message);
   }
   {
@@ -4414,7 +4414,7 @@ function suiteFreestyle() {
     const into = sp.yaw === -Math.PI / 2 ? sp.x < 0 : sp.yaw === Math.PI / 2 ? sp.x > 0 : sp.yaw === 0 ? sp.z > 0 : sp.z < 0;
     check('a plot with no open ground starts the craft at its edge, in the open, facing into it',
       sp.from === 'off' && into && planClearance(placed, sp.x, sp.z) >= OPEN_CLEAR && !codesOf(d).includes('fs-spawn')
-      && Boolean(w) && /starts at its (left|right|top|bottom) edge, facing into it/.test(w.message),
+      && Boolean(w) && /场地(左|右|上|下)侧边缘朝内起飞/.test(w.message),
       `${sp.from} at (${sp.x}, ${sp.z}) facing ${sp.yaw}: ${w ? w.message : 'no fs-no-start'}`);
   }
   {
@@ -4444,7 +4444,7 @@ function suiteFreestyle() {
     const pads = freestylePlace(d, 'startPads', 40, 40);
     let placed = placeDocument(d);
     const inside = freestyleReport(d).warnings.find((x) => x.code === 'fs-spawn');
-    check('pads at Base 0 under a building are fs-spawn, inside it', Boolean(inside) && /inside/.test(inside.message)
+    check('pads at Base 0 under a building are fs-spawn, inside it', Boolean(inside) && /内部/.test(inside.message)
       && placed.spawn.y === 0, inside ? inside.message : 'no fs-spawn');
     check('and that is not fs-pads-seat: they stand on the ground they were put on', !codesOf(d).includes('fs-pads-seat'));
     const top = topUnder(placed.solids, placed.spawn.x, placed.spawn.z);
@@ -4465,13 +4465,13 @@ function suiteFreestyle() {
     check('a Base 1 m over the roof is still seated on the roof', placed.spawn.y === top && placed.spawn.base === top + 1,
       `seat ${placed.spawn.y}`);
     check('and fs-pads-seat says where, naming the building and the roof’s height',
-      Boolean(seat) && seat.elementId === pads.id && seat.message.includes('on top of Building')
+      Boolean(seat) && seat.elementId === pads.id && seat.message.includes('建筑顶部')
       && seat.message.includes(`${top.toFixed(2)} m`), seat ? seat.message : 'no fs-pads-seat');
     check('but nothing is in the way of the craft there', !codesOf(d).includes('fs-spawn'));
     pads.position.x = 100;
     const ground = freestyleReport(d).warnings.find((x) => x.code === 'fs-pads-seat');
     check('pads raised over nothing are on the ground, and it says so',
-      placeDocument(d).spawn.y === 0 && Boolean(ground) && ground.message.includes('on the ground'),
+      placeDocument(d).spawn.y === 0 && Boolean(ground) && ground.message.includes('地面'),
       ground ? ground.message : 'no fs-pads-seat');
   }
   {
@@ -4490,12 +4490,12 @@ function suiteFreestyle() {
     check('a row across a ledge is drawn at the seat of the craft’s mat, on the ledge',
       placed.spawn.y === 0.5 && drawn.y === placed.spawn.y, `seat ${placed.spawn.y}, drawn at ${drawn.y}`);
     const seat = freestyleReport(d).warnings.find((x) => x.code === 'fs-pads-seat');
-    check('and fs-pads-seat names a mat that is off it', Boolean(seat) && /mat 1 sits at 0\.00 m/.test(seat.message),
+    check('and fs-pads-seat names a mat that is off it', Boolean(seat) && /第 1 个垫位于 0\.00 m/.test(seat.message),
       seat ? seat.message : 'no fs-pads-seat');
     pads.position.z = 0;
     const low = freestyleReport(d).warnings.find((x) => x.code === 'fs-pads-seat');
     check('and with Base left at 0 it says both: where to set Base, and that the row is split',
-      Boolean(low) && /Set Base to 0\.50 m/.test(low.message) && /two heights/.test(low.message),
+      Boolean(low) && /底部高度设置为 0\.50 m/.test(low.message) && /横跨两个高度/.test(low.message),
       low ? low.message : 'no fs-pads-seat');
   }
   {
@@ -4657,7 +4657,7 @@ function suiteFreestyle() {
     };
     const six = freestyleReport(block(6)).warnings.find((x) => x.code === 'fs-crowded');
     check('six tall stacks with 1.2 m slots are more than the physics looks at, and it says so',
-      Boolean(six) && /1024 at most/.test(six.message), six ? six.message : 'no fs-crowded');
+      Boolean(six) && /最多检测 1024 个/.test(six.message), six ? six.message : 'no fs-crowded');
     check('one is not', !codesOf(block(1)).includes('fs-crowded'));
   }
   {
@@ -5155,7 +5155,7 @@ function suiteRoadTool() {
     freestylePlace(m.d, 'building', 80, 50);
     const w = roadCodes(m.d).find((x) => x.code === 'rd-solid');
     check('a road through a building warns, on the road, naming the building',
-      w && w.elementId === m.road.id && w.message.includes('Building'));
+      w && w.elementId === m.road.id && w.message.includes('建筑'));
     const m2 = roadMap();
     freestylePlace(m2.d, 'building', 80, 70);
     check('and one well clear of it does not', !roadCodes(m2.d).some((x) => x.code === 'rd-solid'));
@@ -5175,7 +5175,7 @@ function suiteRoadTool() {
     const m = roadMap();
     m.d.elements.find((e) => e.type === 'startPads').position = { x: 80, y: 50, z: 0 };
     const w = roadCodes(m.d).find((x) => x.code === 'rd-start');
-    check('a road over the start pads warns', w && w.elementId === m.road.id && w.message.includes('start pads'));
+    check('a road over the start pads warns', w && w.elementId === m.road.id && w.message.includes('起飞垫'));
     /* With no pads the start keeps a car's reach and a metre off every
      * road (openSpawn in src/maps/built/place.js), so a road through the
      * point moves the start, and rd-start has nothing to say. */
@@ -5206,7 +5206,7 @@ function suiteRoadTool() {
     removeElement(m.d, m.road.id);
     const w = roadCodes(m.d).find((x) => x.code === 'tr-no-road');
     check('a vehicle whose road was deleted warns that its road is gone, and names the car',
-      w && w.elementId === c1.id && w.message.includes('not on the map any more'));
+      w && w.elementId === c1.id && w.message.includes('已不在地图中'));
     const m2 = roadMap();
     addCar(m2.d, m2.road, 20);
     check('and one on a road does not', !roadCodes(m2.d).some((x) => x.code === 'tr-no-road'));
@@ -5215,7 +5215,7 @@ function suiteRoadTool() {
     const fold = roadMap({ nodes: [{ x: 0, y: 0 }, { x: 30, y: 0 }, { x: 10, y: 0 }], closed: false });
     const w = roadCodes(fold.d).find((x) => x.code === 'rd-fold' || x.code === 'rd-tight');
     check('a node road.js has to leave out warns, naming the road and the node', w && w.level === 'warn'
-      && w.elementId === fold.road.id && w.node === 1 && w.message.startsWith('Road: '), w && w.message);
+      && w.elementId === fold.road.id && w.node === 1 && w.message.startsWith('道路: '), w && w.message);
     const kink = roadMap({ nodes: [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10.3, y: 0.004 }, { x: 25, y: 0.004 }], closed: false });
     const k = roadCodes(kink.d).find((x) => x.code === 'rd-kink');
     check('a node it runs straight past is a note, naming the node', k && k.level === 'info' && Number.isInteger(k.node),
@@ -5264,12 +5264,12 @@ function suiteRoadTool() {
     addCar(one.d, one.road, 10);
     addCar(one.d, one.road, 90, { reverse: true });
     check('but two going opposite ways round a one lane loop do: head on',
-      roadCodes(one.d).some((x) => x.code === 'tr-lane-clash' && x.message.includes('opposite directions')));
+      roadCodes(one.d).some((x) => x.code === 'tr-lane-clash' && x.message.includes('相反方向')));
     const openRoad = roadMap({ closed: false });
     addCar(openRoad.d, openRoad.road, 10);
     addCar(openRoad.d, openRoad.road, 60);
     check('and so do two on one open road, out and back along its middle',
-      roadCodes(openRoad.d).some((x) => x.code === 'tr-lane-clash' && x.message.includes('open road')));
+      roadCodes(openRoad.d).some((x) => x.code === 'tr-lane-clash' && x.message.includes('开放式道路')));
   }
   {
     const m = roadMap();
@@ -6412,19 +6412,19 @@ function suiteSeat() {
   const said = seatedNote([{ id: hi.id, type: 'gate', from: 15.01, to: 0, on: null }], nameOf,
     (id) => elementById(track, id));
   check('the note names what was set down, how high it was, and where it stands now',
-    /^Gate \d+ was 15\.0 m up with nothing under it, so it now stands on the ground\.$/.test(said), said);
+    /^赛门 \d+原本位于 15\.0 m 高处，下方没有支撑物，因此已放置在地面上。$/.test(said), said);
   const onRoof = seatedNote([{ id: gateOn.id, type: 'gate', from: roof + 3, to: roof, on: bld.id }], labeller(d),
     (id) => elementById(d, id));
-  check('and on a map it names what it now stands on', /^Gate \d* ?was 14\.6 m up and now stands on Building \d\.$/.test(onRoof), onRoof);
+  check('and on a map it names what it now stands on', /^赛门(?: \d+)?原本位于 14\.6 m 高处，现在放置在建筑 \d上。$/.test(onRoof), onRoof);
   const five = ['a', 'b', 'c', 'd', 'e'].map((id) => ({ id: hi.id, type: 'gate', from: 9, to: 0, on: null }));
   const many = seatedNote(five, nameOf, (id) => elementById(track, id));
   check('several are counted, three are named, and the rest are said to be more',
-    /^5 things were up in the air/.test(many) && /and 2 more/.test(many), many);
+    /^5 个悬空元素/.test(many) && /另外 2 个/.test(many), many);
   const numbered = place(track, 'flag', 25, 0, { name: '15', z: 20 });
   const numberedNote = seatedNote([{ id: numbered.id, type: 'flag', from: 20.06, to: 0, on: null }], nameOf,
     (id) => elementById(track, id));
   check('an element an author or an import named is called by its type and its name',
-    /^Flag "15" was 20\.1 m up with nothing under it/.test(numberedNote), numberedNote);
+    /^旗帜 "15"原本位于 20\.1 m 高处，下方没有支撑物/.test(numberedNote), numberedNote);
   check('and nothing moved says nothing', seatedNote([], nameOf, () => null) === '');
 }
 

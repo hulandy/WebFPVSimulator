@@ -169,19 +169,19 @@ function isSoftware(raw) {
 
 function buildNote(info) {
   if (!info.usable) {
-    return 'WebGL is not drawing. Reload the page. If this stays, the browser refused a graphics context.';
+    return 'WebGL 未能绘制画面。请重新加载页面。如果问题仍然存在，说明浏览器拒绝创建图形上下文。';
   }
   const api = info.webgl2 ? 'WebGL 2' : 'WebGL';
   if (info.software) {
-    return `${api} is running on the CPU, not a GPU (${info.raw || 'software rasteriser'}). Headless Chrome does this. Low is the preset that will run. Nothing is uploaded.`;
+    return `${api} 正在使用 CPU 而非 GPU 运行（${info.raw || '软件光栅化器'}）。无头 Chrome 会出现此情况。低画质预设可以运行。不会上传任何信息。`;
   }
   if (info.hidden) {
-    return `${api} is drawing, so a GPU is in use, but this browser will not name the chip. Firefox's resist-fingerprinting and some Safari builds do that. Nothing is uploaded.`;
+    return `${api} 正在绘制画面，说明正在使用 GPU，但此浏览器不会提供显卡名称。Firefox 的防指纹功能和部分 Safari 版本会隐藏此信息。不会上传任何信息。`;
   }
   if (/^Apple GPU$/i.test(info.name)) {
-    return `${info.name}. ${api} is drawing. Safari hides the chip model. On a dual-GPU machine this is the device the tab bound after asking for high-performance. Nothing is uploaded.`;
+    return `${info.name}。${api} 正在绘制画面。Safari 会隐藏芯片型号。在双显卡设备上，这是页面请求高性能模式后实际绑定的显卡。不会上传任何信息。`;
   }
-  return `${info.name}. ${api} is drawing on this GPU. On a dual-GPU laptop that should be the discrete chip, because the session asked for high-performance. Nothing is uploaded.`;
+  return `${info.name}。${api} 正在使用此 GPU 绘制画面。在双显卡笔记本上，这通常是独立显卡，因为页面请求了高性能模式。不会上传任何信息。`;
 }
 
 /*
@@ -194,19 +194,19 @@ export function readGpuInfo(renderer) {
     integrated: false,
     vendor: '',
     name: '',
-    display: 'Unknown',
+    display: '未知',
     software: false,
     usable: false,
     webgl2: false,
     hidden: true,
-    note: 'The GPU name is not available yet.',
+    note: '显卡名称暂不可用。',
   };
   if (!gl || typeof gl.getParameter !== 'function') {
-    info.note = 'No WebGL context. The world cannot draw.';
+    info.note = '没有 WebGL 上下文，无法绘制场景。';
     return info;
   }
   if (typeof gl.isContextLost === 'function' && gl.isContextLost()) {
-    info.note = 'The WebGL context was lost. Reload the page.';
+    info.note = 'WebGL 上下文已丢失，请重新加载页面。';
     return info;
   }
   info.usable = true;
@@ -242,11 +242,11 @@ export function readGpuInfo(renderer) {
   info.integrated = !info.software && (isIntegratedGpu(raw) || isIntegratedGpu(name));
   info.hidden = !info.software && looksGeneric(name, raw);
   if (info.software) {
-    info.display = name ? `Software (${name})` : 'Software';
+    info.display = name ? `软件渲染（${name}）` : '软件渲染';
   } else if (info.hidden) {
-    info.display = 'Hidden by this browser';
+    info.display = '此浏览器已隐藏';
   } else {
-    info.display = name || 'GPU in use';
+    info.display = name || '正在使用 GPU';
   }
   info.note = buildNote(info);
   return info;
